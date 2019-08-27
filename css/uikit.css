@@ -746,7 +746,7 @@ a.uk-link-reset,
 }
 
 /* Smaller */
-@media (max-height: 500px) {
+@media (max-height: 560px) {
   .uk-divider-vertical {
     width: 1px;
     height: 50px;
