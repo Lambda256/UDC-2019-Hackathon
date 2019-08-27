@@ -21,7 +21,7 @@ function show() {
     optionsVal.options.length = 0;
 
     if (input.value) {
-        dropdown.style.display = 'block';
+        dropdown.style.display = '';
         optionsVal.size = 3;
         var textCountry = input.value;
 
@@ -29,25 +29,31 @@ function show() {
             var testableRegExp = new RegExp(RegExp.escape(textCountry), "i");
             if (arr[i].match(testableRegExp)) {
                 addValue(arr[i], arr[i]);
-
             }
         }
+        /*
+        if (typeof dropdown.children[0].children[0] == 'undefined') {
+          console.log("NULL")
+        } else {
+          console.log(dropdown.children[0].children[0].innerText)
+        }
+        */
 
         var size = dropdown.children[0].children;
         if (size.length > 0)
         {
-           var defaultSize = 20;
+           var defaultSize = 27;
            if (size.length == 1)
            {
-              defaultSize = 30;
+              defaultSize = 35;
            }
-           else if (size.length < 10)
+           else if (size.length < 5)
            {
               defaultSize *= size.length;
            }
            else
            {
-              defaultSize *= 10;
+              defaultSize *= 5;
            }
            dropdown.children[0].style.height = defaultSize + "px";
         }

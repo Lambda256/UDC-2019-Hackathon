@@ -531,6 +531,10 @@ a.uk-link-reset,
   font-size: 2.6rem;
   line-height: 1.2;
 }
+.uk-profile-small {
+  width: 2.6rem;
+  height: 2.6rem;
+}
 .uk-heading-medium {
   font-size: 2.8875rem;
   line-height: 1.1;
@@ -551,6 +555,10 @@ a.uk-link-reset,
 @media (min-width: 960px) {
   .uk-heading-small {
     font-size: 3.25rem;
+  }
+  .uk-profile-small {
+    width: 3.25rem;
+    height: 3.25rem;
   }
   .uk-heading-medium {
     font-size: 3.5rem;
@@ -727,6 +735,36 @@ a.uk-link-reset,
   margin-left: auto;
   margin-right: auto;
   border-left: 1px solid #e5e5e5;
+}
+
+.uk-divider-vertical-small {
+  width: 1px;
+  height: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  border-left: 1px solid #e5e5e5;
+}
+
+/* Smaller */
+@media (max-height: 500px) {
+  .uk-divider-vertical {
+    width: 1px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border-left: 1px solid #e5e5e5;
+  }
+}
+
+/* Bigger */
+@media (min-height: 1000px) {
+  .uk-divider-vertical {
+    width: 1px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    border-left: 1px solid #e5e5e5;
+  }
 }
 /* ========================================================================
    Component: List
@@ -1439,7 +1477,7 @@ button.uk-icon:not(:disabled) {
   padding: 0 10px;
   background: #fff;
   color: #666;
-  border: 1px solid #2A1A00;
+  border: 1px solid #ffffff;
   transition: 0.2s ease-in-out;
   transition-property: color, background-color, border;
 }
@@ -1478,7 +1516,7 @@ button.uk-icon:not(:disabled) {
   outline: none;
   background-color: #fff;
   color: #666;
-  border: 5px solid #F8B323;
+  border: 5px solid #ffffff;
 }
 /* Disabled */
 .uk-input:disabled,
@@ -1495,13 +1533,13 @@ button.uk-icon:not(:disabled) {
   color: #999 !important;
 }
 .uk-input::placeholder {
-  color: #999;
+  color: #fff;
 }
 .uk-textarea::-ms-input-placeholder {
   color: #999 !important;
 }
 .uk-textarea::placeholder {
-  color: #999;
+  color: #fff;
 }
 /* Style modifier (`uk-input`, `uk-select` and `uk-textarea`)
  ========================================================================== */
@@ -1950,15 +1988,15 @@ select.uk-form-width-xsmall {
  */
 .uk-button-default {
   background-color: transparent;
-  color: #333;
-  border: 1px solid #2A1A00;
+  color: #fff;
+  border: 1px solid #ffffff;
 }
 /* Hover + Focus */
 .uk-button-default:hover,
 .uk-button-default:focus {
-  background-color: transparent;
-  color: #333;
-  border-color: #b2b2b2;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ffffff;
 }
 /* OnClick + Active */
 .uk-button-default:active,
@@ -3593,7 +3631,7 @@ select.uk-form-width-xsmall {
   color: #999 !important;
 }
 .uk-search-input::placeholder {
-  color: #999;
+  color: #fff;
 }
 /* Icon (Adopts `uk-icon`)
  ========================================================================== */
@@ -7161,6 +7199,10 @@ ul.uk-nav-sub {
   font-size: 0.875rem;
   line-height: 1.5;
 }
+.uk-text-medium {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
 .uk-text-large {
   font-size: 1.5rem;
   line-height: 1.5;
@@ -7528,9 +7570,9 @@ iframe.uk-cover {
   background-color: #222;
 }
 .uk-background-gradient {
-  background: linear-gradient(top, #F3F3F2, #E9E6E1);
-  background: -webkit-linear-gradient(top, #F3F3F2, #E9E6E1);
-  background: -moz-linear-gradient(top, #F3F3F2, #E9E6E1);
+  background: linear-gradient(top, #eda716, #F8B323);
+  background: -webkit-linear-gradient(top, #eda716, #F8B323);
+  background: -moz-linear-gradient(top, #eda716, #F8B323);
 }
 /* Size
  ========================================================================== */
