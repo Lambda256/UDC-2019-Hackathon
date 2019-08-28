@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="uk-background-fixed uk-background-center-center" style="background-image: url(src/bg.jpg)">
+<html class="uk-height-1-1 uk-background-fixed uk-background-center-center" style="background-image: url(src/bg.jpg);">
     <head>
         <title>Title</title>
         <meta charset="utf-8">
@@ -11,26 +11,26 @@
         <script src="js/functions.js"></script>
     </head>
     <!--<body class="uk-background-gradient">-->
-    <body>
+    <body class="uk-height-1-1 ">
       <!-- nav -->
-      <div class="uk-text-center uk-text-middle uk-margin-top" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
+      <div id="nav" class="uk-text-center" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky" style="height:100px;">
         <nav class="uk-navbar uk-navbar-container uk-padding-small" style="background: transparent">
           <div class="uk-width-1-6"></div>
           <div class="uk-width-2-3 uk-animation-toggle" tabindex="0">
-            <div class="uk-animation-shake">
+            <div class="uk-animation-shake uk-margin-small-top">
                 <span class="uk-heading-small" style="font-family: 'Black Han Sans', sans-serif; color: #F3F3F2;">
                   타고벌자
                 </span>
             </div>
           </div>
-          <div class="uk-width-1-6">
+          <div class="uk-width-1-6 uk-margin-small-top">
             <img class="uk-align-right uk-profile-small uk-border-circle uk-margin-right" src="src/profile.png">
           </div>
         </nav>
       </div>
 
       <!-- body 1 -->
-      <div id="body1" class="uk-text-center">
+      <div id="body1" class="uk-height-1-nav uk-text-center">
         <div class="uk-inline uk-divider-vertical"></div>
         <form class="uk-text-middle">
           <div class="uk-margin-bottom">
@@ -56,7 +56,7 @@
         <div class="uk-inline uk-divider-vertical"></div>
 
         <div>
-          <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-bottom" onclick="go()">
+          <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-top uk-margin-bottom" onclick="go()">
             <div class="uk-margin-small-top uk-margin-small-bottom">
               <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">GO!</span>
             </div>
@@ -65,29 +65,24 @@
       </div>
 
       <!-- body 2 -->
-      <div id="body2" class="uk-text-center" style="height:100%; display:none;">
-        <div class="uk-inline uk-divider-vertical"></div>
-        <div id="map"></div>
-        <div class="uk-inline uk-divider-vertical"></div>
-        <div>
-          <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-bottom">
-            <div class="uk-margin-small-top uk-margin-small-bottom">
-              <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">OK</span>
-            </div>
-          </button>
+      <div id="body2" class="uk-height-1-nav" style="display:none;">
+        <div class="uk-text-center" style="height:20%">
+          <span class="uk-text-large" style="font-family: 'Noto Sans KR', sans-serif; color: #F3F3F2;">
+            도착지 근처 정류장들의 인센티브를 확인하세요
+          </span>
+          <div>
+            <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-top">
+              <div class="uk-margin-small-top uk-margin-small-bottom">
+                <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">OK</span>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div class="uk-width-1-1 uk-align-center" style="height:80%; margin:0px;">
+          <iframe id="map" class="uk-width-1-1 uk-height-1-1" src="./data/station_cluster_map.html">
         </div>
       </div>
 
     </body>
     <script src="js/autocomplete.js"></script>
-    <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
-        });
-      }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGE-jGQfS_Hi_ofJjilmTE8jVEIkIhTTg&callback=initMap" async defer></script>
 </html>
