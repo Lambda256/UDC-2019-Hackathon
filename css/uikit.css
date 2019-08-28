@@ -754,7 +754,7 @@ a.uk-link-reset,
 }
 
 /* Smaller */
-@media (max-height: 560px) {
+@media (max-height: 570px) {
   .uk-divider-vertical {
     width: 1px;
     height: 50px;
@@ -765,7 +765,7 @@ a.uk-link-reset,
 }
 
 /* Bigger */
-@media (min-height: 800px) {
+@media (min-height: 730px) {
   .uk-divider-vertical {
     width: 1px;
     height: 180px;
