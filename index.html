@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="uk-background-fixed uk-background-center-center" style="background-image: url(src/bg.jpg);">
+<html class="uk-background-fixed uk-background-center-center" style="background-image: url(src/bg.jpg)">
     <head>
         <title>Title</title>
         <meta charset="utf-8">
@@ -8,6 +8,7 @@
         <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR|Do+Hyeon|Jua&display=swap" rel="stylesheet">
         <script src="js/uikit.min.js"></script>
         <script src="js/uikit-icons.min.js"></script>
+        <script src="js/functions.js"></script>
     </head>
     <!--<body class="uk-background-gradient">-->
     <body>
@@ -55,13 +56,38 @@
         <div class="uk-inline uk-divider-vertical"></div>
 
         <div>
-          <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-bottom">
+          <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-bottom" onclick="go()">
             <div class="uk-margin-small-top uk-margin-small-bottom">
               <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">GO!</span>
             </div>
           </button>
         </div>
       </div>
+
+      <!-- body 2 -->
+      <div id="body2" class="uk-text-center" style="height:100%; display:none;">
+        <div class="uk-inline uk-divider-vertical"></div>
+        <div id="map"></div>
+        <div class="uk-inline uk-divider-vertical"></div>
+        <div>
+          <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-bottom">
+            <div class="uk-margin-small-top uk-margin-small-bottom">
+              <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">OK</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
     </body>
     <script src="js/autocomplete.js"></script>
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 8
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGE-jGQfS_Hi_ofJjilmTE8jVEIkIhTTg&callback=initMap" async defer></script>
 </html>

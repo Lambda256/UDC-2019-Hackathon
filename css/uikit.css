@@ -19,6 +19,7 @@ html {
   /* 3 */
   background: #fff;
   color: #666;
+  scroll-behavior: smooth;
 }
 /*
  * Remove the margin in all browsers.
@@ -51,6 +52,13 @@ a:hover,
   color: #0f6ecd;
   text-decoration: underline;
 }
+
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+  height: 100%;
+}
+
 /* Text-level semantics
  ========================================================================== */
 /*
@@ -757,10 +765,10 @@ a.uk-link-reset,
 }
 
 /* Bigger */
-@media (min-height: 1000px) {
+@media (min-height: 800px) {
   .uk-divider-vertical {
     width: 1px;
-    height: 150px;
+    height: 180px;
     margin-left: auto;
     margin-right: auto;
     border-left: 1px solid #e5e5e5;
