@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+ solidity ^0.5.0;
 
 // Auto Balancing Mobility
 contract ABM{
@@ -12,7 +12,7 @@ contract ABM{
     // map[stationID] = # of bikes
     mapping(int=>int) bikes;
     
-    function ABM() public{
+    constructor() public{
         // set owner
         owner = msg.sender;
     }
@@ -25,13 +25,13 @@ contract ABM{
     
     // only owner or company execute a function
     modifier onlyOwnerOrCompany(){
-        bool isOwner = keccak256(owner) == keccak256(msg.sender);
-        bool isCompany = (keccak256(companies[msg.sender]) != keccak256(""));
+        bool isOwner = owner == msg.sender;
+        bool isCompany = (keccak256(abi.encodePacked(companies[msg.sender])) != keccak256(abi.encodePacked("")));
         require(isOwner || isCompany);
         _;
     }
     
-    function registerCompany(string companyName) public onlyOwner {
+    function registerCompany(string memory companyName) public onlyOwner {
         companies[msg.sender] = companyName;
     }
     
