@@ -7156,11 +7156,11 @@ ul.uk-nav-sub {
 }
 
 .uk-height-1-nav {
-  height: calc(100% - 100px);
+  height: calc(100% - 90px);
 }
 
 .okdiv-height {
-  height: calc(100% - 72px);
+  height: calc(100% - 55px);
 }
 /*
  * Useful to create image teasers
@@ -7226,6 +7226,18 @@ ul.uk-nav-sub {
   font-size: 1.5rem;
   line-height: 1.5;
 }
+/* Tablet Landscape and bigger */
+@media (min-width: 960px) {
+  .uk-text-medium {
+    font-size: 1.5rem;
+  }
+}
+@media (max-height: 700px) {
+  .uk-text-medium {
+    font-size: 1.2rem;
+  }
+}
+
 /* Weight modifier
  ========================================================================== */
 .uk-text-bold {

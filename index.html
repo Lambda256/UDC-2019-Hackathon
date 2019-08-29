@@ -13,18 +13,18 @@
 
     <body class="uk-height-1-1 ">
       <!-- nav -->
-      <div id="nav" class="uk-text-center" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky" style="height:100px;">
-        <nav class="uk-navbar uk-navbar-container uk-padding-small" style="background: transparent">
+      <div id="nav" class="uk-text-center" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky" style="height:90px;">
+        <nav class="uk-height-1-1 uk-navbar uk-navbar-container" style="background: transparent">
           <div class="uk-width-1-6"></div>
-          <div class="uk-width-2-3 uk-animation-toggle" tabindex="0">
-            <div class="uk-animation-shake uk-margin-small-top" onclick="topFunction()">
+          <div class="uk-width-2-3 uk-animation-toggle uk-flex uk-flex-center" tabindex="0">
+            <div class="uk-animation-shake uk-margin-top" onclick="topFunction()">
                 <span class="uk-heading-small" style="font-family: 'Black Han Sans', sans-serif; color: #F3F3F2;">
                   타고벌자
                 </span>
             </div>
           </div>
-          <div class="uk-width-1-6 uk-margin-small-top">
-            <img class="uk-align-right uk-profile-small uk-border-circle uk-margin-right" src="src/profile.png">
+          <div class="uk-width-1-6 uk-flex uk-flex-right uk-flex-top">
+            <img class="uk-profile-small uk-border-circle uk-margin-right uk-margin-top" src="src/profile.png">
           </div>
         </nav>
       </div>
@@ -54,7 +54,7 @@
         </form>
         <div class="uk-inline uk-divider-vertical"></div>
         <div>
-          <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-top uk-margin-bottom" onclick="go()">
+          <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-bottom" onclick="go()">
             <div class="uk-margin-small-top uk-margin-small-bottom">
               <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">GO!</span>
             </div>
@@ -80,11 +80,13 @@
 
       <!-- body 2 -->
       <div id="body2" class="uk-height-1-nav" style="display:none;">
-        <div class="uk-text-center" style="height:20%">
-          <span class="uk-text-large" style="font-family: 'Noto Sans KR', sans-serif; color: #F3F3F2;">
-            도착지 근처 정류장들의 인센티브를 확인하세요
-          </span>
-          <div class="okdiv-height uk-flex uk-flex-center uk-flex-middle">
+        <div class="uk-text-center" style="height:22%">
+          <div class="uk-flex uk-flex-center uk-flex-top" style="height:55px;">
+            <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif; color: #F3F3F2;">
+              도착지 근처 정류장들의 인센티브를 확인하세요
+            </span>
+          </div>
+          <div class="okdiv-height uk-flex uk-flex-center uk-flex-top">
             <button class="uk-width-1-4 uk-width-small@s uk-button-default" type="button" uk-toggle="target: #modal-example">
               <div class="uk-margin-small-top uk-margin-small-bottom">
                 <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">OK</span>
@@ -92,7 +94,7 @@
             </button>
           </div>
         </div>
-        <div class="uk-width-1-1 uk-align-center" style="height:80%; margin:0px;">
+        <div class="uk-width-1-1 uk-align-center" style="height:78%; margin:0px;">
           <iframe id="map" class="uk-width-1-1 uk-height-1-1" src="./data/station_cluster_map.html">
         </div>
       </div>
