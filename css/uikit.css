@@ -2018,7 +2018,7 @@ select.uk-form-width-xsmall {
  * Primary
  */
 .uk-button-primary {
-  background-color: #2A1A00;
+  background-color: #000;
   color: #fff;
   border: 1px solid transparent;
 }
@@ -2038,21 +2038,23 @@ select.uk-form-width-xsmall {
  * Secondary
  */
 .uk-button-secondary {
-  background-color: #222;
-  color: #fff;
-  border: 1px solid transparent;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
 }
 /* Hover + Focus */
 .uk-button-secondary:hover,
 .uk-button-secondary:focus {
-  background-color: #151515;
+  background-color: #c0c0c0;
   color: #fff;
+  border: 1px solid transparent;
 }
 /* OnClick + Active */
 .uk-button-secondary:active,
 .uk-button-secondary.uk-active {
-  background-color: #080808;
+  background-color: #c0c0c0;
   color: #fff;
+  border: 1px solid transparent;
 }
 /*
  * Danger

@@ -10,7 +10,7 @@
         <script src="js/uikit-icons.min.js"></script>
         <script src="js/functions.js"></script>
     </head>
-    <!--<body class="uk-background-gradient">-->
+
     <body class="uk-height-1-1 ">
       <!-- nav -->
       <div id="nav" class="uk-text-center" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky" style="height:100px;">
@@ -66,6 +66,18 @@
       <!-- empty space -->
       <div id="emptydiv" class="uk-height-small" style="display:none;"></div>
 
+      <!-- Modal -->
+      <div id="modal-example" uk-modal>
+          <div class="uk-modal-dialog uk-modal-body">
+              <h2 class="uk-modal-title">Headline</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+              <p class="uk-text-right">
+                  <button class="uk-button uk-button-secondary uk-modal-close" type="button">Cancel</button>
+                  <button class="uk-button uk-button-primary" type="button">Save</button>
+              </p>
+          </div>
+      </div>
+
       <!-- body 2 -->
       <div id="body2" class="uk-height-1-nav" style="display:none;">
         <div class="uk-text-center" style="height:20%">
@@ -73,7 +85,7 @@
             도착지 근처 정류장들의 인센티브를 확인하세요
           </span>
           <div class="okdiv-height uk-flex uk-flex-center uk-flex-middle">
-            <button class="uk-width-1-4 uk-width-small@s uk-button-default">
+            <button class="uk-width-1-4 uk-width-small@s uk-button-default" type="button" uk-toggle="target: #modal-example">
               <div class="uk-margin-small-top uk-margin-small-bottom">
                 <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">OK</span>
               </div>
@@ -85,5 +97,5 @@
         </div>
       </div>
     </body>
-    <!-- no script here (due to iframe?) -->
+    <!-- no script / div here (due to iframe) -->
 </html>
