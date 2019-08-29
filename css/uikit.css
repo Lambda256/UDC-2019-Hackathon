@@ -7156,6 +7156,10 @@ ul.uk-nav-sub {
 .uk-height-1-nav {
   height: calc(100% - 100px);
 }
+
+.okdiv-height {
+  height: calc(100% - 72px);
+}
 /*
  * Useful to create image teasers
  */
