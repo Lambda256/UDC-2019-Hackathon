@@ -46,3 +46,42 @@ UDC와 루니버스는 이런 물음에 답하는 개발자를 만나고자 ‘�
 - 기술성: 기술적 로드맵이 잘 구성 되었는가	
 - 완성도: 계획안에 담긴 내용이 다 구현되었는가	
 - 사업성: 서비스의 효용과 가치가 충분히 전달되었는가
+
+
+## 본선 프로젝트
+
+#### 1. 인타임
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/intime
+
+#### 2. 타타타
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/tatata
+
+#### 3. 루니사인
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/lunisign
+
+#### 4. 리겜 
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/regam
+
+#### 5. 블카
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/blcar
+
+#### 6. 시공조아
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/sigong
+
+#### 7. 중고로운평화나라
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/joonggoroun
+
+#### 8. 마이워크체인
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/myworkchain
+
+#### 9. 이어줄개
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/linkdog
+
+#### 10. 해시마켓
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/hashgon
+
+#### 11. 진실의입
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/mouthoftruth
+
+#### 12. VMO
+https://github.com/Lambda256/UDC-2019-Hackathon/tree/vmo
