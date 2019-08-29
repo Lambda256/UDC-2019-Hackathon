@@ -43,6 +43,13 @@ contract ABM{
         bikes[stationID] = bikeNum;
     }
     
+    function setBikeNums(int[] memory stationIDs, int[] memory bikeNums) public onlyOwnerOrCompany{
+        require(stationIDs.length == bikeNums.length);
+        for (uint i=0; i<stationIDs.length;i++){
+            bikes[stationIDs[i]] = bikeNums[i];
+        }
+    }
+    
     function getBikeNum(int stationID) public view returns (int) {
         return bikes[stationID];
     }
@@ -71,7 +78,7 @@ contract ABM{
     // insert block into blocks array
     function insertBlock(uint _blockNumber, bytes32 _prevBlockHash, bytes32 _weightHash, bytes32 _testSetHash) public onlyOwner{
         FLBlockHeader memory FLBlock = FLBlockHeader(_blockNumber, _prevBlockHash, _weightHash, _testSetHash);
-        blocks[_blockNumber] = FLBlock;
+        blocks.push(FLBlock);
     }
     
     // delete block from blocks array
