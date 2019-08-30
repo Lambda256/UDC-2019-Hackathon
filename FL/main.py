@@ -5,10 +5,9 @@ import arguments
 
 import tensorflow as tf
 import numpy as np
-# import time
-# from pprint import pprint
 
 
+# python main.py --nodes=5 --round=1000 --globalSet=10000
 if __name__ == "__main__":
     # parsing hyperparameters
     args = arguments.parser()
@@ -87,9 +86,9 @@ if __name__ == "__main__":
 
             # eval. each node
             node.flmodel.evaluate(node.x_test, node.y_test)
-            print("> node: %06d" % i, end="\t")
-            print("loss: %20.16f" % node.flmodel.loss, end="\t")
-            print("acc: %8.4f" % node.flmodel.acc, end="\r")
+            print("> node: %-5d" % i, end="\t")
+            print("loss: %-8.4f" % node.flmodel.loss, end="\t")
+            print("acc: %-8.4f" % node.flmodel.acc, end="\r")
             # time.sleep(0.3)
 
         Leader.raw_update_weights(peer_weights, peer_reputations)
@@ -108,7 +107,7 @@ if __name__ == "__main__":
 
         # print
         print(" " * 64, end="\r")
-        print("round: %06d" % nextBlockNumber, end="\t")
-        print("loss: %20.16f" % Leader.flmodel.loss, end="\t")
-        print("acc: %8.4f" % Leader.flmodel.acc)
+        print("round: %-6d" % nextBlockNumber, end="\t")
+        print("loss: %-8.4f" % Leader.flmodel.loss, end="\t")
+        print("acc: %-8.4f" % Leader.flmodel.acc)
         printBlock(flchain.blocks[-1])
