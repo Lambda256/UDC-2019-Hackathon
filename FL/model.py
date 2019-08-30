@@ -1,5 +1,4 @@
 import tensorflow as tf
-import numpy as np
 
 
 class FLModel:
@@ -17,7 +16,7 @@ class FLModel:
         self.loss = res[0]
         self.acc = res[1]
 
-    def evaluate_by_other(self, x_test, y_test, verbose=0):
+    def raw_evaluate(self, x_test, y_test, verbose=0):
         res = self.__model.evaluate(x_test, y_test, verbose=verbose)
         return res[0], res[1]  # loss, acc
 
@@ -30,7 +29,7 @@ class FLModel:
 
 
 if __name__ == "__main__":
-    mnist = tf.keras.datasets.mnist
+    mnist = tf.keras.datasets.fashion_mnist
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
     x_train, x_test = x_train / 255.0, x_test / 255.0
 
@@ -50,7 +49,7 @@ if __name__ == "__main__":
     # weights = flmodel.get_weights()
     # print(weights)
 
-    flmodel.fit(x_train, y_train, epochs=1)
+    flmodel.fit(x_train, y_train, epochs=5, verbose=1)
 
-    flmodel.evaluate(x_test, y_test)
+    flmodel.evaluate(x_test, y_test, verbose=1)
     print(flmodel.loss, flmodel.acc)

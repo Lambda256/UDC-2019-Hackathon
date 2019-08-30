@@ -1,6 +1,7 @@
 import hashlib
 import rlp
 import numpy as np
+import tensorflow as tf
 
 
 class Header:
@@ -53,7 +54,7 @@ class Block:
             # (x, y)
             if type(i) != np.ndarray:
                 i = np.array(i)
-            
+
             b = i.tobytes()
             testset_list.append(b)
 
@@ -75,6 +76,17 @@ class Blockchain:
 
     def getBlock(self, blockNumber):
         return self.blocks[blockNumber]
+
+
+def printBlock(block: Block):
+    print("{")
+    print("    \"blockNumber\"    :", block.header.blockNumber, end=",\n")
+    print("    \"prevBlockHash\"  :", block.header.prevBlockHash, end=",\n")
+    print("    \"weightHash\"     :", block.header.weightHash, end=",\n")
+    print("    \"testsetHash\"    :", block.header.testsetHash, end=",\n")
+    print("    \"(+)testsetSize\" :", len(block.testset[0]), end=",\n")
+    print("    \"(+)blockHash\"   :", block.calBlockHash())
+    print("}")
 
 
 if __name__ == "__main__":

@@ -1,136 +1,114 @@
 from model import FLModel
+from node import Node, split_dataset
+from block import Blockchain, Block, printBlock
+import arguments
 
 import tensorflow as tf
 import numpy as np
-import random
-import csv
-
+# import time
 # from pprint import pprint
 
 
-SEED = 950327
-random.seed(SEED)
-np.random.seed(SEED)
-
-
 if __name__ == "__main__":
+    # parsing hyperparameters
     args = arguments.parser()
-    n_nodes = args.nodes
-    mecha_dist = args.dist
-    mecha_bias = args.bias
-    rounds = args.round
-    top = args.top
-    dataset_size = args.dataset
-    gdataset_limit = args.gdataset + dataset_size
-    if gdataset_limit > 60000: gdataset_limit = 60000 
-    comp = args.comp
-
-    size = 10
+    num_nodes = args.nodes
+    num_round = args.round
+    num_global_testset = args.globalSet
+    print(">>> Setting:", args)
 
     # Set Tensorflow GPU
-    tf.device('/device:GPU:0')
+    # tf.device('/device:GPU:0')
 
     # Load datasets
-    mnist = tf.keras.datasets.mnist  # Load MNIST datasets (size: 60,000)
-    (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    fashion_mnist = tf.keras.datasets.fashion_mnist
+    (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
     x_train, x_test = x_train / 255.0, x_test / 255.0
-    print(">>> Done Loding Datasets")
 
-    # Temp
-    global_x_test = x_train[dataset_size:gdataset_limit]
-    global_y_test = y_train[dataset_size:gdataset_limit]
-    x_train = x_train[:dataset_size]
-    y_train = y_train[:dataset_size]
+    # get global testset by train
+    global_x_test = x_train[:num_global_testset]
+    global_y_test = y_train[:num_global_testset]
+    x_train = x_train[num_global_testset:]
+    y_train = y_train[num_global_testset:]
 
-    # for same initial weights
-    w = initial_weights()
+    # set FL model
+    mnist_model = tf.keras.models.Sequential([
+        tf.keras.layers.Flatten(input_shape=(28, 28)),
+        tf.keras.layers.Dense(512, activation=tf.nn.relu),
+        tf.keras.layers.Dropout(0.2),
+        tf.keras.layers.Dense(10, activation=tf.nn.softmax)
+    ])
+    mnist_model.compile(
+        optimizer='adam',
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy'])
+    flmodel = FLModel(mnist_model)
 
-    # Big one
-    cent = Model()
-    cent.set_weights(w)
-    cent.fit(x_train, y_train, epochs=5)
-    cent.evaluate(global_x_test, global_y_test)
-    print(">>> Done Training Big one NN")
+    """set blockchain"""
+    init_weights = flmodel.get_weights()
+    genesis = Block(
+        0,
+        "0" * 64,
+        init_weights,
+        (global_x_test, global_y_test)
+    )
+    flchain = Blockchain(genesis)  # set blockchain with genesis block
 
-    x_dist_train, y_dist_train = split_dataset(
-        n_nodes, size,
-        mecha_dist, mecha_bias,
-        x_train, y_train,
-        visual=False)
-    x_dist_test, y_dist_test = split_dataset(
-        n_nodes, size,
-        mecha_dist, mecha_bias,
-        x_test, y_test,
-        visual=False)
+    """set nodes"""
+    # split dataset
+    my_x_train = split_dataset(x_train, num_nodes)
+    my_y_train = split_dataset(y_train, num_nodes)
+    my_x_test = split_dataset(x_test, num_nodes)
+    my_y_test = split_dataset(y_test, num_nodes)
 
-    # Set peer nodes
+    # set nodes
     nodes = list()
-    for i in range(n_nodes):
-        node = Node()
-        node.set_model(Model())  # set model
-        node.set_data(
-            x_dist_train[i], y_dist_train[i],
-            x_dist_test[i], y_dist_test[i])  # set data
-        node.neighbors = range(n_nodes)  # assume fully connected with myself
-        node.model.set_weights(w)  # for same initial weights
-        # print(node.x_train)
-        # print(node.y_train)
-        # print(node.x_test)
-        # print(node.y_test)
-        nodes.append(node)
+    for i in range(num_nodes):
+        nodes.append(
+            Node(flmodel, (my_x_train[i], my_y_train[i]), (my_x_test[i], my_y_test[i])))
 
-    # Print node distribution
-    distribution = list()
-    for node in nodes:
-        distribution.append(len(node.y_train))
-    print(distribution)
-    with open('distribution.csv', 'a') as f:
-            writer = csv.writer(f)
-            writer.writerow(distribution)
+    # set Leader (Primary)  # pBTF
+    Leader = Node(flmodel, (None, None), (global_x_test, global_y_test))
 
-    # Test
-    for round in range(rounds):
-        print(">>> Start round", round + 1, "/", rounds)
-        # print(">>> acc before train", [node.model.acc for node in nodes])
+    """main"""
+    for nextBlockNumber in range(1, num_round + 1):
+        currentBlockNumber = nextBlockNumber - 1
+        currentBlockWeight = flchain.blocks[currentBlockNumber].weights
 
-        # acc of big one NN
-        print(">>> acc of cent.", cent.acc)
+        # update weights
+        peer_weights = list()
+        # TODO: set a different reputation per nodes
+        peer_reputations = np.ones(num_nodes)
+        for i, node in enumerate(nodes):
+            node.flmodel.set_weights(currentBlockWeight)  # set weights
+            node.flmodel.fit(node.x_train, node.y_train, epochs=1)  # training
+            peer_weight = node.flmodel.get_weights()
+            peer_weights.append(peer_weight)
 
-        locally_train(nodes, epochs=5, verbose=0)  # local training
+            # eval. each node
+            node.flmodel.evaluate(node.x_test, node.y_test)
+            print("> node: %06d" % i, end="\t")
+            print("loss: %20.16f" % node.flmodel.loss, end="\t")
+            print("acc: %8.4f" % node.flmodel.acc, end="\r")
+            # time.sleep(0.3)
 
-        # acc_before_gen is the accuracy before updating weights
-        acc_before_gen = [node.model.acc for node in nodes]
-        print(">>> acc before GA.",
-              avg_and_sd(acc_before_gen),
-              acc_before_gen)
+        Leader.raw_update_weights(peer_weights, peer_reputations)
+        nextBlockWeight = Leader.flmodel.get_weights()
 
-        # acc_before_gen_global is the accuracy tested with global testset before updating weights
-        acc_before_gen_global = [node.model.evaluate_by_other(global_x_test, global_y_test)[1] for node in nodes]
-        print(">>> acc before GA. with Global",
-              avg_and_sd(acc_before_gen_global),
-              acc_before_gen_global)
+        # create next block
+        new_block = Block(
+            nextBlockNumber,
+            flchain.getBlock(nextBlockNumber - 1).calBlockHash(),
+            nextBlockWeight,
+            (Leader.x_test, Leader.y_test)
+        )
+        flchain.append(new_block)  # append next block
 
-        fa = updates(nodes, top=top, comp=comp)  # update; averaging weights
-        with open('fa.csv', 'a') as f:
-            writer = csv.writer(f)
-            writer.writerow(fa)
-        
-        locally_eval(nodes, verbose=0)  # local evalutation
+        Leader.flmodel.evaluate(Leader.x_test, Leader.y_test)  # eval.
 
-        # acc_after_gen is the accuracy after updating weights
-        acc_after_gen = [node.model.acc for node in nodes]
-        print(">>> acc after GA.",
-              avg_and_sd(acc_after_gen),
-              acc_after_gen)
-        with open('local.csv', 'a') as f:
-            writer = csv.writer(f)
-            writer.writerow(acc_after_gen)
-
-        # acc_after_gen_global is the accuracy tested with global testset after updating weights
-        acc_after_gen_global = [node.model.evaluate_by_other(global_x_test, global_y_test)[1] for node in nodes]
-        print(">>> acc after GA. with Global",
-              avg_and_sd(acc_after_gen_global),
-              acc_after_gen_global)
-        with open('global.csv', 'a') as f:
-            writer = csv.writer(f)
-            writer.writerow(acc_after_gen_global)
+        # print
+        print(" " * 64, end="\r")
+        print("round: %06d" % nextBlockNumber, end="\t")
+        print("loss: %20.16f" % Leader.flmodel.loss, end="\t")
+        print("acc: %8.4f" % Leader.flmodel.acc)
+        printBlock(flchain.blocks[-1])
