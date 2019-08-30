@@ -1,6 +1,6 @@
 from model import FLModel
 from node import Node, split_dataset
-from block import Blockchain, Block, printBlock
+from block import Blockchain, Block, printBlock, writeBlockchain
 import arguments
 
 import tensorflow as tf
@@ -51,7 +51,8 @@ if __name__ == "__main__":
         init_weights,
         (global_x_test, global_y_test)
     )
-    flchain = Blockchain(genesis)  # set blockchain with genesis block
+    flchain = Blockchain(genesis)  # set blockchain with genesis block    
+    writeBlockchain(flchain)  # save blockchain
 
     """set nodes"""
     # split dataset
@@ -66,7 +67,7 @@ if __name__ == "__main__":
         nodes.append(
             Node(flmodel, (my_x_train[i], my_y_train[i]), (my_x_test[i], my_y_test[i])))
 
-    # set Leader (Primary)  # pBTF
+    # set Leader (Primary) @ pBFT
     Leader = Node(flmodel, (None, None), (global_x_test, global_y_test))
 
     """main"""
@@ -75,21 +76,20 @@ if __name__ == "__main__":
         currentBlockWeight = flchain.blocks[currentBlockNumber].weights
 
         # update weights
+        # Request @ pBFT
         peer_weights = list()
-        # TODO: set a different reputation per nodes
-        peer_reputations = np.ones(num_nodes)
+        peer_reputations = np.ones(num_nodes)  # TODO: set a different reputation per nodes
         for i, node in enumerate(nodes):
-            node.flmodel.set_weights(currentBlockWeight)  # set weights
-            node.flmodel.fit(node.x_train, node.y_train, epochs=1)  # training
+            node.flmodel.set_weights(currentBlockWeight)  # Pre-Prepare @ pBFT
+            node.flmodel.fit(node.x_train, node.y_train, epochs=1)  # Prepare and Commit @ pBFT
             peer_weight = node.flmodel.get_weights()
-            peer_weights.append(peer_weight)
+            peer_weights.append(peer_weight)  # Reply @ pBFT
 
             # eval. each node
             node.flmodel.evaluate(node.x_test, node.y_test)
             print("> node: %-5d" % i, end="\t")
             print("loss: %-8.4f" % node.flmodel.loss, end="\t")
             print("acc: %-8.4f" % node.flmodel.acc, end="\r")
-            # time.sleep(0.3)
 
         Leader.raw_update_weights(peer_weights, peer_reputations)
         nextBlockWeight = Leader.flmodel.get_weights()
@@ -111,3 +111,6 @@ if __name__ == "__main__":
         print("loss: %-8.4f" % Leader.flmodel.loss, end="\t")
         print("acc: %-8.4f" % Leader.flmodel.acc)
         printBlock(flchain.blocks[-1])
+
+        # save blockchain
+        writeBlockchain(flchain)

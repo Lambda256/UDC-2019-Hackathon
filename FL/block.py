@@ -2,6 +2,8 @@ import hashlib
 import rlp
 import numpy as np
 import tensorflow as tf
+import os
+import pickle
 
 
 class Header:
@@ -67,6 +69,16 @@ class Block:
         return SHA3.hexdigest()
 
 
+def delegate(method, prop):
+    def decorate(cls):
+        setattr(cls, method,
+                lambda self, *args, **kwargs:
+                getattr(getattr(self, prop), method)(*args, **kwargs))
+        return cls
+    return decorate
+
+
+@delegate("__len__", "blocks")
 class Blockchain:
     def __init__(self, genesisBlock):
         self.blocks = [genesisBlock]
@@ -76,6 +88,9 @@ class Blockchain:
 
     def getBlock(self, blockNumber):
         return self.blocks[blockNumber]
+
+    # def len(self):
+    #     pass
 
 
 def printBlock(block: Block):
@@ -87,6 +102,24 @@ def printBlock(block: Block):
     print("    \"(+)testsetSize\" :", len(block.testset[0]), end=",\n")
     print("    \"(+)blockHash\"   :", block.calBlockHash())
     print("}")
+
+
+def writeBlockchain(blockchain: Blockchain):
+    # Create directory
+    dirName = "data"
+    try:
+        os.mkdir(dirName)  # Create target Directory
+    except FileExistsError:
+        pass
+
+    # Write
+    with open("./data/chain.bin", "wb") as f:
+        pickle.dump(blockchain, f)
+
+
+def readBlockchain(PATH):
+    with open(PATH, "rb") as f:
+        return pickle.load(f)
 
 
 if __name__ == "__main__":
@@ -136,3 +169,11 @@ if __name__ == "__main__":
 
     flmodel.evaluate(x_test, y_test)
     print(flmodel.loss, flmodel.acc)
+
+    # write blockchain
+    writeBlockchain(flchain)
+
+    # read blockchain
+    flchain = readBlockchain("./data/chain.bin")
+    print(flchain.blocks[0].calBlockHash())
+    print(flchain.blocks[1].header.prevBlockHash)
