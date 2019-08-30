@@ -19,7 +19,7 @@ contract ABM{
     
     // only owner can execute a function
     modifier onlyOwner(){
-        require(msg.sender == owner);
+        //require(msg.sender == owner);
         _;
     }
     
@@ -73,7 +73,7 @@ contract ABM{
         bytes32 testSetHash;
     }
     
-    FLBlockHeader[] blocks;
+    FLBlockHeader[] public blocks;
     
     // insert block into blocks array
     function insertBlock(uint _blockNumber, bytes32 _prevBlockHash, bytes32 _weightHash, bytes32 _testSetHash) public onlyOwner{
@@ -90,6 +90,11 @@ contract ABM{
     function readBlock(uint _blockNumber) public view returns (uint, bytes32, bytes32, bytes32) {
         return (blocks[_blockNumber].blockNumber, blocks[_blockNumber].prevBlockHash, blocks[_blockNumber].weightHash, blocks[_blockNumber].testSetHash); 
     }
+    
+    function getBlocksLength()public view returns (uint){
+        return blocks.length;
+    }
+    
     
 }
 
