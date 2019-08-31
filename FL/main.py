@@ -54,7 +54,7 @@ if __name__ == "__main__":
         []
     )
     flchain = Blockchain(genesis)  # set blockchain with genesis block    
-    writeBlockchain(flchain)  # save blockchain
+    writeBlockchain("../data", flchain)  # save blockchain
 
     """set nodes"""
     # split dataset
@@ -124,4 +124,4 @@ if __name__ == "__main__":
         printBlock(flchain.blocks[-1])
 
         # save blockchain
-        writeBlockchain(flchain)
+        writeBlockchain("../data", flchain)

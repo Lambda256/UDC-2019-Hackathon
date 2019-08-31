@@ -114,21 +114,20 @@ def printBlock(block: Block):
     print("}")
 
 
-def writeBlockchain(blockchain: Blockchain):
-    # Create directory
-    dirName = "data"
+def writeBlockchain(PATH, blockchain: Blockchain):
+    # Create directory 
     try:
-        os.mkdir(dirName)  # Create target Directory
+        os.mkdir(PATH)  # Create target Directory
     except FileExistsError:
         pass
 
     # Write
-    with open("./data/chain.bin", "wb") as f:
+    with open(PATH + "/chain.bin", "wb") as f:
         pickle.dump(blockchain, f)
 
 
 def readBlockchain(PATH):
-    with open(PATH, "rb") as f:
+    with open(PATH + "/chain.bin", "rb") as f:
         return pickle.load(f)
 
 
@@ -183,9 +182,9 @@ if __name__ == "__main__":
     print(flmodel.loss, flmodel.acc)
 
     # write blockchain
-    writeBlockchain(flchain)
+    writeBlockchain("../data", flchain)
 
     # read blockchain
-    flchain = readBlockchain("./data/chain.bin")
+    flchain = readBlockchain("../data")
     print(flchain.blocks[0].calBlockHash())
     print(flchain.blocks[1].header.prevBlockHash)

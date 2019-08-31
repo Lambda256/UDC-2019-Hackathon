@@ -116,7 +116,7 @@ def deleteBlock(blockNumber, from_):
 
 if __name__ == "__main__":
     # read blockchain
-    flchain = readBlockchain("../FL/data/chain.bin")
+    flchain = readBlockchain("../data")
 
     # create model
     mnist_model = tf.keras.models.Sequential([
