@@ -143,11 +143,11 @@ function autocomplete(arr) {
       travelTimes.push(getTravelTimeHour(departure, targets[i]));
     }
     console.log(targetIDs, travelTimes);
-    callback(targetIDs, travelTimes, getPredictResult);
+    callback(departure, targetIDs, travelTimes, getPredictResult);
   }
 
   // 2. Send expected arrival time & target id by Tx
-  function sendPredictTx(targetIDs, travelTimes, callback) {
+  function sendPredictTx(departure, targetIDs, travelTimes, callback) {
     console.log("5. send predict tx");
     reqTime = (new Date()).getTime();
     console.log(reqTime);
@@ -169,30 +169,34 @@ function autocomplete(arr) {
         }
     });
     */
-    callback(updateMap);
+    callback(departure,updateMap);
   }
 
   // < Get reply tx and update map>
   // 1. Get (target station id, incentive)
-  function getPredictResult(callback) {
+  function getPredictResult(departure,callback) {
     console.log("6. get predict result");
-    callback(closeSpinnerAndMove);
+    callback(departure,closeSpinnerAndMove);
   }
 
   // 2. Update ../src/map.html
-  function updateMap(callback) {
+  function updateMap(departure, callback) {
     console.log("7. update map");
-    callback();
+    callback(departure);
   }
 
   // < Close the loading status and scroll to next page >
-  function closeSpinnerAndMove(callback) {
+  function closeSpinnerAndMove(departure) {
     console.log("8. close spinner and move page");
     document.getElementById("spinner").style.display="none";
     document.getElementById("go").style.display="";
     document.getElementById("body2").style.display = "";
     document.getElementById("emptydiv").style.display = "";
     window.location = "/#body2";
+
+    // Set departure info
+    document.getElementById("departure").innerHTML =
+      "<B>[" + departure[2] + ". " + departure[3] + "]</B>" + "<br />" + departure[4];
   }
 
   // Get N closest stations from arr_index
