@@ -1,7 +1,23 @@
- solidity ^0.5.0;
+pragma solidity ^0.5.0;
+
+// interface for token
+/*contract ERC20Interface {
+    function totalSupply() public view returns (uint);
+    function balanceOf(address tokenOwner) public view returns (uint balance);
+    function allowance(address tokenOwner, address spender) public view returns (uint remaining);
+    function transfer(address to, uint tokens) public returns (bool success);
+    function approve(address spender, uint tokens) public returns (bool success);
+    function transferFrom(address from, address to, uint tokens) public returns (bool success);
+
+    event Transfer(address indexed from, address indexed to, uint tokens);
+    event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
+}*/
 
 // Auto Balancing Mobility
 contract ABM{
+    
+    // ABMTT(auto balancing mobility test token) address
+    //address tokenAddr = 0x9796833d40A3B129660fb1d067434922C9b13ed6;
     
     // owner of this contract
     address public owner;
@@ -62,6 +78,7 @@ contract ABM{
         // need at least 1 bike to rent
         require(bikes[stationID] > 0);
         
+        // decrease # of bike
         bikes[stationID]--;
     }
     
