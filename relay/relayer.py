@@ -143,10 +143,9 @@ if __name__ == "__main__":
         # flmodel.evaluate(global_x_test, global_y_test)
         # print(flmodel.loss, flmodel.acc)
 
-        target = np.expand_dims(X[0], 0)
-        # print(target.shape)  # (1, 28, 28)
-
         # inference
+        # target = np.expand_dims(X[0], 0)
+        # print(target.shape)  # (1, 28, 28)
         # pred = flmodel.predict(target)  
         # print(np.argmax(pred[0]))
 
