@@ -141,6 +141,79 @@ contract ABM{
     }
     
     
+    // model inference
+    
+    int[] nums;
+    
+    function insertNum(int num)public{
+        nums.push(num);
+    }
+    
+    function getNumsLen()public view returns(uint){
+        return nums.length;
+    }
+    
+    function getNum(uint index) public view returns (int){
+        return nums[index];
+    }
+    
+    function popNum() public {
+        nums.pop(); // eliminate last inserted element
+    }
+    
+    function deleteNum(uint index)public {
+        delete nums[index]; // just change value as 0
+    }
+    
+    // inference request
+    struct infRequest{
+        address addr;
+        int reqTime;
+        int[] stations; // station ID
+        int[] arriveTimes; // arrive a station after x hours
+        int[] infos; // month, temperature, windDirection, windSpeed, precipitation, humidity, day(0~6)
+    }
+    infRequest[] infReqs;
+    
+    // inference response
+    struct infResponse{
+        int[] stations;
+        int[] bikeNums;
+    }
+    mapping(string=>infResponse) infResponses;
+    
+    // insert inference request to list
+    function requestInference(int _reqTime, int[] memory _stations, int[] memory _arriveTimes, int[] memory _infos) public {
+        infRequest memory req = infRequest(msg.sender, _reqTime, _stations, _arriveTimes, _infos);
+        infReqs.push(req);
+    }
+    
+    // for relayer, to get request from list
+    function getRequest() public view returns (address, int, int[] memory, int[] memory, int[] memory) {
+        // get latest request
+        infRequest memory req = infReqs[infReqs.length-1];
+        //infReqs.pop(); // due to this, cannot get return values. so move this into deleteRequest() function
+        
+        return (req.addr, req.reqTime, req.stations, req.arriveTimes, req.infos);
+    }
+    
+    // for relayer, delete picked request
+    function deleteRequest() public{
+        infReqs.pop();
+    }
+    
+    // for relayer, to insert inference result to list (requestID = fromAddr + requestTime)
+    function insertResponse(string memory requestID, int[] memory _stations, int[] memory _bikeNums) public {
+        infResponse memory res = infResponse(_stations, _bikeNums);
+        infResponses[requestID] = res;
+    }
+    
+    // read inference result (requestID = fromAddr + requestTime)
+    function getResponse(string memory requestID) public view returns (int[] memory, int[] memory){
+        return (infResponses[requestID].stations, infResponses[requestID].bikeNums);
+    }
+    
+    
 }
 
 
