@@ -5,6 +5,7 @@ import arguments
 
 import tensorflow as tf
 import numpy as np
+import random
 
 
 # python main.py --nodes=5 --round=1000 --globalSet=10000
@@ -49,7 +50,8 @@ if __name__ == "__main__":
         0,
         "0" * 64,
         init_weights,
-        (global_x_test, global_y_test)
+        (global_x_test, global_y_test),
+        []
     )
     flchain = Blockchain(genesis)  # set blockchain with genesis block    
     writeBlockchain(flchain)  # save blockchain
@@ -79,7 +81,15 @@ if __name__ == "__main__":
         # Request @ pBFT
         peer_weights = list()
         peer_reputations = np.ones(num_nodes)  # TODO: set a different reputation per nodes
+        participants = list()
+
         for i, node in enumerate(nodes):
+            # random selection
+            if random.random() < 0.5:
+                continue
+
+            participants.append(i)
+
             node.flmodel.set_weights(currentBlockWeight)  # Pre-Prepare @ pBFT
             node.flmodel.fit(node.x_train, node.y_train, epochs=1)  # Prepare and Commit @ pBFT
             peer_weight = node.flmodel.get_weights()
@@ -91,7 +101,7 @@ if __name__ == "__main__":
             print("loss: %-8.4f" % node.flmodel.loss, end="\t")
             print("acc: %-8.4f" % node.flmodel.acc, end="\r")
 
-        Leader.raw_update_weights(peer_weights, peer_reputations)
+        Leader.raw_update_weights(peer_weights, [peer_reputations[p] for p in participants])
         nextBlockWeight = Leader.flmodel.get_weights()
 
         # create next block
@@ -99,7 +109,8 @@ if __name__ == "__main__":
             nextBlockNumber,
             flchain.getBlock(nextBlockNumber - 1).calBlockHash(),
             nextBlockWeight,
-            (Leader.x_test, Leader.y_test)
+            (Leader.x_test, Leader.y_test),
+            participants
         )
         flchain.append(new_block)  # append next block
 

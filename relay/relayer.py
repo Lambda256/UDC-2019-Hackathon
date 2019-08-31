@@ -2,14 +2,15 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))) + "/FL")
 
-from block import readBlockchain
+from block import readBlockchain, printBlock
+from model import FLModel
 
 import json
 import requests
-# import tensorflow as tf
+import tensorflow as tf
 
 
-# global variables
+# hardcoding factors
 REOA = "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78"
 
 
@@ -98,14 +99,45 @@ def getBlocksLength(from_):
 #     return owner
 
 
+def deleteBlock(blockNumber, from_):
+    """
+    curl -X POST 'https://api.luniverse.io/tx/v1.0/transactions/deleteBlock7' \
+        --header 'Authorization: Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD' \
+        --header 'Content-Type: application/json' \
+        --data '{
+            "from": "Please enter value.",
+            "inputs": {
+                "_blockNumber": "Please enter value."
+            }
+        }'
+    """
+    pass
+
+
 if __name__ == "__main__":
     # read blockchain
     flchain = readBlockchain("../FL/data/chain.bin")
 
+    # create model
+    mnist_model = tf.keras.models.Sequential([
+        tf.keras.layers.Flatten(input_shape=(28, 28)),
+        tf.keras.layers.Dense(512, activation=tf.nn.relu),
+        tf.keras.layers.Dropout(0.2),
+        tf.keras.layers.Dense(10, activation=tf.nn.softmax)
+    ])
+    mnist_model.compile(
+        optimizer='adam',
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy'])
+    flmodel = FLModel(mnist_model)
+
+    # relaying
     chain_len = len(flchain)
     for i in range(chain_len):
         print("Relay block %-5d" % i)
+
         flblock = flchain.blocks[i]
+        printBlock(flblock)
 
         from_ = REOA
 
@@ -114,8 +146,8 @@ if __name__ == "__main__":
         # print(r)
 
         # readBlock
-        r = readBlock(i, from_)
-        print(r)
+        # r = readBlock(i, from_)
+        # print(r)
 
         # # getBlocksLength
         # r = getBlocksLength(from_)

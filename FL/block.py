@@ -7,23 +7,26 @@ import pickle
 
 
 class Header:
-    def __init__(self, n: int, prev, w, t):
+    def __init__(self, n: int, prev, w, t, p):
         self.blockNumber = n
         self.prevBlockHash = prev
         self.weightHash = w
         self.testsetHash = t
+        self.participantHash = p
 
 
 class Block:
-    def __init__(self, blockNumber: int, prevBlockHash, weights: list, testset: tuple):
+    def __init__(self, blockNumber: int, prevBlockHash, weights: list, testset: tuple, participants: list):
         self.header = Header(
             blockNumber,
             prevBlockHash,
             self.calWeightHash(weights),
-            self.calTestsetHash(testset)
+            self.calTestsetHash(testset),
+            self.calParticipantHash(participants)
         )
         self.weights = weights
         self.testset = testset
+        self.participants = participants
 
     def calBlockHash(self):
         header_list = list()
@@ -62,6 +65,11 @@ class Block:
 
         return self.__getHash(testset_list)
 
+    def calParticipantHash(self, participants: list):
+        participants = np.array(participants)
+        participants.tobytes()
+        return self.__getHash(participants)
+
     def __getHash(self, inputs=[]):
         SHA3 = hashlib.sha3_256()
         for i in inputs:
@@ -99,7 +107,9 @@ def printBlock(block: Block):
     print("    \"prevBlockHash\"  :", block.header.prevBlockHash, end=",\n")
     print("    \"weightHash\"     :", block.header.weightHash, end=",\n")
     print("    \"testsetHash\"    :", block.header.testsetHash, end=",\n")
+    print("    \"participantHash\":", block.header.participantHash, end=",\n")
     print("    \"(+)testsetSize\" :", len(block.testset[0]), end=",\n")
+    print("    \"(+)participants\":", len(block.participants), end=",\n")
     print("    \"(+)blockHash\"   :", block.calBlockHash())
     print("}")
 
@@ -151,7 +161,8 @@ if __name__ == "__main__":
         0,
         "0" * 64,
         init_weights,
-        testset
+        testset,
+        []
     )
     flchain = Blockchain(genesis)  # set blockchain with genesis block
 
@@ -163,7 +174,8 @@ if __name__ == "__main__":
         nextBlockNumber,
         flchain.getBlock(nextBlockNumber - 1).calBlockHash(),
         modified_weight,
-        testset
+        testset,
+        []
     )
     flchain.append(new_block)
 
