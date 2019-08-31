@@ -1,3 +1,6 @@
+/*
+ * Read station data
+ */
 // Retrieved from http://jsfiddle.net/e6220t92/2/
 const fileUrl = '../src/stations.csv' // provide file location
 fetch(fileUrl)
@@ -5,6 +8,10 @@ fetch(fileUrl)
    .then( t => CSVToArray(t) )
    .then( arr => autocomplete(arr) )
 
+/*
+ * Start autocomplete logic
+ * Add Go() button event listener here
+ */
 function autocomplete(arr) {
   var input = document.getElementsByClassName("autocomplete-input")
   var optionsVal = document.getElementsByClassName("autocomplete-list")
@@ -87,6 +94,11 @@ function autocomplete(arr) {
       document.getElementsByClassName("autocomplete-dropdown")[idx].style.display = 'none';
   }
 
+
+  /*
+   * Go() button event listener
+   * Send & Receive transactions here
+   */
   document.getElementById("go").onclick = function() {
     // *** MAKE IT SYNCHRONOUS !!! ***
 
@@ -162,6 +174,13 @@ function autocomplete(arr) {
     return distances.slice(0, n);
   }
 }
+
+
+
+
+/*
+ * Util functions
+ */
 
 // https://m.blog.naver.com/javaking75/220342410214
 function computeDistance(startCoords, destCoords) {
