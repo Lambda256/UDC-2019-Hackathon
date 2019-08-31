@@ -150,10 +150,11 @@ if __name__ == "__main__":
     X_train = min_max_scaler.transform(X_train)
     X_test = min_max_scaler.transform(X_test)
 
+    # TODO: modified model with concatenate layer
     nn_model = tf.keras.models.Sequential([
         # input & first layer
         tf.keras.layers.Dense(
-            512,
+            64,
             input_shape=(14,),
             activation=tf.nn.relu,
             kernel_initializer='he_normal'),
@@ -161,23 +162,25 @@ if __name__ == "__main__":
         
         # hidden layer
         tf.keras.layers.Dense(
-            256,
+            64,
             activation=tf.nn.relu,
             kernel_initializer='he_normal'),
+        tf.keras.layers.Dropout(0.5),
 
         # output layer
-        tf.keras.layers.Dense(1)
+        tf.keras.layers.Dense(
+            1,
+            activation='linear')
     ])
     nn_model.compile(
-        optimizer='rmsprop',
-        loss='mse',
-        metrics=['mae'])
+        optimizer='adam',
+        loss='mean_absolute_error',
+        metrics=['mse'])
 
-    nn_model.fit(X_train, y_train, epochs=1000)
+    nn_model.fit(X_train, y_train, epochs=1000, batch_size=32)
     print(nn_model.evaluate(X_test, y_test))
 
     # 요일_0 == 월요일
-
-    preds = nn_model.predict(X_test)
-    for i, pred in enumerate(preds):
-        print(pred[0], "\t", y_test[i], end="\r")
+    # preds = nn_model.predict(X_test)
+    # for i, pred in enumerate(preds):
+    #     print(pred[0], "\t", y_test[i], end="\r")
