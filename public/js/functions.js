@@ -100,12 +100,14 @@ function autocomplete(arr) {
    * Send & Receive transactions here
    */
   document.getElementById("go").onclick = function() {
+    console.log("1. click button");
     var targets;
     openSpinner(getTargets);
   };
 
   // < Open loading status >
   function openSpinner(callback) {
+    console.log("2. open spinner");
     document.getElementById("spinner").style.display="";
     document.getElementById("go").style.display="none";
     callback(getArrivalTime);
@@ -113,6 +115,7 @@ function autocomplete(arr) {
 
   // < Get departure & arrival & targets >
   function getTargets(callback) {
+    console.log("3. get targets");
     for (var i = 0; i < arr.length; i++) {
         if (arr[i][3] == input[0].value) {
             console.log("Departure : ", arr[i][2], arr[i][3]);
@@ -132,11 +135,13 @@ function autocomplete(arr) {
   // < Make all txs from departure to targets >
   // 1. Get time (departure <-> targets)
   function getArrivalTime(callback) {
+    console.log("4. get arrival time");
     callback(getPredictResult);
   }
 
   // 2. Send expected arrival time & target id by Tx
   function sendPredictTx(callback) {
+    console.log("5. send predict tx");
     /*
     $.ajax({
         url: "https://api.luniverse.io/tx/v1.0/transactions/getBikeNum3",
@@ -161,16 +166,19 @@ function autocomplete(arr) {
   // < Get reply tx and update map>
   // 1. Get (target station id, incentive)
   function getPredictResult(callback) {
+    console.log("6. get predict result");
     callback(closeSpinnerAndMove);
   }
 
   // 2. Update ../src/map.html
   function updateMap(callback) {
+    console.log("7. update map");
     callback();
   }
 
   // < Close the loading status and scroll to next page >
   function closeSpinnerAndMove(callback) {
+    console.log("8. close spinner and move page");
     document.getElementById("spinner").style.display="none";
     document.getElementById("go").style.display="";
     document.getElementById("body2").style.display = "";
