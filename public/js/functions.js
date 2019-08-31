@@ -199,7 +199,7 @@ function autocomplete(arr) {
   function getCloseStations(index, n) {
     var target = arr[index]; // arrival station
     // only iterate 100
-    var searchStart = ((index-50) >= 0) ? index-50 : 0;
+    var searchStart = ((index-50) > 0) ? index-50 : 1;
     var searchEnd = ((index+50) <= arr.length-1) ? index+50 : arr.length-1;
     var distances = [];
     for (var i = searchStart; i <= searchEnd; i++) {
