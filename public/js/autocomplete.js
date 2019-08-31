@@ -46,13 +46,6 @@ function autocomplete(arr) {
                   addValue(arr[i][3], arr[i][3], idx);
               }
           }
-          /*
-          if (typeof dropdown.children[0].children[0] == 'undefined') {
-            console.log("NULL")
-          } else {
-            console.log(dropdown.children[0].children[0].innerText)
-          }
-          */
 
           var size = dropdown.children[0].children;
           if (size.length > 0)
@@ -93,6 +86,44 @@ function autocomplete(arr) {
       input[idx].value = selectedVal.value;
       document.getElementsByClassName("autocomplete-dropdown")[idx].style.display = 'none';
   }
+
+  document.getElementById("go").onclick = function() {
+    // *** MAKE IT SYNCHRONOUS !!! ***
+
+
+    // < Open loading status >
+
+
+    // < Get departure & arrival & targets >
+    var targets;
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i][3] == input[0].value) {
+            console.log("Departure : ", arr[i][2], arr[i][3]);
+        }
+        if (arr[i][3] == input[1].value) {
+            console.log("Arrival : ", arr[i][2], arr[i][3]);
+            targets = getCloseStations(arr[i][2], 10) // Get top 10 close stations from here
+        }
+    }
+
+    // < Make all txs from departure to targets >
+    // 1. Get time (departure <-> targets)
+    // 2. Send expected arrival time & target id by Tx
+
+    // < Get reply tx and update map>
+    // 1. Get (target station id, incentive)
+    // 2. Update ../src/map.html
+
+    // < Close the loading status and scroll to next page >
+    document.getElementById("body2").style.display = "";
+    document.getElementById("emptydiv").style.display = "";
+    window.location = "/#body2";
+  };
+}
+
+// Get N closest stations from s_id
+function getCloseStations(s_id, n) {
+
 }
 
 // https://stackoverflow.com/questions/14446447/how-to-read-a-local-text-file
