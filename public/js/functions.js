@@ -47,7 +47,7 @@ function autocomplete(arr) {
           optionsVal[idx].size = 3;
           var textCountry = input[idx].value;
 
-          for (var i = 0; i < arr.length; i++) {
+          for (var i = 1; i < arr.length; i++) {
               //var testableRegExp = new RegExp(RegExp.escape(textCountry), "i");
               if (arr[i][3].match(textCountry)) {
                   addValue(arr[i][3], arr[i][3], idx);
