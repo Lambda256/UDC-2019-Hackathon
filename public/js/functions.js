@@ -100,14 +100,19 @@ function autocomplete(arr) {
    * Send & Receive transactions here
    */
   document.getElementById("go").onclick = function() {
-    // *** MAKE IT SYNCHRONOUS !!! ***
-
-
-    // < Open loading status >
-
-
-    // < Get departure & arrival & targets >
     var targets;
+    openSpinner(getTargets);
+  };
+
+  // < Open loading status >
+  function openSpinner(callback) {
+    document.getElementById("spinner").style.display="";
+    document.getElementById("go").style.display="none";
+    callback(getArrivalTime);
+  }
+
+  // < Get departure & arrival & targets >
+  function getTargets(callback) {
     for (var i = 0; i < arr.length; i++) {
         if (arr[i][3] == input[0].value) {
             console.log("Departure : ", arr[i][2], arr[i][3]);
@@ -121,10 +126,17 @@ function autocomplete(arr) {
             }
         }
     }
+    callback(sendPredictTx);
+  }
 
-    // < Make all txs from departure to targets >
-    // 1. Get time (departure <-> targets)
-    // 2. Send expected arrival time & target id by Tx
+  // < Make all txs from departure to targets >
+  // 1. Get time (departure <-> targets)
+  function getArrivalTime(callback) {
+    callback(getPredictResult);
+  }
+
+  // 2. Send expected arrival time & target id by Tx
+  function sendPredictTx(callback) {
     /*
     $.ajax({
         url: "https://api.luniverse.io/tx/v1.0/transactions/getBikeNum3",
@@ -143,17 +155,28 @@ function autocomplete(arr) {
         }
     });
     */
+    callback(updateMap);
+  }
 
-    // < Get reply tx and update map>
-    // 1. Get (target station id, incentive)
-    // 2. Update ../src/map.html
+  // < Get reply tx and update map>
+  // 1. Get (target station id, incentive)
+  function getPredictResult(callback) {
+    callback(closeSpinnerAndMove);
+  }
 
-    // < Close the loading status and scroll to next page >
+  // 2. Update ../src/map.html
+  function updateMap(callback) {
+    callback();
+  }
+
+  // < Close the loading status and scroll to next page >
+  function closeSpinnerAndMove(callback) {
+    document.getElementById("spinner").style.display="none";
+    document.getElementById("go").style.display="";
     document.getElementById("body2").style.display = "";
     document.getElementById("emptydiv").style.display = "";
     window.location = "/#body2";
-  };
-
+  }
 
   // Get N closest stations from arr_index
   function getCloseStations(index, n) {
@@ -164,7 +187,6 @@ function autocomplete(arr) {
     var searchEnd = ((index+50) <= arr.length-1) ? index+50 : arr.length-1;
     var distances = [];
     for (var i = searchStart; i <= searchEnd; i++) {
-      if (i == index) continue;
       // get distance [km]
       distances.push([computeDistance(arr[i],target),i])
     }
