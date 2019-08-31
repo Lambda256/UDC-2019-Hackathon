@@ -26,6 +26,9 @@ class FLModel:
 
     def set_weights(self, new_weights):
         self.__model.set_weights(new_weights)
+    
+    def predict(self, x_input):
+        return self.__model.predict(x_input)
 
 
 if __name__ == "__main__":

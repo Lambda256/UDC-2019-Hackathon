@@ -8,6 +8,7 @@ from model import FLModel
 import json
 import requests
 import tensorflow as tf
+import numpy as np
 
 
 # hardcoding factors
@@ -137,8 +138,19 @@ if __name__ == "__main__":
         print("Relay block %-5d" % i)
 
         flblock = flchain.blocks[i]
-        printBlock(flblock)
+        # printBlock(flblock)
+        flmodel.set_weights(flblock.weights)
+        # flmodel.evaluate(global_x_test, global_y_test)
+        # print(flmodel.loss, flmodel.acc)
 
+        target = np.expand_dims(X[0], 0)
+        # print(target.shape)  # (1, 28, 28)
+
+        # inference
+        # pred = flmodel.predict(target)  
+        # print(np.argmax(pred[0]))
+
+        # send transactions
         from_ = REOA
 
         # # insertBlock
