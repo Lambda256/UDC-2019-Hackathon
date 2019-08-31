@@ -40,7 +40,7 @@ function autocomplete(arr) {
       var dropdown = document.getElementsByClassName("autocomplete-dropdown")[idx]
       dropdown.style.display = 'none';
 
-      optionsVal[idx].options.length = 0;
+      optionsVal[idx].options.length = 1;
 
       if (input[idx].value) {
           dropdown.style.display = '';
@@ -48,37 +48,102 @@ function autocomplete(arr) {
           var textCountry = input[idx].value;
 
           for (var i = 0; i < arr.length; i++) {
-              var testableRegExp = new RegExp(RegExp.escape(textCountry), "i");
-              if (arr[i][3].match(testableRegExp)) {
+              //var testableRegExp = new RegExp(RegExp.escape(textCountry), "i");
+              if (arr[i][3].match(textCountry)) {
                   addValue(arr[i][3], arr[i][3], idx);
               }
           }
-
-          var size = dropdown.children[0].children;
-          if (size.length > 0)
-          {
-             var defaultSize = 27;
-             if (size.length == 1)
-             {
-                defaultSize = 35;
-             }
-             else if (size.length < 5)
-             {
-                defaultSize *= size.length;
-             }
-             else
-             {
-                defaultSize *= 5;
-             }
-             dropdown.children[0].style.height = defaultSize + "px";
-          }
-          else
-          {
-            // there is no item
-            dropdown.style.display = 'none';
-          }
-
       }
+
+      var x, i, j, selElmnt, a, b, c;
+      /* Look for any elements with the class "custom-select": */
+      x = document.getElementsByClassName("custom-select");
+        while (x[idx].childElementCount > 1) {
+          x[idx].removeChild(x[idx].lastChild);
+        }
+        selElmnt = x[idx].getElementsByTagName("select")[0];
+        /* For each element, create a new DIV that will act as the selected item: */
+        a = document.createElement("DIV");
+        a.setAttribute("class", "select-selected");
+        //a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+        x[idx].appendChild(a);
+        /* For each element, create a new DIV that will contain the option list: */
+        b = document.createElement("DIV");
+        b.setAttribute("class", "select-items");
+        for (j = 1; j < selElmnt.length; j++) {
+          /* For each option in the original select element,
+          create a new DIV that will act as an option item: */
+          c = document.createElement("DIV");
+          c.innerHTML = selElmnt.options[j].innerHTML;
+          c.addEventListener("click", function(e) {
+              /* When an item is clicked, update the original select box,
+              and the selected item: */
+              var y, i, k, s, h;
+              s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+              h = this.parentNode.previousSibling;
+              for (var i = 0; i < s.length; i++) {
+                if (s.options[i].innerHTML == this.innerHTML) {
+                  s.selectedIndex = i;
+                  h.innerHTML = this.innerHTML;
+                  y = this.parentNode.getElementsByClassName("same-as-selected");
+                  for (k = 0; k < y.length; k++) {
+                    y[k].removeAttribute("class");
+                  }
+                  this.setAttribute("class", "same-as-selected");
+                  break;
+                }
+              }
+              h.click();
+          });
+          b.appendChild(c);
+        }
+        x[idx].appendChild(b);
+        a.addEventListener("click", function(e) {
+          /* When the select box is clicked, close any other select boxes,
+          and open/close the current select box: */
+          e.stopPropagation();
+          closeAllSelect(this);
+          this.nextSibling.classList.toggle("select-hide");
+          this.classList.toggle("select-arrow-active");
+          input[idx].value = this.innerHTML;
+        });
+
+      function closeAllSelect(elmnt) {
+        /* A function that will close all select boxes in the document,
+        except the current select box: */
+        var x, y, i, arrNo = [];
+        x = document.getElementsByClassName("select-items");
+        y = document.getElementsByClassName("select-selected");
+        for (i = 0; i < y.length; i++) {
+          if (elmnt == y[i]) {
+            arrNo.push(i)
+          } else {
+            y[i].classList.remove("select-arrow-active");
+          }
+        }
+        for (i = 0; i < x.length; i++) {
+          if (arrNo.indexOf(i)) {
+            x[i].classList.add("select-hide");
+          }
+        }
+      }
+
+      // Set height
+      var options = b.children;
+      if (options.length > 0)
+      {
+         var defaultSize = 40;
+         if (options.length < 5) {
+            defaultSize *= options.length;
+         } else {
+            defaultSize *= 5;
+         }
+         b.style.height = defaultSize + "px";
+      }
+
+      /* If the user clicks anywhere outside the select box,
+      then close all select boxes: */
+      document.addEventListener("click", closeAllSelect);
   }
 
   function addValue(text, val, idx) {
