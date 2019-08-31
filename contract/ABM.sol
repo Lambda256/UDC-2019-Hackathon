@@ -1,23 +1,27 @@
 pragma solidity ^0.5.0;
 
-// interface for token
-/*contract ERC20Interface {
-    function totalSupply() public view returns (uint);
+contract ERC20 {
     function balanceOf(address tokenOwner) public view returns (uint balance);
     function allowance(address tokenOwner, address spender) public view returns (uint remaining);
     function transfer(address to, uint tokens) public returns (bool success);
     function approve(address spender, uint tokens) public returns (bool success);
-    function transferFrom(address from, address to, uint tokens) public returns (bool success);
-
-    event Transfer(address indexed from, address indexed to, uint tokens);
+    function transferFrom(address _from, address to, uint tokens) public returns (bool success);
+    event Transfer(address indexed _from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
-}*/
+}
+
 
 // Auto Balancing Mobility
 contract ABM{
     
-    // ABMTT(auto balancing mobility test token) address
-    //address tokenAddr = 0x9796833d40A3B129660fb1d067434922C9b13ed6;
+    // address of ABMTT token
+    address tokenAddr = 0x9796833d40A3B129660fb1d067434922C9b13ed6;
+    
+    // ABM token
+    ERC20 ABMtoken = ERC20(tokenAddr);
+    
+    // address of luniverse REOA owner account
+    address REOAowner = 0x7F9e54d53549ba46DbE32AB39Fd5feE3Fd7CBE78;
     
     // owner of this contract
     address public owner;
@@ -29,7 +33,16 @@ contract ABM{
     mapping(int=>int) bikes;
     
     // user rent timestamp (to calculate rent fee later)
-    mapping(address=>int) rentTimes;
+    mapping(address=>uint) rentTimes;
+    
+    // bike return info to calculate return incentive
+    struct returnInfo{
+        int stationID;
+        int bikeNumAfterReturn;
+        uint useTime;
+    }
+    
+    mapping(address=>returnInfo) returnInfos;
     
     constructor() public{
         // set owner
@@ -81,27 +94,37 @@ contract ABM{
         return bikes[stationID];
     }
     
-    function returnBike(int stationID) public returns (int) {
+    function returnBike(int stationID, uint returnTime) public {
         // check a user rented a bikes
         require(rentTimes[msg.sender] != 0);
         
+        // calculate use time
+        uint useTime = returnTime - rentTimes[msg.sender];
+        
+        // pay additional rent fee
+        ABMtoken.transferFrom(msg.sender, REOAowner, useTime);
+        
         // init rent time
-        int rentTime = rentTimes[msg.sender];
         delete rentTimes[msg.sender];
         
         // increase # of bike
         bikes[stationID]++;
         
-        // return rent time to calculate rent fee
-        return rentTime;
+        // update return info to calculate incentive later
+        returnInfo memory ri = returnInfo(stationID, bikes[stationID], useTime);
+        returnInfos[msg.sender] = ri;
+        
     }
     
-    function rentBike(int stationID, int rentTime) public{
+    function rentBike(int stationID, uint rentTime) public{
         // need at least 1 bike to rent
         require(bikes[stationID] > 0);
         
         // do not rent more than 1 bike
         require(rentTimes[msg.sender] == 0);
+        
+        // pay rent fee (user should execute approve(this contract address, 5) at sideToken contract first)
+        ABMtoken.transferFrom(msg.sender, REOAowner, 5);
         
         // save time stimestamp
         rentTimes[msg.sender] = rentTime;
@@ -141,34 +164,18 @@ contract ABM{
     }
     
     
+    
+    //
     // model inference
-    
-    int[] nums;
-    
-    function insertNum(int num)public{
-        nums.push(num);
-    }
-    
-    function getNumsLen()public view returns(uint){
-        return nums.length;
-    }
-    
-    function getNum(uint index) public view returns (int){
-        return nums[index];
-    }
-    
-    function popNum() public {
-        nums.pop(); // eliminate last inserted element
-    }
-    
-    function deleteNum(uint index)public {
-        delete nums[index]; // just change value as 0
-    }
+    //
     
     // inference request
     struct infRequest{
+        // for request id
         address addr;
         int reqTime;
+        
+        // inference data
         int[] stations; // station ID
         int[] arriveTimes; // arrive a station after x hours
         int[] infos; // month, temperature, windDirection, windSpeed, precipitation, humidity, day(0~6)
@@ -211,6 +218,45 @@ contract ABM{
     // read inference result (requestID = fromAddr + requestTime)
     function getResponse(string memory requestID) public view returns (int[] memory, int[] memory){
         return (infResponses[requestID].stations, infResponses[requestID].bikeNums);
+    }
+    
+    // map[address] = amount of incentive that this user can get
+    mapping(address=>int) incentives;
+    
+    function withdrawIncentive() public {
+        delete incentives[msg.sender];
+    }
+    
+    
+    
+    
+    
+    // token funcitons
+    
+    // need to execute token.approve(msg.sender, 10) first
+    function sendToken() public {
+        ERC20 token = ERC20(tokenAddr);
+        token.transferFrom(0x7F9e54d53549ba46DbE32AB39Fd5feE3Fd7CBE78, msg.sender, 10);
+    }
+    
+    function sendTokenTo(address _to) public {
+        ERC20 token = ERC20(tokenAddr);
+        token.transferFrom(0x7F9e54d53549ba46DbE32AB39Fd5feE3Fd7CBE78, _to, 10);
+    }
+    
+    function sendTokenFromTo(address _from, address _to) public{
+        ERC20 token = ERC20(tokenAddr);
+        token.transferFrom(_from, _to, 10);
+    }
+    
+    function transferToken(address to) public {
+        ERC20 token = ERC20(tokenAddr);
+        token.transfer(to, 10);
+    }
+    
+    function balanceOf() public view returns (uint) {
+        ERC20 token = ERC20(tokenAddr);
+        return token.balanceOf(msg.sender);
     }
     
     
