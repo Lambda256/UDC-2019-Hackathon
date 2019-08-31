@@ -28,6 +28,9 @@ contract ABM{
     // map[stationID] = # of bikes
     mapping(int=>int) bikes;
     
+    // user rent timestamp (to calculate rent fee later)
+    mapping(address=>int) rentTimes;
+    
     constructor() public{
         // set owner
         owner = msg.sender;
@@ -70,13 +73,30 @@ contract ABM{
         return bikes[stationID];
     }
     
-    function returnBike(int stationID) public{
+    function returnBike(int stationID) public returns (int) {
+        // check a user rented a bikes
+        require(rentTimes[msg.sender] != 0);
+        
+        // init rent time
+        int rentTime = rentTimes[msg.sender];
+        delete rentTimes[msg.sender];
+        
+        // increase # of bike
         bikes[stationID]++;
+        
+        // return rent time to calculate rent fee
+        return rentTime;
     }
     
-    function rentBike(int stationID) public{
+    function rentBike(int stationID, int rentTime) public{
         // need at least 1 bike to rent
         require(bikes[stationID] > 0);
+        
+        // do not rent more than 1 bike
+        require(rentTimes[msg.sender] == 0);
+        
+        // save time stimestamp
+        rentTimes[msg.sender] = rentTime;
         
         // decrease # of bike
         bikes[stationID]--;
