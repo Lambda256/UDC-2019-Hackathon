@@ -3,9 +3,3 @@ function topFunction() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
-
-function go() {
-  document.getElementById("body2").style.display = "";
-  document.getElementById("emptydiv").style.display = "";
-  window.location = "/#body2";
-}
