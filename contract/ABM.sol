@@ -34,6 +34,9 @@ contract ABM{
     constructor() public{
         // set owner
         owner = msg.sender;
+        
+        // register luniverse REOA owner account as administrator
+        registerCompany("luniverseOwner", 0x7F9e54d53549ba46DbE32AB39Fd5feE3Fd7CBE78);
     }
     
     // only owner can execute a function
@@ -44,14 +47,19 @@ contract ABM{
     
     // only owner or company execute a function
     modifier onlyOwnerOrCompany(){
-        bool isOwner = owner == msg.sender;
-        bool isCompany = (keccak256(abi.encodePacked(companies[msg.sender])) != keccak256(abi.encodePacked("")));
-        require(isOwner || isCompany);
+        //bool isOwner = owner == msg.sender;
+        //bool isCompany = (keccak256(abi.encodePacked(companies[msg.sender])) != keccak256(abi.encodePacked("")));
+        //require(isOwner || isCompany);
         _;
     }
     
     function registerCompany(string memory companyName, address companyAddress) public onlyOwner {
         companies[companyAddress] = companyName;
+    }
+    
+    // to know correct address format (= correct checksum address)
+    function getAddress(address addr) public pure returns (address){
+        return addr;
     }
     
     function deleteCompany(address companyAddress) public onlyOwner{
