@@ -179,7 +179,7 @@ if __name__ == "__main__":
     flchain.append(new_block)
 
     flmodel.evaluate(x_test, y_test)
-    print(flmodel.loss, flmodel.acc)
+    print(flmodel.loss, flmodel.metrics)
 
     # write blockchain
     writeBlockchain("../data", flchain)

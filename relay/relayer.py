@@ -1,14 +1,15 @@
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))) + "/FL")
-
-from block import readBlockchain, printBlock
-from model import FLModel
-
 import json
 import requests
 import tensorflow as tf
 import numpy as np
+
+import os
+import sys
+sys.path.append(os.path.dirname(
+    os.path.abspath(os.path.dirname(__file__))) + "/FL")
+
+from block import readBlockchain, printBlock
+from model import FLModel
 
 
 # hardcoding factors
@@ -119,18 +120,37 @@ if __name__ == "__main__":
     # read blockchain
     flchain = readBlockchain("../data")
 
-    # create model
-    mnist_model = tf.keras.models.Sequential([
-        tf.keras.layers.Flatten(input_shape=(28, 28)),
-        tf.keras.layers.Dense(512, activation=tf.nn.relu),
-        tf.keras.layers.Dropout(0.2),
-        tf.keras.layers.Dense(10, activation=tf.nn.softmax)
+    # get model for inference
+    # set FL model
+    len_features = 15
+    # TODO: modified model with concatenate layer
+    nn_model = tf.keras.models.Sequential([
+        # input & first layer
+        tf.keras.layers.Dense(
+            64,
+            input_shape=(len_features,),
+            activation=tf.nn.relu,
+            kernel_initializer='he_normal'),
+        tf.keras.layers.Dropout(0.5),
+
+        # hidden layer
+        tf.keras.layers.Dense(
+            64,
+            activation=tf.nn.relu,
+            kernel_initializer='he_normal'),
+        tf.keras.layers.Dropout(0.5),
+
+        # output layer
+        tf.keras.layers.Dense(
+            1,
+            activation='linear')
     ])
-    mnist_model.compile(
+    nn_model.compile(
         optimizer='adam',
-        loss='sparse_categorical_crossentropy',
-        metrics=['accuracy'])
-    flmodel = FLModel(mnist_model)
+        loss='mean_absolute_error',
+        metrics=['mse'])
+
+    flmodel = FLModel(nn_model)
 
     # relaying
     chain_len = len(flchain)
@@ -138,16 +158,12 @@ if __name__ == "__main__":
         print("Relay block %-5d" % i)
 
         flblock = flchain.blocks[i]
-        # printBlock(flblock)
-        flmodel.set_weights(flblock.weights)
-        # flmodel.evaluate(global_x_test, global_y_test)
-        # print(flmodel.loss, flmodel.acc)
+        printBlock(flblock)
 
-        # inference
-        # target = np.expand_dims(X[0], 0)
-        # print(target.shape)  # (1, 28, 28)
-        # pred = flmodel.predict(target)  
-        # print(np.argmax(pred[0]))
+        """inference"""
+        # flmodel.set_weights(flblock.weights)
+        # # Do normalization
+        # flmodel.predict()
 
         # send transactions
         from_ = REOA

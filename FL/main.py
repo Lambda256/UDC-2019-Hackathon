@@ -1,11 +1,16 @@
-from model import FLModel
-from node import Node, split_dataset
-from block import Blockchain, Block, printBlock, writeBlockchain
+import random
+import numpy as np
+import tensorflow as tf
 import arguments
 
-import tensorflow as tf
-import numpy as np
-import random
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
+from block import Blockchain, Block, printBlock, writeBlockchain
+from node import Node, split_dataset
+from model import FLModel
+import preprocessing
 
 
 # python main.py --nodes=5 --round=1000 --globalSet=10000
@@ -21,9 +26,8 @@ if __name__ == "__main__":
     # tf.device('/device:GPU:0')
 
     # Load datasets
-    fashion_mnist = tf.keras.datasets.fashion_mnist
-    (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
-    x_train, x_test = x_train / 255.0, x_test / 255.0
+    features, x_train, y_train, x_test, y_test = preprocessing.get_train_test(
+        "../data/realworld")
 
     # get global testset by train
     global_x_test = x_train[:num_global_testset]
@@ -32,17 +36,34 @@ if __name__ == "__main__":
     y_train = y_train[num_global_testset:]
 
     # set FL model
-    mnist_model = tf.keras.models.Sequential([
-        tf.keras.layers.Flatten(input_shape=(28, 28)),
-        tf.keras.layers.Dense(512, activation=tf.nn.relu),
-        tf.keras.layers.Dropout(0.2),
-        tf.keras.layers.Dense(10, activation=tf.nn.softmax)
+    # TODO: modified model with concatenate layer
+    nn_model = tf.keras.models.Sequential([
+        # input & first layer
+        tf.keras.layers.Dense(
+            64,
+            input_shape=(len(features),),
+            activation=tf.nn.relu,
+            kernel_initializer='he_normal'),
+        tf.keras.layers.Dropout(0.5),
+
+        # hidden layer
+        tf.keras.layers.Dense(
+            64,
+            activation=tf.nn.relu,
+            kernel_initializer='he_normal'),
+        tf.keras.layers.Dropout(0.5),
+
+        # output layer
+        tf.keras.layers.Dense(
+            1,
+            activation='linear')
     ])
-    mnist_model.compile(
+    nn_model.compile(
         optimizer='adam',
-        loss='sparse_categorical_crossentropy',
-        metrics=['accuracy'])
-    flmodel = FLModel(mnist_model)
+        loss='mean_absolute_error',
+        metrics=['mse'])
+
+    flmodel = FLModel(nn_model)
 
     """set blockchain"""
     init_weights = flmodel.get_weights()
@@ -53,7 +74,7 @@ if __name__ == "__main__":
         (global_x_test, global_y_test),
         []
     )
-    flchain = Blockchain(genesis)  # set blockchain with genesis block    
+    flchain = Blockchain(genesis)  # set blockchain with genesis block
     writeBlockchain("../data", flchain)  # save blockchain
 
     """set nodes"""
@@ -80,7 +101,8 @@ if __name__ == "__main__":
         # update weights
         # Request @ pBFT
         peer_weights = list()
-        peer_reputations = np.ones(num_nodes)  # TODO: set a different reputation per nodes
+        # TODO: set a different reputation per nodes
+        peer_reputations = np.ones(num_nodes)
         participants = list()
 
         for i, node in enumerate(nodes):
@@ -91,17 +113,26 @@ if __name__ == "__main__":
             participants.append(i)
 
             node.flmodel.set_weights(currentBlockWeight)  # Pre-Prepare @ pBFT
-            node.flmodel.fit(node.x_train, node.y_train, epochs=1)  # Prepare and Commit @ pBFT
+
+            # training
+            # early_stopping = tf.keras.callbacks.EarlyStopping(
+            #     monitor='loss', patience=20)  # loss is 'mae'  # early stopping
+
+            node.flmodel.fit(
+                node.x_train, node.y_train,
+                # callbacks=[early_stopping],
+                epochs=1)  # Prepare and Commit @ pBFT
             peer_weight = node.flmodel.get_weights()
             peer_weights.append(peer_weight)  # Reply @ pBFT
 
             # eval. each node
             node.flmodel.evaluate(node.x_test, node.y_test)
             print("> node: %-5d" % i, end="\t")
-            print("loss: %-8.4f" % node.flmodel.loss, end="\t")
-            print("acc: %-8.4f" % node.flmodel.acc, end="\r")
+            print("mae: %-8.4f" % node.flmodel.loss, end="\t")
+            print("mse: %-8.4f" % node.flmodel.metrics[0], end="\r")
 
-        Leader.raw_update_weights(peer_weights, [peer_reputations[p] for p in participants])
+        Leader.raw_update_weights(
+            peer_weights, [peer_reputations[p] for p in participants])
         nextBlockWeight = Leader.flmodel.get_weights()
 
         # create next block
@@ -119,8 +150,8 @@ if __name__ == "__main__":
         # print
         print(" " * 64, end="\r")
         print("round: %-6d" % nextBlockNumber, end="\t")
-        print("loss: %-8.4f" % Leader.flmodel.loss, end="\t")
-        print("acc: %-8.4f" % Leader.flmodel.acc)
+        print("mae: %-8.4f" % Leader.flmodel.loss, end="\t")
+        print("mse: %-8.4f" % Leader.flmodel.metrics[0])
         printBlock(flchain.blocks[-1])
 
         # save blockchain
