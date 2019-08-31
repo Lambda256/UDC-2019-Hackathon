@@ -102,7 +102,11 @@ function autocomplete(arr) {
         }
         if (arr[i][3] == input[1].value) {
             console.log("Arrival : ", arr[i][2], arr[i][3]);
-            targets = getCloseStations(arr[i][2], 10) // Get top 10 close stations from here
+            targets = getCloseStations(i, 10) // Get top 10 close stations from here
+            for (var j = 0; j < targets.length; j++) {
+              console.log(arr[targets[j][1]])
+              //console.log("TIME(minute) : ", targets[j][0]/10*60)
+            }
         }
     }
 
@@ -119,11 +123,45 @@ function autocomplete(arr) {
     document.getElementById("emptydiv").style.display = "";
     window.location = "/#body2";
   };
+
+
+  // Get N closest stations from arr_index
+  function getCloseStations(index, n) {
+    var target = arr[index]; // arrival station
+    console.log("(",target[6],",",target[7],")");
+    // only iterate 100
+    var searchStart = ((index-50) >= 0) ? index-50 : 0;
+    var searchEnd = ((index+50) <= arr.length-1) ? index+50 : arr.length-1;
+    var distances = [];
+    for (var i = searchStart; i <= searchEnd; i++) {
+      if (i == index) continue;
+      // get distance [km]
+      distances.push([computeDistance(arr[i],target),i])
+    }
+    distances.sort(function(left, right) {
+      return left[0] < right[0] ? -1 : 1;
+    });
+    return distances.slice(0, n);
+  }
 }
 
-// Get N closest stations from s_id
-function getCloseStations(s_id, n) {
+// https://m.blog.naver.com/javaking75/220342410214
+function computeDistance(startCoords, destCoords) {
+    var startLatRads = degreesToRadians(startCoords[6]);
+    var startLongRads = degreesToRadians(startCoords[7]);
+    var destLatRads = degreesToRadians(destCoords[6]);
+    var destLongRads = degreesToRadians(destCoords[7]);
 
+    var Radius = 6371; //지구의 반경(km)
+    var distance = Math.acos(Math.sin(startLatRads) * Math.sin(destLatRads) +
+                    Math.cos(startLatRads) * Math.cos(destLatRads) *
+                    Math.cos(startLongRads - destLongRads)) * Radius;
+    return distance;
+}
+
+function degreesToRadians(degrees) {
+    radians = (degrees * Math.PI)/180;
+    return radians;
 }
 
 // https://stackoverflow.com/questions/14446447/how-to-read-a-local-text-file
