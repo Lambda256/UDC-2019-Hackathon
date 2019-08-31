@@ -115,33 +115,42 @@ function autocomplete(arr) {
 
   // < Get departure & arrival & targets >
   function getTargets(callback) {
+    var departure, arrival, targets;
     console.log("3. get targets");
     for (var i = 0; i < arr.length; i++) {
         if (arr[i][3] == input[0].value) {
-            console.log("Departure : ", arr[i][2], arr[i][3]);
+            departure = arr[i];
+            console.log("Departure : ", departure);
         }
         if (arr[i][3] == input[1].value) {
-            console.log("Arrival : ", arr[i][2], arr[i][3]);
+            arrival = arr[i];
+            console.log("Arrival : ", arrival);
             targets = getCloseStations(i, 10) // Get top 10 close stations from here
-            for (var j = 0; j < targets.length; j++) {
-              console.log(arr[targets[j][1]])
-              //console.log("TIME(minute) : ", targets[j][0]/10*60)
-            }
         }
     }
-    callback(sendPredictTx);
+    callback(departure, targets, sendPredictTx);
   }
 
   // < Make all txs from departure to targets >
   // 1. Get time (departure <-> targets)
-  function getArrivalTime(callback) {
+  function getArrivalTime(departure, targets, callback) {
     console.log("4. get arrival time");
-    callback(getPredictResult);
+    var targetIDs = [];
+    var travelTimes = [];
+    for (var i = 0; i < targets.length; i++) {
+      console.log(targets[i])
+      targetIDs.push(targets[i][2]);
+      travelTimes.push(getTravelTimeHour(departure, targets[i]));
+    }
+    console.log(targetIDs, travelTimes);
+    callback(targetIDs, travelTimes, getPredictResult);
   }
 
   // 2. Send expected arrival time & target id by Tx
-  function sendPredictTx(callback) {
+  function sendPredictTx(targetIDs, travelTimes, callback) {
     console.log("5. send predict tx");
+    reqTime = (new Date()).getTime();
+    console.log(reqTime);
     /*
     $.ajax({
         url: "https://api.luniverse.io/tx/v1.0/transactions/getBikeNum3",
@@ -189,7 +198,6 @@ function autocomplete(arr) {
   // Get N closest stations from arr_index
   function getCloseStations(index, n) {
     var target = arr[index]; // arrival station
-    console.log("(",target[6],",",target[7],")");
     // only iterate 100
     var searchStart = ((index-50) >= 0) ? index-50 : 0;
     var searchEnd = ((index+50) <= arr.length-1) ? index+50 : arr.length-1;
@@ -201,7 +209,19 @@ function autocomplete(arr) {
     distances.sort(function(left, right) {
       return left[0] < right[0] ? -1 : 1;
     });
-    return distances.slice(0, n);
+
+    var targets = [];
+    for (var i = 0; i < n; i++) {
+      targets.push(arr[distances[i][1]]);
+    }
+    return targets;
+  }
+
+  // Get travel time
+  function getTravelTimeHour(departure, arrival) {
+    dist = computeDistance(departure,arrival); // km
+    time = dist / 10; // hour (10km/h)
+    return Math.round(time);
   }
 }
 
