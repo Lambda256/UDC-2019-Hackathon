@@ -113,6 +113,24 @@ function autocomplete(arr) {
     // < Make all txs from departure to targets >
     // 1. Get time (departure <-> targets)
     // 2. Send expected arrival time & target id by Tx
+    /*
+    $.ajax({
+        url: "https://api.luniverse.io/tx/v1.0/transactions/getBikeNum3",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        },
+        type: 'POST',
+        contentType: 'application/json',
+        processData: false,
+        data: '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"stationID": "987"}}',
+        success: function (data) {
+          alert(JSON.stringify(data));
+        },
+        error: function(){
+          alert("Cannot get data");
+        }
+    });
+    */
 
     // < Get reply tx and update map>
     // 1. Get (target station id, incentive)
