@@ -164,17 +164,31 @@ function autocomplete(arr) {
 
 
   /*
-   * Go() button event listener
+   * Logo & Go() button event listener
    * Send & Receive transactions here
    */
-  document.getElementById("go").onclick = function() {
-    console.log("1. click button");
-    openSpinner(getTargets);
-  };
+
+   // after logo
+   UIkit.util.on('#logo', 'scrolled', function () {
+     document.getElementById("body2").style.display="none";
+     document.getElementById("emptydiv").style.display="none";
+   });
+
+
+   // before go
+   UIkit.util.on('#go', 'beforescroll', function () {
+     console.log("1. Click go button");
+     openSpinner(getTargets);
+   });
+
+   // after go
+   UIkit.util.on('#go', 'scrolled', function () {
+     closeSpinnerAndBody();
+   });
 
   // < Open loading status >
   function openSpinner(callback) {
-    console.log("2. open spinner");
+    console.log("2. Open spinner (loading status)");
     document.getElementById("spinner").style.display="";
     document.getElementById("go").style.display="none";
     callback(getArrivalTime);
@@ -183,15 +197,13 @@ function autocomplete(arr) {
   // < Get departure & arrival & targets >
   function getTargets(callback) {
     var departure, arrival, targets;
-    console.log("3. get targets");
+    console.log("3. Get targets (top 10 closest stations)");
     for (var i = 0; i < arr.length; i++) {
         if (arr[i][3] == input[0].value) {
             departure = arr[i];
-            console.log("Departure : ", departure);
         }
         if (arr[i][3] == input[1].value) {
             arrival = arr[i];
-            console.log("Arrival : ", arrival);
             targets = getCloseStations(i, 10) // Get top 10 close stations from here
         }
     }
@@ -201,21 +213,20 @@ function autocomplete(arr) {
   // < Make all txs from departure to targets >
   // 1. Get time (departure <-> targets)
   function getArrivalTime(departure, targets, callback) {
-    console.log("4. get arrival time");
+    console.log("4. Get target station id & travel time (hr)");
     var targetIDs = [];
     var travelTimes = [];
     for (var i = 0; i < targets.length; i++) {
-      console.log(targets[i])
       targetIDs.push(targets[i][2]);
       travelTimes.push(getTravelTimeHour(departure, targets[i]));
     }
     console.log(targetIDs, travelTimes);
-    callback(departure, targetIDs, travelTimes, getPredictResult);
+    callback(departure, targets, targetIDs, travelTimes, getPredictResult);
   }
 
   // 2. Send expected arrival time & target id by Tx
-  function sendPredictTx(departure, targetIDs, travelTimes, callback) {
-    console.log("5. send predict tx");
+  function sendPredictTx(departure, targets, targetIDs, travelTimes, callback) {
+    console.log("5. Send predict tx with timestamp [todo]");
     reqTime = (new Date()).getTime();
     console.log(reqTime);
     /*
@@ -236,20 +247,19 @@ function autocomplete(arr) {
         }
     });
     */
-    callback(departure,updateMap);
+    callback(departure, targets, updateMap);
   }
 
   // < Get reply tx and update map>
   // 1. Get (target station id, incentive)
-  function getPredictResult(departure,callback) {
-    console.log("6. get predict result");
-    callback(departure,closeSpinnerAndMove);
+  function getPredictResult(departure, targets, callback) {
+    console.log("6. Get predict result [todo]");
+    callback(departure, targets);
   }
 
-  // 2. Update ../src/map.html
-  function updateMap(departure, callback) {
+  // 2. Update map
+  function updateMap(departure, targets) {
     // 지도 중심 계산
-    console.log(targets);
     let lat_mean = 0;
     let long_mean = 0;
     for (var i=0;i<targets.length;i++){
@@ -259,7 +269,7 @@ function autocomplete(arr) {
     lat_mean /= 10;
     long_mean /= 10;
     
-    // 지도 객체 추가
+    // 지도 중심 이동
     mymap.setView([lat_mean,long_mean], 14);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -274,21 +284,16 @@ function autocomplete(arr) {
       var marker = L.marker(targets[i].slice(6,8)).addTo(mymap);
     }
     console.log("7. update map");
-    callback(departure);
-  }
-
-  // < Close the loading status and scroll to next page >
-  function closeSpinnerAndMove(departure) {
-    console.log("8. close spinner and move page");
-    document.getElementById("spinner").style.display="none";
-    document.getElementById("go").style.display="";
-    document.getElementById("body2").style.display = "";
-    document.getElementById("emptydiv").style.display = "";
-    window.location = "/#body2";
+    // 여기에서 Targets 정류장을 지도에 표시
+    // targets[0]~targets[9] 까지 있음 (목적지 + 목적지와 가까운 정류장 9개)
+    // targets[i][6] : 위도, targets[i][7] : 경도
+    // 자세한 정보는 이 부분에서 console 에 프린트 되는 targets element 참고
+    console.log("Departure : ", departure)
+    console.log("Targets : ", targets)
 
     // Set departure info
     document.getElementById("departure").innerHTML =
-      "<B>[" + departure[2] + ". " + departure[3] + "]</B>" + "<br />" + departure[4];
+    "<B>[" + departure[2] + ". " + departure[3] + "]</B>" + "<br />" + departure[4];
   }
 
   // Get N closest stations from arr_index
@@ -345,25 +350,6 @@ function computeDistance(startCoords, destCoords) {
 function degreesToRadians(degrees) {
     radians = (degrees * Math.PI)/180;
     return radians;
-}
-
-// https://stackoverflow.com/questions/14446447/how-to-read-a-local-text-file
-function readTextFile(file)
-{
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                alert(allText);
-            }
-        }
-    }
-    rawFile.send(null);
 }
 
 // ref: http://stackoverflow.com/a/1293163/2343
@@ -452,8 +438,22 @@ function CSVToArray( strData, strDelimiter ){
     return( arrData );
 }
 
-// When the user clicks on the button, scroll to the top of the document
-function topFunction() {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
+// < Close the loading status and scroll to next page >
+function closeSpinnerAndBody() {
+  console.log("8. Close spinner/body1 (after scroll)");
+  document.getElementById("spinner").style.display="none";
+  document.getElementById("go").style.display="";
+  document.getElementById("body1").style.display="none";
+  document.getElementById("emptydiv").style.display="none";
+}
+
+function showbody1() {
+  document.getElementById("body1").style.display="";
+  document.getElementById("emptydiv").style.display="";
+  window.scrollTo(0,document.body.scrollHeight);
+}
+
+function showbody2() {
+  document.getElementById("emptydiv").style.display="";
+  document.getElementById("body2").style.display="";
 }

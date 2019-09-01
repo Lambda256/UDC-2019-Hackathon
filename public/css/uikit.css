@@ -30,7 +30,6 @@ html {
   /* 3 */
   background: #fff;
   color: #666;
-  scroll-behavior: smooth;
   overflow: hidden;
 }
 /*
@@ -61,8 +60,8 @@ a:hover,
 .uk-link:hover,
 .uk-link-toggle:hover .uk-link,
 .uk-link-toggle:focus .uk-link {
-  color: #0f6ecd;
-  text-decoration: underline;
+  /*color: #0f6ecd;
+  text-decoration: underline;*/
 }
 
 .selectitems {
@@ -77,6 +76,10 @@ a:hover,
 
 .select-selected {
   display: none;
+}
+
+.uk-profile-small:hover {
+  cursor: pointer;
 }
 
 /* style the items (options), including the selected item: */
@@ -5688,7 +5691,8 @@ ul.uk-nav-sub {
   box-sizing: border-box;
   width: 270px;
   padding: 20px 20px;
-  background: #222;
+  background-color: rgba(0,0,0,.87);
+  /*background: #000;*/
   /* 3 */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -7216,6 +7220,10 @@ ul.uk-nav-sub {
 
 .uk-height-1-nav {
   height: calc(100% - 90px);
+}
+
+.uk-height-1-text {
+  height: calc(100% - 130px);
 }
 
 .okdiv-height {
