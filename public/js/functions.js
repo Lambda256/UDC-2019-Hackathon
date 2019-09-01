@@ -257,6 +257,10 @@ function autocomplete(arr) {
   // 2. Update map
   function updateMap(departure, targets) {
     console.log("7. Update map");
+    // 여기에서 Targets 정류장을 지도에 표시
+    // targets[0]~targets[9] 까지 있음 (목적지 + 목적지와 가까운 정류장 9개)
+    // targets[i][6] : 위도, targets[i][7] : 경도
+    // 자세한 정보는 이 부분에서 console 에 프린트 되는 targets element 참고
     console.log("Departure : ", departure)
     console.log("Targets : ", targets)
 
