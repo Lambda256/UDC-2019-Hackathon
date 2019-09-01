@@ -10,7 +10,6 @@ contract ERC20 {
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
 }
 
-
 // Auto Balancing Mobility
 contract ABM{
     
@@ -28,21 +27,6 @@ contract ABM{
     
     // map[companyName] = address of company
     mapping(address=>string) companies;
-    
-    // map[stationID] = # of bikes
-    mapping(int=>int) bikes;
-    
-    // user rent timestamp (to calculate rent fee later)
-    mapping(address=>uint) rentTimes;
-    
-    // bike return info to calculate return incentive
-    struct returnInfo{
-        int stationID;
-        int bikeNumAfterReturn;
-        uint useTime;
-    }
-    
-    mapping(address=>returnInfo) returnInfos;
     
     constructor() public{
         // set owner
@@ -79,6 +63,30 @@ contract ABM{
         delete companies[companyAddress];
     }
     
+    
+    
+    
+    
+    //
+    // bike rent/return functions
+    //
+    
+    // map[stationID] = # of bikes
+    mapping(int=>int) bikes;
+    
+    // user rent timestamp (to calculate rent fee later)
+    mapping(address=>uint) rentTimes;
+    
+    // bike return info to calculate return incentive
+    struct returnInfo{
+        int stationID;
+        int bikeNumAfterReturn;
+        uint useTime;
+    }
+    
+    // save user's bike return info
+    mapping(address=>returnInfo) returnInfos;
+    
     function setBikeNum(int stationID, int bikeNum) public onlyOwnerOrCompany{
         bikes[stationID] = bikeNum;
     }
@@ -113,7 +121,6 @@ contract ABM{
         // update return info to calculate incentive later
         returnInfo memory ri = returnInfo(stationID, bikes[stationID], useTime);
         returnInfos[msg.sender] = ri;
-        
     }
     
     function rentBike(int stationID, uint rentTime) public{
@@ -132,6 +139,14 @@ contract ABM{
         // decrease # of bike
         bikes[stationID]--;
     }
+    
+    
+    
+    
+    
+    //
+    // functions for relayed blocks
+    //
     
     // struct to get blocks from relayer
     struct FLBlockHeader{
@@ -165,8 +180,10 @@ contract ABM{
     
     
     
+    
+    
     //
-    // model inference
+    // ML model inference
     //
     
     // inference request
@@ -220,39 +237,25 @@ contract ABM{
         return (infResponses[requestID].stations, infResponses[requestID].bikeNums);
     }
     
-    // map[address] = amount of incentive that this user can get
-    mapping(address=>int) incentives;
+    // get user's return info for relayer to calculate incentive
+    function getReturnInfo(address addr) public view returns(int, int, uint){
+        return (returnInfos[addr].stationID, returnInfos[addr].bikeNumAfterReturn, returnInfos[addr].useTime);
+    }
     
-    function withdrawIncentive() public {
-        delete incentives[msg.sender];
+    // relayer gives incentive to receiver
+    function giveIncentive(address receiver, uint amount) public{
+        if(amount > 0){
+            ABMtoken.transferFrom(REOAowner, receiver, amount);
+        }
     }
     
     
     
     
     
+    //
     // token funcitons
-    
-    // need to execute token.approve(msg.sender, 10) first
-    function sendToken() public {
-        ERC20 token = ERC20(tokenAddr);
-        token.transferFrom(0x7F9e54d53549ba46DbE32AB39Fd5feE3Fd7CBE78, msg.sender, 10);
-    }
-    
-    function sendTokenTo(address _to) public {
-        ERC20 token = ERC20(tokenAddr);
-        token.transferFrom(0x7F9e54d53549ba46DbE32AB39Fd5feE3Fd7CBE78, _to, 10);
-    }
-    
-    function sendTokenFromTo(address _from, address _to) public{
-        ERC20 token = ERC20(tokenAddr);
-        token.transferFrom(_from, _to, 10);
-    }
-    
-    function transferToken(address to) public {
-        ERC20 token = ERC20(tokenAddr);
-        token.transfer(to, 10);
-    }
+    //
     
     function balanceOf() public view returns (uint) {
         ERC20 token = ERC20(tokenAddr);
@@ -261,10 +264,6 @@ contract ABM{
     
     
 }
-
-
-
-
 
 
 
