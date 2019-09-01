@@ -2,6 +2,9 @@
  * Read station data
  */
 // Retrieved from http://jsfiddle.net/e6220t92/2/
+
+var targets =[];
+
 const fileUrl = '../src/stations.csv' // provide file location
 fetch(fileUrl)
    .then( r => r.text() )
@@ -279,7 +282,7 @@ function autocomplete(arr) {
       return left[0] < right[0] ? -1 : 1;
     });
 
-    var targets = [];
+    targets = [];
     for (var i = 0; i < n; i++) {
       targets.push(arr[distances[i][1]]);
     }
