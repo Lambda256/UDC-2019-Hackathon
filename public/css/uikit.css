@@ -78,6 +78,10 @@ a:hover,
   display: none;
 }
 
+.uk-profile-small:hover {
+  cursor: pointer;
+}
+
 /* style the items (options), including the selected item: */
 .select-items div {
   font-family: 'Noto Sans KR', sans-serif;
@@ -5687,7 +5691,8 @@ ul.uk-nav-sub {
   box-sizing: border-box;
   width: 270px;
   padding: 20px 20px;
-  background: #222;
+  background-color: rgba(0,0,0,.87);
+  /*background: #000;*/
   /* 3 */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
