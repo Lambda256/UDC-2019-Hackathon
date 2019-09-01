@@ -64,7 +64,7 @@ a:hover,
   text-decoration: underline;*/
 }
 
-.selectitems {
+.selectitems, .uk-label:hover {
   cursor: pointer;
 }
 
