@@ -169,7 +169,6 @@ function autocomplete(arr) {
    */
   document.getElementById("go").onclick = function() {
     console.log("1. click button");
-    var targets;
     openSpinner(getTargets);
   };
 
@@ -249,6 +248,31 @@ function autocomplete(arr) {
 
   // 2. Update ../src/map.html
   function updateMap(departure, callback) {
+    // 지도 중심 계산
+    console.log(targets);
+    let lat_mean = 0;
+    let long_mean = 0;
+    for (var i=0;i<targets.length;i++){
+      lat_mean += parseFloat(targets[i][6]);
+      long_mean += parseFloat(targets[i][7]);
+    }
+    lat_mean /= 10;
+    long_mean /= 10;
+    
+    // 지도 객체 추가
+    var mymap = L.map('mapid').setView([lat_mean,long_mean], 14);
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.streets',
+      // 용환 mapbox public accesToken (이대로 두면 됨)
+      accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
+    }).addTo(mymap);
+    
+    // 마커 추가
+    for (var i=0;i<targets.length;i++){
+      var marker = L.marker(targets[i].slice(6,8)).addTo(mymap);
+    }
     console.log("7. update map");
     callback(departure);
   }
