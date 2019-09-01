@@ -422,6 +422,7 @@ function closeSpinnerAndBody() {
 
 function showbody1() {
   document.getElementById("body1").style.display="";
+  document.getElementById("emptydiv").style.display="";
   window.scrollTo(0,document.body.scrollHeight);
 }
 
