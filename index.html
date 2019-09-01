@@ -103,10 +103,59 @@
             </button>
           </div>
         </div>
-        <div class="uk-width-1-1 uk-align-center" style="height:78%; margin:0px;">
-          <iframe id="map" class="uk-width-1-1 uk-height-1-1" src="./src/station_cluster_map.html">
+        <div id="mapid" class="uk-width-1-1" style="height:78%; margin:0px;">
         </div>
       </div>
+
     </body>
     <!-- no script / div here (due to iframe) -->
 </html>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+crossorigin=""></script>
+<script>
+  // 일단 홍대입구로 다 해둠.
+  var _candidates = [
+    [37.5575,126.9245],
+    [37.5575,126.9245],
+    [37.5575,126.9245],
+    [37.5575,126.9245],
+    [37.5575,126.9245],
+    [37.5575,126.9245],
+    [37.5575,126.9245],
+    [37.5575,126.9245],
+    [37.5575,126.9245],
+    [37.5575,126.9245],
+  ];
+  function updateMap ( candidates ) {
+    // 지도 중심 계산
+    var lat_mean = 0;
+    var long_mean = 0;
+    for (var i=0;i<candidates.length;i++){
+      lat_mean += candidates[i][0];
+      long_mean += candidates[i][1];
+    }
+    lat_mean /= 10;
+    long_mean /= 10;
+
+    // 지도 객체 추가
+    var mymap = L.map('mapid').setView([lat_mean,long_mean], 14);
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.streets',
+      // 용환 mapbox public accesToken (이대로 두면 됨)
+      accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
+    }).addTo(mymap);
+
+    // 마커 추가
+    for (var i=0;i<candidates.length;i++){
+      var marker = L.marker(candidates[i]).addTo(mymap);
+    }
+  }
+  updateMap(_candidates);
+</script>
