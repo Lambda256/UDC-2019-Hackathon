@@ -174,7 +174,7 @@ function autocomplete(arr) {
 
    // before go
    UIkit.util.on('#go', 'beforescroll', function () {
-     console.log("1. click button (before scroll)");
+     console.log("1. Click go button");
      openSpinner(getTargets);
    });
 
@@ -185,7 +185,7 @@ function autocomplete(arr) {
 
   // < Open loading status >
   function openSpinner(callback) {
-    console.log("2. open spinner");
+    console.log("2. Open spinner (loading status)");
     document.getElementById("spinner").style.display="";
     document.getElementById("go").style.display="none";
     callback(getArrivalTime);
@@ -194,15 +194,13 @@ function autocomplete(arr) {
   // < Get departure & arrival & targets >
   function getTargets(callback) {
     var departure, arrival, targets;
-    console.log("3. get targets");
+    console.log("3. Get targets (top 10 closest stations)");
     for (var i = 0; i < arr.length; i++) {
         if (arr[i][3] == input[0].value) {
             departure = arr[i];
-            console.log("Departure : ", departure);
         }
         if (arr[i][3] == input[1].value) {
             arrival = arr[i];
-            console.log("Arrival : ", arrival);
             targets = getCloseStations(i, 10) // Get top 10 close stations from here
         }
     }
@@ -212,21 +210,20 @@ function autocomplete(arr) {
   // < Make all txs from departure to targets >
   // 1. Get time (departure <-> targets)
   function getArrivalTime(departure, targets, callback) {
-    console.log("4. get arrival time");
+    console.log("4. Get target station id & travel time (hr)");
     var targetIDs = [];
     var travelTimes = [];
     for (var i = 0; i < targets.length; i++) {
-      console.log(targets[i])
       targetIDs.push(targets[i][2]);
       travelTimes.push(getTravelTimeHour(departure, targets[i]));
     }
     console.log(targetIDs, travelTimes);
-    callback(departure, targetIDs, travelTimes, getPredictResult);
+    callback(departure, targets, targetIDs, travelTimes, getPredictResult);
   }
 
   // 2. Send expected arrival time & target id by Tx
-  function sendPredictTx(departure, targetIDs, travelTimes, callback) {
-    console.log("5. send predict tx");
+  function sendPredictTx(departure, targets, targetIDs, travelTimes, callback) {
+    console.log("5. Send predict tx with timestamp [todo]");
     reqTime = (new Date()).getTime();
     console.log(reqTime);
     /*
@@ -247,19 +244,21 @@ function autocomplete(arr) {
         }
     });
     */
-    callback(departure,updateMap);
+    callback(departure, targets, updateMap);
   }
 
   // < Get reply tx and update map>
   // 1. Get (target station id, incentive)
-  function getPredictResult(departure,callback) {
-    console.log("6. get predict result");
-    callback(departure);
+  function getPredictResult(departure, targets, callback) {
+    console.log("6. Get predict result [todo]");
+    callback(departure, targets);
   }
 
-  // 2. Update ../src/map.html
-  function updateMap(departure) {
-    console.log("7. update map");
+  // 2. Update map
+  function updateMap(departure, targets) {
+    console.log("7. Update map");
+    console.log("Departure : ", departure)
+    console.log("Targets : ", targets)
 
     // Set departure info
     document.getElementById("departure").innerHTML =
@@ -410,7 +409,7 @@ function CSVToArray( strData, strDelimiter ){
 
 // < Close the loading status and scroll to next page >
 function closeSpinnerAndBody() {
-  console.log("8. (after scroll) close spinner/body1 ");
+  console.log("8. Close spinner/body1 (after scroll)");
   document.getElementById("spinner").style.display="none";
   document.getElementById("go").style.display="";
   document.getElementById("body1").style.display="none";
