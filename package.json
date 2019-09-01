@@ -1,0 +1,22 @@
+{
+  "name": "mobicrypt",
+  "version": "1.0.0",
+  "description": "schedules https://docs.google.com/spreadsheets/d/1U7EXwIBeZVlVf9_f_frDB8RGM-PNW6bwquQ2tOEYG9g/edit?usp=sharing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eric-yoo/mobicrypt.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eric-yoo/mobicrypt/issues"
+  },
+  "homepage": "https://github.com/eric-yoo/mobicrypt#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
