@@ -65,6 +65,54 @@ a:hover,
   text-decoration: underline;
 }
 
+.selectitems {
+  cursor: pointer;
+}
+
+/* TEST HERE */
+/* The container must be positioned relative: */
+.custom-select select {
+  display: none; /*hide original SELECT element: */
+}
+
+.select-selected {
+  display: none;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.9rem;
+  color: #000;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+  overflow-y:auto;
+  position: absolute;
+  background-color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  text-align: left;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+
 /* Always set the map height explicitly to define the size of the div
  * element that contains the map. */
 #map {
