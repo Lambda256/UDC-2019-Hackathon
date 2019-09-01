@@ -161,14 +161,27 @@ function autocomplete(arr) {
 
 
   /*
-   * Go() button event listener
+   * Logo & Go() button event listener
    * Send & Receive transactions here
    */
-  document.getElementById("go").onclick = function() {
-    console.log("1. click button");
-    var targets;
-    openSpinner(getTargets);
-  };
+
+   // after logo
+   UIkit.util.on('#logo', 'scrolled', function () {
+     document.getElementById("body2").style.display="none";
+     document.getElementById("emptydiv").style.display="none";
+   });
+
+
+   // before go
+   UIkit.util.on('#go', 'beforescroll', function () {
+     console.log("1. click button (before scroll)");
+     openSpinner(getTargets);
+   });
+
+   // after go
+   UIkit.util.on('#go', 'scrolled', function () {
+     closeSpinnerAndBody();
+   });
 
   // < Open loading status >
   function openSpinner(callback) {
@@ -241,27 +254,16 @@ function autocomplete(arr) {
   // 1. Get (target station id, incentive)
   function getPredictResult(departure,callback) {
     console.log("6. get predict result");
-    callback(departure,closeSpinnerAndMove);
-  }
-
-  // 2. Update ../src/map.html
-  function updateMap(departure, callback) {
-    console.log("7. update map");
     callback(departure);
   }
 
-  // < Close the loading status and scroll to next page >
-  function closeSpinnerAndMove(departure) {
-    console.log("8. close spinner and move page");
-    document.getElementById("spinner").style.display="none";
-    document.getElementById("go").style.display="";
-    document.getElementById("body2").style.display = "";
-    document.getElementById("emptydiv").style.display = "";
-    window.location = "/#body2";
+  // 2. Update ../src/map.html
+  function updateMap(departure) {
+    console.log("7. update map");
 
     // Set departure info
     document.getElementById("departure").innerHTML =
-      "<B>[" + departure[2] + ". " + departure[3] + "]</B>" + "<br />" + departure[4];
+    "<B>[" + departure[2] + ". " + departure[3] + "]</B>" + "<br />" + departure[4];
   }
 
   // Get N closest stations from arr_index
@@ -318,25 +320,6 @@ function computeDistance(startCoords, destCoords) {
 function degreesToRadians(degrees) {
     radians = (degrees * Math.PI)/180;
     return radians;
-}
-
-// https://stackoverflow.com/questions/14446447/how-to-read-a-local-text-file
-function readTextFile(file)
-{
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                alert(allText);
-            }
-        }
-    }
-    rawFile.send(null);
 }
 
 // ref: http://stackoverflow.com/a/1293163/2343
@@ -425,8 +408,21 @@ function CSVToArray( strData, strDelimiter ){
     return( arrData );
 }
 
-// When the user clicks on the button, scroll to the top of the document
-function topFunction() {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
+// < Close the loading status and scroll to next page >
+function closeSpinnerAndBody() {
+  console.log("8. (after scroll) close spinner/body1 ");
+  document.getElementById("spinner").style.display="none";
+  document.getElementById("go").style.display="";
+  document.getElementById("body1").style.display="none";
+  document.getElementById("emptydiv").style.display="none";
+}
+
+function showbody1() {
+  document.getElementById("body1").style.display="";
+  window.scrollTo(0,document.body.scrollHeight);
+}
+
+function showbody2() {
+  document.getElementById("emptydiv").style.display="";
+  document.getElementById("body2").style.display="";
 }

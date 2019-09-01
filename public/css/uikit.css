@@ -30,7 +30,6 @@ html {
   /* 3 */
   background: #fff;
   color: #666;
-  scroll-behavior: smooth;
   overflow: hidden;
 }
 /*
@@ -61,8 +60,8 @@ a:hover,
 .uk-link:hover,
 .uk-link-toggle:hover .uk-link,
 .uk-link-toggle:focus .uk-link {
-  color: #0f6ecd;
-  text-decoration: underline;
+  /*color: #0f6ecd;
+  text-decoration: underline;*/
 }
 
 .selectitems {

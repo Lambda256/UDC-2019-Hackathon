@@ -17,10 +17,13 @@
       	<nav class="uk-height-1-1 uk-navbar uk-navbar-container" style="background: transparent">
           <div class="uk-width-1-6"></div>
       	  <div class="uk-width-2-3 uk-animation-toggle" tabindex="0">
-      	    <div class="uk-animation-shake uk-margin-top" onclick="topFunction()">
-              <span class="uk-heading-small" style="font-family: 'Black Han Sans', sans-serif; color: #F3F3F2;">
-      			    타고벌자
-      	      </span>
+
+      	    <div class="uk-animation-shake uk-margin-top">
+              <a id="logo" onclick="showbody1()" href="#" uk-totop uk-scroll>
+                <span class="uk-heading-small" style="font-family: 'Black Han Sans', sans-serif; color: #F3F3F2;">
+        			    타고벌자
+        	      </span>
+              </a>
             </div>
           </div>
           <div class="uk-width-1-6 uk-flex uk-flex-right uk-flex-top">
@@ -59,11 +62,13 @@
         <div class="uk-inline uk-divider-vertical"></div>
         <div>
           <div id="spinner" uk-spinner style="display:none;"></div>
-          <button id="go" class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-bottom">
-            <div class="uk-margin-small-top uk-margin-small-bottom">
-              <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">GO!</span>
-            </div>
-          </button>
+          <a id="go" onclick="showbody2()" href="#body2" uk-scroll>
+            <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-bottom">
+              <div class="uk-margin-small-top uk-margin-small-bottom">
+                <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">GO!</span>
+              </div>
+            </button>
+          </a>
         </div>
       </div>
       <script src="js/functions.js"></script>
