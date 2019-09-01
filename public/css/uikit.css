@@ -7222,6 +7222,10 @@ ul.uk-nav-sub {
   height: calc(100% - 90px);
 }
 
+.uk-height-1-text {
+  height: calc(100% - 130px);
+}
+
 .okdiv-height {
   height: calc(100% - 55px);
 }
