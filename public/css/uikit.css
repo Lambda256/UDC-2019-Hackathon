@@ -6046,11 +6046,13 @@ ul.uk-nav-sub {
 /* Message
 ========================================================================== */
 .uk-notification-message {
+  text-align: center;
   position: relative;
   padding: 15px;
   background: #f8f8f8;
   color: #666;
-  font-size: 1.25rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.9rem;
   line-height: 1.4;
   cursor: pointer;
 }

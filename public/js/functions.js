@@ -177,7 +177,13 @@ function autocomplete(arr) {
    // before go
    UIkit.util.on('#go', 'beforescroll', function () {
      console.log("1. Click go button");
-     openSpinner(getTargets);
+     try {
+       getTargets(getArrivalTime);
+     }
+     catch (error) {
+       UIkit.notification({message: '정류장 정보를 다시 한 번 확인해주세요.', status: 'danger', pos: 'bottom-center'});
+       event.preventDefault();
+     }
    });
 
    // after go
@@ -185,18 +191,10 @@ function autocomplete(arr) {
      closeSpinnerAndBody();
    });
 
-  // < Open loading status >
-  function openSpinner(callback) {
-    console.log("2. Open spinner (loading status)");
-    document.getElementById("spinner").style.display="";
-    document.getElementById("go").style.display="none";
-    callback(getArrivalTime);
-  }
-
   // < Get departure & arrival & targets >
   function getTargets(callback) {
     var departure, arrival, targets;
-    console.log("3. Get targets (top 10 closest stations)");
+    console.log("2. Get targets (top 10 closest stations)");
     for (var i = 0; i < arr.length; i++) {
         if (arr[i][3] == input[0].value) {
             departure = arr[i];
@@ -206,13 +204,13 @@ function autocomplete(arr) {
             targets = getCloseStations(i, 10) // Get top 10 close stations from here
         }
     }
-    callback(departure, targets, sendPredictTx);
+    callback(departure, targets, openSpinner);
   }
 
   // < Make all txs from departure to targets >
-  // 1. Get time (departure <-> targets)
+  // Get time (departure <-> targets)
   function getArrivalTime(departure, targets, callback) {
-    console.log("4. Get target station id & travel time (hr)");
+    console.log("3. Get target station id & travel time (hr)");
     var targetIDs = [];
     var travelTimes = [];
     for (var i = 0; i < targets.length; i++) {
@@ -220,10 +218,18 @@ function autocomplete(arr) {
       travelTimes.push(getTravelTimeHour(departure, targets[i]));
     }
     console.log(targetIDs, travelTimes);
+    callback(departure, targets, targetIDs, travelTimes, sendPredictTx);
+  }
+
+  // < Open loading status >
+  function openSpinner(departure, targets, targetIDs, travelTimes, callback) {
+    console.log("4. Open spinner (loading status)");
+    document.getElementById("spinner").style.display="";
+    document.getElementById("go").style.display="none";
     callback(departure, targets, targetIDs, travelTimes, getPredictResult);
   }
 
-  // 2. Send expected arrival time & target id by Tx
+  // Send expected arrival time & target id by Tx
   function sendPredictTx(departure, targets, targetIDs, travelTimes, callback) {
     console.log("5. Send predict tx with timestamp [todo]");
     reqTime = (new Date()).getTime();
@@ -250,13 +256,13 @@ function autocomplete(arr) {
   }
 
   // < Get reply tx and update map>
-  // 1. Get (target station id, incentive)
+  // Get (target station id, incentive)
   function getPredictResult(departure, targets, callback) {
     console.log("6. Get predict result [todo]");
     callback(departure, targets);
   }
 
-  // 2. Update map
+  // Update map
   function updateMap(departure, targets) {
     // 지도 중심 계산
     let lat_mean = 0;
