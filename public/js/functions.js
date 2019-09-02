@@ -498,3 +498,34 @@ function showbody2() {
   document.getElementById("emptydiv").style.display="";
   document.getElementById("body2").style.display="";
 }
+
+var weather = [];
+
+function queryWeather() {
+  const weatherFileUrl = '../src/weather.csv' // provide file location
+  var d = new Date();
+  var datestring = 
+    (d.getFullYear()-1) + "-" + // use last year's data
+    ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+    ("0" + d.getDate()).slice(-2) + " " + 
+    ("0" + d.getHours()).slice(-2) + ":" + 
+    ("00");
+
+  fetch(weatherFileUrl)
+   .then( _response => _response.text() )
+   .then( _text => CSVToArray(_text) )
+   .then( _array => {
+    for (var i=0; i<_array.length; i++){
+      if (_array[i][1] == datestring){
+        console.log("weather matched to year 2018");
+        weather = _array[i].slice(2,7);
+      }
+    }
+    if (weather == []){
+      console.log("weather set to default");
+      weather = _array[1].slice(2,7);
+    }
+    console.log(weather);
+   });
+}
+queryWeather();
