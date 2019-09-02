@@ -107,6 +107,7 @@ contract ABM{
         require(rentTimes[msg.sender] != 0);
         
         // calculate use time
+        require(returnTime > rentTimes[msg.sender]);
         uint useTime = returnTime - rentTimes[msg.sender];
         
         // pay additional rent fee
@@ -130,10 +131,10 @@ contract ABM{
         // do not rent more than 1 bike
         require(rentTimes[msg.sender] == 0);
         
-        // pay rent fee (user should execute approve(this contract address, 5) at sideToken contract first)
+        // pay default rent fee (user should execute approve(this contract address, 5) at sideToken contract first)
         ABMtoken.transferFrom(msg.sender, REOAowner, 5);
         
-        // save time stimestamp
+        // save rent timestamp
         rentTimes[msg.sender] = rentTime;
         
         // decrease # of bike
@@ -175,8 +176,8 @@ contract ABM{
     }
     
     // get block from blocks array
-    function readBlock(uint _blockNumber) public view returns (uint, bytes32, bytes32, bytes32) {
-        return (blocks[_blockNumber].blockNumber, blocks[_blockNumber].prevBlockHash, blocks[_blockNumber].weightHash, blocks[_blockNumber].testSetHash); 
+    function readBlock(uint _blockNumber) public view returns (uint, bytes32, bytes32, bytes32, bytes32, int64) {
+        return (blocks[_blockNumber].blockNumber, blocks[_blockNumber].prevBlockHash, blocks[_blockNumber].weightHash, blocks[_blockNumber].testSetHash, blocks[_blockNumber].participantHash, blocks[_blockNumber].timestamp); 
     }
     
     function getBlocksLength()public view returns (uint){
@@ -238,8 +239,32 @@ contract ABM{
     }
     
     // read inference result (requestID = fromAddr + requestTime)
-    function getResponse(string memory requestID) public view returns (int[] memory, int[] memory){
-        return (infResponses[requestID].stations, infResponses[requestID].bikeNums);
+    function getResponse(string memory requestID) public view returns (int[] memory, int[] memory, int[] memory){
+        
+        // inf response should be exist
+        require(infResponses[requestID].stations.length > 0);
+        
+        // incentive prediction
+        int[] memory predictedIncentives = new int[](infResponses[requestID].stations.length);
+        for(uint i=0; i<infResponses[requestID].stations.length; i++){
+            int predictedBikeNum = infResponses[requestID].bikeNums[i];
+            int currentBikeNum = bikes[infResponses[requestID].stations[i]];
+            int diff;
+            
+            // can get incentive for this station
+            if(predictedBikeNum > currentBikeNum){
+                diff = predictedBikeNum - currentBikeNum;
+            }
+            // cannot get incentive for this station
+            else{
+                diff = 0;
+            }
+            
+            // incentive function: bikeNumDiff * 10
+            predictedIncentives[i] = diff * 10;
+        }
+        
+        return (infResponses[requestID].stations, infResponses[requestID].bikeNums, predictedIncentives);
     }
     
     // get user's return info for relayer to calculate incentive
