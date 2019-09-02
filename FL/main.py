@@ -2,12 +2,13 @@ import random
 import numpy as np
 import tensorflow as tf
 import arguments
+from time import time
 
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from block import Blockchain, Block, printBlock, writeBlockchain
+from block import Blockchain, Block, printBlock, writeBlockchain, writeBlock
 from node import Node, split_dataset
 from model import FLModel
 import preprocessing
@@ -27,7 +28,7 @@ if __name__ == "__main__":
 
     # Load datasets
     features, x_train, y_train, x_test, y_test = preprocessing.get_train_test(
-        "../data/realworld")
+        "./data/realworld")
 
     # get global testset by train
     global_x_test = x_train[:num_global_testset]
@@ -56,7 +57,7 @@ if __name__ == "__main__":
         # output layer
         tf.keras.layers.Dense(
             1,
-            activation='linear')
+            activation=tf.nn.relu)
     ])
     nn_model.compile(
         optimizer='adam',
@@ -72,10 +73,12 @@ if __name__ == "__main__":
         "0" * 64,
         init_weights,
         (global_x_test, global_y_test),
-        []
+        [],
+        int(time())
     )
     flchain = Blockchain(genesis)  # set blockchain with genesis block
-    writeBlockchain("../data", flchain)  # save blockchain
+    # writeBlockchain("./data", flchain)  # save blockchain
+    writeBlock("./data/blocks", flchain.blocks[-1])
 
     """set nodes"""
     # split dataset
@@ -141,7 +144,8 @@ if __name__ == "__main__":
             flchain.getBlock(nextBlockNumber - 1).calBlockHash(),
             nextBlockWeight,
             (Leader.x_test, Leader.y_test),
-            participants
+            participants,
+            int(time())
         )
         flchain.append(new_block)  # append next block
 
@@ -154,5 +158,8 @@ if __name__ == "__main__":
         print("mse: %-8.4f" % Leader.flmodel.metrics[0])
         printBlock(flchain.blocks[-1])
 
-        # save blockchain
-        writeBlockchain("../data", flchain)
+        # save block
+        writeBlock("./data/blocks", flchain.blocks[-1])
+
+    # save blockchain
+    writeBlockchain("./data", flchain)

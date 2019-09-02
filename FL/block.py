@@ -1,28 +1,30 @@
 import hashlib
-import rlp
 import numpy as np
 import tensorflow as tf
 import os
 import pickle
+import time
 
 
 class Header:
-    def __init__(self, n: int, prev, w, t, p):
+    def __init__(self, n: int, prev, w, t, p, timestamp: int):
         self.blockNumber = n
         self.prevBlockHash = prev
         self.weightHash = w
         self.testsetHash = t
         self.participantHash = p
+        self.timestamp = timestamp
 
 
 class Block:
-    def __init__(self, blockNumber: int, prevBlockHash, weights: list, testset: tuple, participants: list):
+    def __init__(self, blockNumber: int, prevBlockHash, weights: list, testset: tuple, participants: list, timestamp: int):
         self.header = Header(
             blockNumber,
             prevBlockHash,
             self.calWeightHash(weights),
             self.calTestsetHash(testset),
-            self.calParticipantHash(participants)
+            self.calParticipantHash(participants),
+            timestamp
         )
         self.weights = weights
         self.testset = testset
@@ -105,6 +107,7 @@ def printBlock(block: Block):
     print("{")
     print("    \"blockNumber\"    :", block.header.blockNumber, end=",\n")
     print("    \"prevBlockHash\"  :", block.header.prevBlockHash, end=",\n")
+    print("    \"timestamp\"      :", block.header.timestamp, end=",\n")
     print("    \"weightHash\"     :", block.header.weightHash, end=",\n")
     print("    \"testsetHash\"    :", block.header.testsetHash, end=",\n")
     print("    \"participantHash\":", block.header.participantHash, end=",\n")
@@ -114,8 +117,25 @@ def printBlock(block: Block):
     print("}")
 
 
+def writeBlock(PATH, block: Block):
+    # Create directory
+    try:
+        os.mkdir(PATH)  # Create target Directory
+    except FileExistsError:
+        pass
+
+    # Write
+    with open(PATH + "/block_" + str(block.header.blockNumber) + ".bin", "wb") as f:
+        pickle.dump(block, f)
+
+
+def readBlock(PATH, blockNumber: int):
+    with open(PATH + "/block_" + str(blockNumber) + ".bin", "rb") as f:
+        return pickle.load(f)
+
+
 def writeBlockchain(PATH, blockchain: Blockchain):
-    # Create directory 
+    # Create directory
     try:
         os.mkdir(PATH)  # Create target Directory
     except FileExistsError:
@@ -134,6 +154,7 @@ def readBlockchain(PATH):
 if __name__ == "__main__":
     from model import FLModel
     import tensorflow as tf
+    from time import time
 
     # load data
     mnist = tf.keras.datasets.mnist
@@ -161,7 +182,8 @@ if __name__ == "__main__":
         "0" * 64,
         init_weights,
         testset,
-        []
+        [],
+        int(time())
     )
     flchain = Blockchain(genesis)  # set blockchain with genesis block
 
@@ -174,7 +196,8 @@ if __name__ == "__main__":
         flchain.getBlock(nextBlockNumber - 1).calBlockHash(),
         modified_weight,
         testset,
-        []
+        [],
+        int(time())
     )
     flchain.append(new_block)
 

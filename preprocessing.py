@@ -3,7 +3,7 @@ import warnings
 import os
 
 
-def get_train_test(PATH="./data/realworld"):
+def get_train_test(PATH="./data/realworld", getScalar=False):
     warnings.filterwarnings('ignore')
 
     """
@@ -111,6 +111,7 @@ def get_train_test(PATH="./data/realworld"):
     dayofweek = ["요일_"+str(i) for i in range(7)]  # 요일_0 is "월요일"
     features = ['대여소번호', '월', '대여시간',
                 '기온(°C)', '풍향(deg)', '풍속(m/s)', '강수량(mm)', '습도(%)'] + dayofweek
+    # TODO: '대여소번호' to one-hot-encoding
     # print(features)
 
     from sklearn.model_selection import train_test_split
@@ -130,7 +131,10 @@ def get_train_test(PATH="./data/realworld"):
     X_train = min_max_scaler.transform(X_train)
     X_test = min_max_scaler.transform(X_test)
 
-    return features, X_train, y_train, X_test, y_test
+    if getScalar is True:
+        return features, min_max_scaler
+    else:
+        return features, X_train, y_train, X_test, y_test
 
 
 if __name__ == "__main__":
@@ -161,7 +165,7 @@ if __name__ == "__main__":
         # output layer
         tf.keras.layers.Dense(
             1,
-            activation='linear')
+            activation=tf.nn.relu)
     ])
     nn_model.compile(
         optimizer='adam',
