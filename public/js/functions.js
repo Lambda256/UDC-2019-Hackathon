@@ -198,6 +198,8 @@ function autocomplete(arr) {
      catch (error) {
        UIkit.notification({message: '정류장 정보를 다시 한 번 확인해주세요.', status: 'danger', pos: 'bottom-center'});
        event.preventDefault();
+       document.getElementById("body2").style.display="none";
+       document.getElementById("emptydiv").style.display="none";
      }
    });
 
