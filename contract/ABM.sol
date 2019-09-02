@@ -111,7 +111,8 @@ contract ABM{
         uint useTime = returnTime - rentTimes[msg.sender];
         
         // pay additional rent fee
-        ABMtoken.transferFrom(msg.sender, REOAowner, useTime);
+        uint additionalRentFee = useTime;
+        ABMtoken.transferFrom(msg.sender, REOAowner, additionalRentFee);
         
         // init rent time
         delete rentTimes[msg.sender];
@@ -122,6 +123,9 @@ contract ABM{
         // update return info to calculate incentive later
         returnInfo memory ri = returnInfo(stationID, bikes[stationID], useTime);
         returnInfos[msg.sender] = ri;
+        
+        // save record
+        insertRecord(msg.sender, 1, additionalRentFee, returnTime);
     }
     
     function rentBike(int stationID, uint rentTime) public{
@@ -132,13 +136,17 @@ contract ABM{
         require(rentTimes[msg.sender] == 0);
         
         // pay default rent fee (user should execute approve(this contract address, 5) at sideToken contract first)
-        ABMtoken.transferFrom(msg.sender, REOAowner, 5);
+        uint defaultRentFee = 5;
+        ABMtoken.transferFrom(msg.sender, REOAowner, defaultRentFee);
         
         // save rent timestamp
         rentTimes[msg.sender] = rentTime;
         
         // decrease # of bike
         bikes[stationID]--;
+        
+        // save record
+        insertRecord(msg.sender, 0, defaultRentFee, rentTime);
     }
     
     
@@ -227,7 +235,7 @@ contract ABM{
         return (req.addr, req.reqTime, req.stations, req.arriveTimes, req.infos);
     }
     
-    // for relayer, delete picked request
+    // for relayer, delete latest request
     function deleteRequest() public{
         infReqs.pop();
     }
@@ -273,10 +281,13 @@ contract ABM{
     }
     
     // relayer gives incentive to receiver
-    function giveIncentive(address receiver, uint amount) public{
+    function giveIncentive(address receiver, uint amount, uint timestamp) public{
         if(amount > 0){
             ABMtoken.transferFrom(REOAowner, receiver, amount);
         }
+        
+        // save record
+        insertRecord(receiver, 2, amount, timestamp);
     }
     
     
@@ -291,6 +302,45 @@ contract ABM{
         ERC20 token = ERC20(tokenAddr);
         return token.balanceOf(msg.sender);
     }
+    
+    
+    
+    
+    
+    //
+    // users' pay/paid record
+    //
+    
+    struct payRecord{
+        int payType; // 0: default rent fee, 1: additional rent fee, 2: return incentive
+        uint amount;
+        uint timestamp;
+    }
+    
+    mapping(address=>payRecord[]) payRecords;
+    
+    function insertRecord(address addr, int _payType, uint _amount, uint _timestamp)public{
+        payRecord memory pr = payRecord(_payType, _amount, _timestamp);
+        payRecords[addr].push(pr);
+    }
+    
+    function getRecord(address addr) public view returns (int[] memory, uint[] memory, uint[] memory){
+        
+        uint recordLength = payRecords[addr].length;
+        int[] memory payTypes = new int[](recordLength);
+        uint[] memory amounts = new uint[](recordLength);
+        uint[] memory timestamps = new uint[](recordLength);
+        
+        for(uint i=0; i<recordLength; i++){
+            payRecord memory pr = payRecords[addr][i];
+            payTypes[i] = pr.payType;
+            amounts[i] = pr.amount;
+            timestamps[i] = pr.timestamp;
+        }
+        
+       return (payTypes, amounts, timestamps);
+    }
+    
     
     
 }
