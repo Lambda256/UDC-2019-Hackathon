@@ -168,17 +168,39 @@ function autocomplete(arr) {
    * Send & Receive transactions here
    */
 
-   // after logo
-   UIkit.util.on('#logo', 'scrolled', function () {
-     document.getElementById("body2").style.display="none";
-     document.getElementById("emptydiv").style.display="none";
+   // after choice
+   UIkit.util.on('#choice', 'scrolled', function () {
+     document.getElementById("body0").style.display="none";
+     document.getElementById("emptydiv0").style.display="none";
    });
 
+   // after logo
+   UIkit.util.on('#logo', 'scrolled', function () {
+     if (document.getElementById("body2").style.display == "") {
+       // go body2->body1
+       document.getElementById("body2").style.display="none";
+       document.getElementById("emptydiv").style.display="none";
+     } else if (document.getElementById("body1").style.display == "") {
+       // go body1->body0
+       document.getElementById("body1").style.display="none";
+       document.getElementById("emptydiv0").style.display="none";
+     } else {
+       // body0->body0
+     }
+   });
 
    // before go
    UIkit.util.on('#go', 'beforescroll', function () {
      console.log("1. Click go button");
-     openSpinner(getTargets);
+     try {
+       getTargets(getArrivalTime);
+     }
+     catch (error) {
+       UIkit.notification({message: '정류장 정보를 다시 한 번 확인해주세요.', status: 'danger', pos: 'bottom-center'});
+       event.preventDefault();
+       document.getElementById("body2").style.display="none";
+       document.getElementById("emptydiv").style.display="none";
+     }
    });
 
    // after go
@@ -186,18 +208,10 @@ function autocomplete(arr) {
      closeSpinnerAndBody();
    });
 
-  // < Open loading status >
-  function openSpinner(callback) {
-    console.log("2. Open spinner (loading status)");
-    document.getElementById("spinner").style.display="";
-    document.getElementById("go").style.display="none";
-    callback(getArrivalTime);
-  }
-
   // < Get departure & arrival & targets >
   function getTargets(callback) {
     var departure, arrival, targets;
-    console.log("3. Get targets (top 10 closest stations)");
+    console.log("2. Get targets (top 10 closest stations)");
     for (var i = 0; i < arr.length; i++) {
         if (arr[i][3] == input[0].value) {
             departure = arr[i];
@@ -207,13 +221,13 @@ function autocomplete(arr) {
             targets = getCloseStations(i, 10) // Get top 10 close stations from here
         }
     }
-    callback(departure, targets, sendPredictTx);
+    callback(departure, targets, openSpinner);
   }
 
   // < Make all txs from departure to targets >
-  // 1. Get time (departure <-> targets)
+  // Get time (departure <-> targets)
   function getArrivalTime(departure, targets, callback) {
-    console.log("4. Get target station id & travel time (hr)");
+    console.log("3. Get target station id & travel time (hr)");
     var targetIDs = [];
     var travelTimes = [];
     for (var i = 0; i < targets.length; i++) {
@@ -221,10 +235,18 @@ function autocomplete(arr) {
       travelTimes.push(getTravelTimeHour(departure, targets[i]));
     }
     console.log(targetIDs, travelTimes);
+    callback(departure, targets, targetIDs, travelTimes, sendPredictTx);
+  }
+
+  // < Open loading status >
+  function openSpinner(departure, targets, targetIDs, travelTimes, callback) {
+    console.log("4. Open spinner (loading status)");
+    document.getElementById("spinner").style.display="";
+    document.getElementById("go").style.display="none";
     callback(departure, targets, targetIDs, travelTimes, getPredictResult);
   }
 
-  // 2. Send expected arrival time & target id by Tx
+  // Send expected arrival time & target id by Tx
   function sendPredictTx(departure, targets, targetIDs, travelTimes, callback) {
     console.log("5. Send predict tx with timestamp [todo]");
     reqTime = (new Date()).getTime();
@@ -251,13 +273,13 @@ function autocomplete(arr) {
   }
 
   // < Get reply tx and update map>
-  // 1. Get (target station id, incentive)
+  // Get (target station id, incentive)
   function getPredictResult(departure, targets, callback) {
     console.log("6. Get predict result [todo]");
     callback(departure, targets);
   }
 
-  // 2. Update map
+  // Update map
   function updateMap(departure, targets) {
     // 지도 중심 계산
     let lat_mean = 0;
@@ -268,7 +290,7 @@ function autocomplete(arr) {
     }
     lat_mean /= 10;
     long_mean /= 10;
-    
+
     // 지도 중심 이동
     mymap.setView([lat_mean,long_mean], 14);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -278,10 +300,14 @@ function autocomplete(arr) {
       // 용환 mapbox public accesToken (이대로 두면 됨)
       accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
     }).addTo(mymap);
-    
+
     // 마커 추가
-    for (var i=0;i<targets.length;i++){
-      var marker = L.marker(targets[i].slice(6,8)).addTo(mymap);
+    for (var i=0;i<targets.length;i++) {
+      var marker = L.marker(targets[i].slice(6,8));
+      marker.addTo(mymap);
+      marker.bindPopup(targets[i][2] + '. ' + targets[i][3] + '\n'
+                        + '<span class\="uk-label\" style=\"background-color:#ffd250;color:#000;\"><span uk-icon=\"bolt\"></span>10,000</span>');
+      if (i==0) marker.openPopup();
     }
     console.log("7. update map");
     // 여기에서 Targets 정류장을 지도에 표시
@@ -447,10 +473,25 @@ function closeSpinnerAndBody() {
   document.getElementById("emptydiv").style.display="none";
 }
 
-function showbody1() {
+function up() {
+  if (document.getElementById("body2").style.display == "") {
+    // go body2->body1
+    document.getElementById("body1").style.display="";
+    document.getElementById("emptydiv").style.display="";
+    window.scrollTo(0,document.body.scrollHeight);
+  } else if (document.getElementById("body1").style.display == "") {
+    // go body1->body0
+    document.getElementById("body0").style.display="";
+    document.getElementById("emptydiv0").style.display="";
+    window.scrollTo(0,document.body.scrollHeight);
+  } else {
+    // body0->body0
+  }
+}
+
+function choose() {
   document.getElementById("body1").style.display="";
-  document.getElementById("emptydiv").style.display="";
-  window.scrollTo(0,document.body.scrollHeight);
+  document.getElementById("emptydiv0").style.display="";
 }
 
 function showbody2() {

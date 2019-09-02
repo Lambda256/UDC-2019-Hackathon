@@ -4,8 +4,10 @@
         <title>스마트 공유 모빌리티, 타고벌자</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/uikit.css" />
         <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR:300&display=swap&subset=korean" rel="stylesheet">
+        <link rel="stylesheet" href="css/uikit.css" />
+        <link rel="stylesheet" href="css/leaflet.css" />
+        <script src="js/leaflet.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="js/uikit.min.js"></script>
         <script src="js/uikit-icons.min.js"></script>
@@ -19,7 +21,7 @@
       	  <div class="uk-width-2-3 uk-animation-toggle" tabindex="0">
 
       	    <div class="uk-animation-shake uk-margin-top">
-              <a id="logo" onclick="showbody1()" href="#" uk-totop uk-scroll>
+              <a id="logo" onclick="up()" href="#" uk-totop uk-scroll>
                 <span class="uk-heading-small" style="font-family: 'Black Han Sans', sans-serif; color: #F3F3F2;">
         			    타고벌자
         	      </span>
@@ -54,8 +56,26 @@
         </div>
       </div>
 
+      <!-- body0 (select page) -->
+      <div id="body0" class="uk-height-1-nav uk-text-center">
+        <div class="uk-inline uk-divider-vertical"></div>
+        <div class="uk-flex uk-flex-center uk-margin-bottom">
+            <a id="choice" onclick="choose()" href="#body1" uk-scroll>
+              <div class="uk-card-hover uk-card uk-card-default uk-card-body uk-width-small uk-height-small uk-width-medium@m" onclick=""><span uk-icon="icon: cart; ratio: 2.2" style="margin-bottom:5px;"></span><br>따릉이</div>
+            </a>
+            <div class="uk-card-hover uk-card uk-card-default uk-card-body uk-margin-left uk-width-small uk-height-small uk-width-medium@m" onclick=""><span uk-icon="icon:  lifesaver; ratio: 2.2" style="margin-bottom:5px;"></span><br>쏘카</div>
+        </div>
+        <div class="uk-flex uk-flex-center">
+            <div class="uk-card-hover uk-card uk-card-default uk-card-body uk-width-small uk-height-small uk-width-medium@m" onclick=""><span uk-icon="icon: happy; ratio: 2.2" style="margin-bottom:5px;"></span><br>스윙</div>
+            <div class="uk-card-hover uk-card uk-card-default uk-card-body uk-margin-left uk-width-small uk-height-small uk-width-medium@m" onclick=""><span uk-icon="icon: bell; ratio: 2.2" style="margin-bottom:5px;"></span><br>디어</div>
+        </div>
+      </div>
+
+      <!-- empty space -->
+      <div id="emptydiv0" class="uk-height-small" style="display:none;"></div>
+
       <!-- body 1 -->
-      <div id="body1" class="uk-height-1-nav uk-text-center">
+      <div id="body1" class="uk-height-1-nav uk-text-center" style="display:none;">
         <div class="uk-inline uk-divider-vertical"></div>
         <form class="uk-text-middle">
           <div class="uk-margin-bottom">
@@ -93,7 +113,7 @@
           </a>
         </div>
       </div>
-      
+
 
       <!-- empty space -->
       <div id="emptydiv" class="uk-height-small" style="display:none;"></div>
@@ -114,7 +134,6 @@
         </div>
 
         <div id="mapid" class="uk-width-1-1 uk-height-1-text" style="margin:0px;">
-            <div id="mapid"></div>
         </div>
       </div>
 
@@ -132,15 +151,4 @@
       </div>
     </body>
 </html>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-crossorigin=""></script>
 <script src="js/functions.js"></script>
-<style>
-  /* 이건 알아서 조절하시길.. */
-  #mapid { height: 50vh; width: 100vw;}
-</style>
