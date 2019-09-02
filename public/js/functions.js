@@ -168,10 +168,25 @@ function autocomplete(arr) {
    * Send & Receive transactions here
    */
 
+   // after choice
+   UIkit.util.on('#choice', 'scrolled', function () {
+     document.getElementById("body0").style.display="none";
+     document.getElementById("emptydiv0").style.display="none";
+   });
+
    // after logo
    UIkit.util.on('#logo', 'scrolled', function () {
-     document.getElementById("body2").style.display="none";
-     document.getElementById("emptydiv").style.display="none";
+     if (document.getElementById("body2").style.display == "") {
+       // go body2->body1
+       document.getElementById("body2").style.display="none";
+       document.getElementById("emptydiv").style.display="none";
+     } else if (document.getElementById("body1").style.display == "") {
+       // go body1->body0
+       document.getElementById("body1").style.display="none";
+       document.getElementById("emptydiv0").style.display="none";
+     } else {
+       // body0->body0
+     }
    });
 
    // before go
@@ -456,10 +471,25 @@ function closeSpinnerAndBody() {
   document.getElementById("emptydiv").style.display="none";
 }
 
-function showbody1() {
+function up() {
+  if (document.getElementById("body2").style.display == "") {
+    // go body2->body1
+    document.getElementById("body1").style.display="";
+    document.getElementById("emptydiv").style.display="";
+    window.scrollTo(0,document.body.scrollHeight);
+  } else if (document.getElementById("body1").style.display == "") {
+    // go body1->body0
+    document.getElementById("body0").style.display="";
+    document.getElementById("emptydiv0").style.display="";
+    window.scrollTo(0,document.body.scrollHeight);
+  } else {
+    // body0->body0
+  }
+}
+
+function choose() {
   document.getElementById("body1").style.display="";
-  document.getElementById("emptydiv").style.display="";
-  window.scrollTo(0,document.body.scrollHeight);
+  document.getElementById("emptydiv0").style.display="";
 }
 
 function showbody2() {

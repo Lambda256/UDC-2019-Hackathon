@@ -3047,16 +3047,22 @@ select.uk-form-width-xsmall {
  * Note: Header and Footer are only implemented for the default style
  */
 .uk-card-default {
-  background: #fff;
-  color: #666;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: transparent;
+  color: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid white;
 }
 .uk-card-default .uk-card-title {
+  font-family: 'Noto Sans KR', sans-serif;
   color: #333;
 }
 .uk-card-default.uk-card-hover:hover {
+  font-family: 'Noto Sans KR', sans-serif;
   background-color: #fff;
-  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
+  color: #000;
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
 .uk-card-default .uk-card-header {
   border-bottom: 1px solid #e5e5e5;
