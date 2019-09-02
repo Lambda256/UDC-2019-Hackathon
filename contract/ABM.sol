@@ -154,19 +154,24 @@ contract ABM{
         bytes32 prevBlockHash;
         bytes32 weightHash;
         bytes32 testSetHash;
+        bytes32 participantHash;
+        int64 timestamp;
     }
     
     FLBlockHeader[] public blocks;
     
     // insert block into blocks array
-    function insertBlock(uint _blockNumber, bytes32 _prevBlockHash, bytes32 _weightHash, bytes32 _testSetHash) public onlyOwner{
-        FLBlockHeader memory FLBlock = FLBlockHeader(_blockNumber, _prevBlockHash, _weightHash, _testSetHash);
+    function insertBlock(uint _blockNumber, bytes32 _prevBlockHash, bytes32 _weightHash, bytes32 _testSetHash, bytes32 _participantHash, int64 _timestamp) public onlyOwner{
+        FLBlockHeader memory FLBlock = FLBlockHeader(_blockNumber, _prevBlockHash, _weightHash, _testSetHash, _participantHash, _timestamp);
         blocks.push(FLBlock);
     }
     
-    // delete block from blocks array
-    function deleteBlock(uint _blockNumber) public onlyOwner{
-        delete blocks[_blockNumber];
+    // delete all block from blocks array
+    function resetBlocks() public onlyOwner{
+        uint blocksLength = blocks.length;
+        for(uint i=0;i<blocksLength;i++){
+            blocks.pop();
+        }
     }
     
     // get block from blocks array
