@@ -174,7 +174,6 @@ function autocomplete(arr) {
      document.getElementById("emptydiv").style.display="none";
    });
 
-
    // before go
    UIkit.util.on('#go', 'beforescroll', function () {
      console.log("1. Click go button");
@@ -268,7 +267,7 @@ function autocomplete(arr) {
     }
     lat_mean /= 10;
     long_mean /= 10;
-    
+
     // 지도 중심 이동
     mymap.setView([lat_mean,long_mean], 14);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -278,10 +277,14 @@ function autocomplete(arr) {
       // 용환 mapbox public accesToken (이대로 두면 됨)
       accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
     }).addTo(mymap);
-    
+
     // 마커 추가
-    for (var i=0;i<targets.length;i++){
-      var marker = L.marker(targets[i].slice(6,8)).addTo(mymap);
+    for (var i=0;i<targets.length;i++) {
+      var marker = L.marker(targets[i].slice(6,8));
+      marker.addTo(mymap);
+      marker.bindPopup(targets[i][2] + '. ' + targets[i][3] + '\n'
+                        + '<span class\="uk-label\" style=\"background-color:#ffd250;color:#000;\"><span uk-icon=\"bolt\"></span>10,000</span>');
+      if (i==0) marker.openPopup();
     }
     console.log("7. update map");
     // 여기에서 Targets 정류장을 지도에 표시
