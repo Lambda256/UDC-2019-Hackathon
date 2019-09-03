@@ -11,10 +11,15 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="js/uikit.min.js"></script>
         <script src="js/uikit-icons.min.js"></script>
+        <meta name="google-signin-scope" content="profile email">
+        <meta name="google-signin-client_id" content="246220780726-tr10ltoqeu9t2bj7qchcddsbqjva0ilf.apps.googleusercontent.com">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
     </head>
 
     <body class="uk-height-1-1 ">
       <!-- nav -->
+      
+    
       <div id="nav" class="uk-text-center" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky" style="height:90px;">
       	<nav class="uk-height-1-1 uk-navbar uk-navbar-container" style="background: transparent">
           <div class="uk-width-1-6"></div>
@@ -24,21 +29,22 @@
               <a id="logo" onclick="up()" href="#" uk-totop uk-scroll>
                 <span class="uk-heading-small" style="font-family: 'Black Han Sans', sans-serif; color: #F3F3F2;">
         			    타고벌자
-        	      </span>
+                </span>
               </a>
             </div>
           </div>
           <div class="uk-width-1-6 uk-flex uk-flex-right uk-flex-top">
-            <img class="uk-profile-small uk-border-circle uk-margin-right uk-margin-top" src="src/profile.png" uk-toggle="target: #offcanvas-flip">
+            <img id="userProfileButton" class="uk-profile-small uk-border-circle uk-margin-right uk-margin-top" src="" uk-toggle="target: #offcanvas-flip">
+            <div id="signInButton" class="g-signin2" data-width="50" data-height="50" data-longtitle="false" data-onsuccess="onSignIn">
+          </div>
           </div>
       	</nav>
       </div>
-
       <!-- my page history -->
       <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
         <div class="uk-offcanvas-bar" style="font-family: 'Noto Sans KR', sans-serif;">
           <button class="uk-offcanvas-close" type="button" uk-close></button>
-          <h3 style="margin-bottom:5px;">YEONJAE</h3>
+          <h3 id="userName" style="margin-bottom:5px;">YEONJAE</h3>
           <span class="uk-label" style="background-color:#ffd250;color:#000;">
             <span uk-icon="bolt"></span>10,000
           </span>
@@ -53,6 +59,7 @@
               <li>List item 2</li>
               <li>List item 3</li>
           </ul>
+          <a href='/' id="signOutButton" onclick="signOut();">Sign out</a>
         </div>
       </div>
 

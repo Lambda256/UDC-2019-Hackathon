@@ -529,3 +529,45 @@ function queryWeather() {
    });
 }
 queryWeather();
+
+
+document.getElementById("userProfileButton").style.visibility = "hidden";
+            document.getElementById("signInButton").style.visibility = "visible";
+            var signedInFlag = false;
+            function onSignIn(googleUser) {
+              // Useful data for your client-side scripts:
+              var profile = googleUser.getBasicProfile();
+              var auth2 = gapi.auth2.getAuthInstance();
+              auth2.disconnect();
+              
+              var myUserEntity = {};
+              signedInFlag = true;
+              myUserEntity.Name = profile.getName();
+              myUserEntity.Email = profile.getEmail();
+              sessionStorage.setItem('myUserEntity',JSON.stringify(myUserEntity));
+              
+
+              document.getElementById("userProfileButton").src=profile.getImageUrl();
+              document.getElementById("userProfileButton").style.visibility = "visible";
+              document.getElementById("signInButton").style.display = "none";
+              document.getElementById("userName").innerHTML=myUserEntity.Name;
+            };
+            function checkIfSignedIn(){
+              if(sessionStorage.getItem('myUserEntity') == null){
+                alert("로그인이 필요합니다.");
+                return false;
+              } else {
+                return true;
+              }
+            }
+            function signOut() {
+              var auth2 = gapi.auth2.getAuthInstance();
+              auth2.signOut().then(function () {
+                console.log('User signed out.');
+              });
+              sessionStorage.clear();
+              signedInFlag = false;
+              
+              document.getElementById("userProfileButton").style.visibility = "hidden";
+              document.getElementById("signInButton").style.display = "";
+            }
