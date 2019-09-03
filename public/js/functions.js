@@ -254,8 +254,8 @@ function autocomplete(arr) {
   function sendPredictTx(departure, targets, targetIDs, travelTimes, callback) {
     console.log("5. Send predict tx with timestamp [todo]");
     var reqTime = (new Date()).getTime();
-    requestPredict(reqTime, targetIDs, travelTimes, infos);
-    callback(departure, targets, updateMap);
+    requestPredict(reqTime, targetIDs, travelTimes, infos, departure, targets, callback);
+    //callback(departure, targets, updateMap);
   }
 
   // < Get reply tx and update map>
@@ -335,6 +335,81 @@ function autocomplete(arr) {
     dist = computeDistance(departure,arrival); // km
     time = dist / 10; // hour (10km/h)
     return Math.round(time);
+  }
+
+  /*
+   * Send transactions
+   */
+  function requestPredict(reqTime, targetIDs, travelTimes, infos, departure, targets, callback) {
+    var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"_reqTime": "'
+          + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
+    console.log("Send Tx 1 : requestPredict", querydata);
+
+    return $.ajax({
+        url: "https://api.luniverse.io/tx/v1.0/transactions/requestInference10",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        },
+        type: 'POST',
+        contentType: 'application/json',
+        processData: false,
+        data: querydata,
+        success: function (data) {
+          console.log(JSON.stringify(data));
+          // [for test] insert response
+          insertResponse(reqTime, targetIDs, departure, targets, callback);
+        },
+        error: function(){
+          console.log("Cannot get data");
+        }
+    });
+  }
+
+  function insertResponse(reqTime, targetIDs, departure, targets, callback) {
+    var bikeNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    var querydata = '{"from": "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b'
+                      + reqTime + '","_stations": [' + targetIDs + '],"_bikeNums": [' + bikeNums + ']}}'
+    console.log("Send Tx 2 : insertResponse", querydata);
+    return $.ajax({
+        url: "https://api.luniverse.io/tx/v1.0/transactions/insertResponse10",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        },
+        type: 'POST',
+        contentType: 'application/json',
+        processData: false,
+        data: querydata,
+        success: function (data) {
+          console.log(JSON.stringify(data));
+          // get Response
+          setTimeout(function () {getResponse(reqTime, departure, targets, callback)}, 3000);
+        },
+        error: function(code){
+          console.log("Cannot get data", JSON.stringify(code));
+        }
+    });
+  }
+
+  function getResponse(reqTime, departure, targets, callback) {
+    var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b' + reqTime + '"}}'
+    console.log("Send Tx 3 : getResponse", querydata);
+    return $.ajax({
+        url: "https://api.luniverse.io/tx/v1.0/transactions/getResponse10",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        },
+        type: 'POST',
+        contentType: 'application/json',
+        processData: false,
+        data: querydata,
+        success: function (data) {
+          console.log(JSON.stringify(data));
+          callback(departure, targets, updateMap);
+        },
+        error: function(code) {
+          console.log(code);
+        }
+    });
   }
 }
 
@@ -517,50 +592,8 @@ function queryInfos() {
    });
 }
 
-
-/*
- * Send transactions
- */
-function requestPredict(reqTime, targetIDs, travelTimes, infos) {
-  var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"_reqTime": "'
-        + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
-  console.log("Send Tx : requestPredict", querydata);
-
-  $.ajax({
-      url: "https://api.luniverse.io/tx/v1.0/transactions/requestInference10",
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
-      },
-      type: 'POST',
-      contentType: 'application/json',
-      processData: false,
-      data: querydata,
-      success: function (data) {
-        console.log(JSON.stringify(data));
-        // Check result
-      },
-      error: function(){
-        console.log("Cannot get data");
-      }
-  });
-}
-
-function getResponse(reqTime) {
-  var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b' + reqTime + '"}}'
-  $.ajax({
-      url: "https://api.luniverse.io/tx/v1.0/transactions/getResponse10",
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
-      },
-      type: 'POST',
-      contentType: 'application/json',
-      processData: false,
-      data: querydata,
-      success: function (data) {
-        console.log(JSON.stringify(data));
-      },
-      error: function(code){
-        console.log("Cannot get data", JSON.stringify(code));
-      }
-  });
+function sleep(miliseconds) {
+   var currentTime = new Date().getTime();
+   while (currentTime + miliseconds >= new Date().getTime()) {
+   }
 }
