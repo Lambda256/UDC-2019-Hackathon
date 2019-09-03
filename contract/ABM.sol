@@ -235,6 +235,16 @@ contract ABM{
         return (req.addr, req.reqTime, req.stations, req.arriveTimes, req.infos);
     }
     
+    // pop latest inference request
+    function popRequest() public{
+        infReqs.pop();
+    }
+    
+    // get # of inference requests
+    function getRequestLength() public view returns (uint){
+        return infReqs.length;
+    }
+    
     // for relayer, delete latest request
     function deleteRequest() public{
         infReqs.pop();
@@ -340,6 +350,22 @@ contract ABM{
         
        return (payTypes, amounts, timestamps);
     }
+    
+    
+    
+    
+    
+    //
+    // reset everything
+    //
+    
+    /*function resetAll() public {
+        
+        // solidity has no reset functions...
+        
+    }*/
+    
+    
     
     
     
