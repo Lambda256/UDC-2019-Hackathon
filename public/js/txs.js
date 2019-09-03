@@ -20,7 +20,7 @@ function rentBike(stationID, time) {
       data: querydata,
       success: function (data) {
         console.log(JSON.stringify(data));
-        //alert("SUCCESS");
+        alert("SUCCESS");
       },
       error: function(code) {
         console.log(code);
@@ -37,7 +37,7 @@ function rentBike(stationID, time) {
  * 인센티브 계산을 위해 requestInference()를 콜함 (아래에서 이어짐)
  */
 function returnBike(stationID, time) {
-  var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b", "inputs": {"stationID": "' + stationID + '", "rentTime": "' + time + '"}}'
+  var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b", "inputs": {"stationID": "' + stationID + '", "returnTime": "' + time + '"}}'
   console.log("Return Bike", querydata);
   return $.ajax({
       url: "https://api.luniverse.io/tx/v1.0/transactions/returnBike10",
@@ -50,7 +50,7 @@ function returnBike(stationID, time) {
       data: querydata,
       success: function (data) {
         console.log(JSON.stringify(data));
-        //alert("SUCCESS");
+        alert("SUCCESS");
       },
       error: function(code) {
         console.log(code);
@@ -62,7 +62,8 @@ function returnBike(stationID, time) {
 /*
  * 유저가 이 트젝을 보내 컨트렉에게 user의 돈을 움직일 권한을 줌
  */
-function approve(contractAddr, amount) {
+function approve(amount) {
+  var contractAddr = "0x86541F02895c5d14434d28dA565E8793E810d848";
   var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b", "inputs": {"valueAmount": "' + amount + '", "spender": "' + contractAddr + '"}}'
   console.log("Approve", querydata);
   return $.ajax({
@@ -88,7 +89,9 @@ function approve(contractAddr, amount) {
 /*
  * 컨트렉이 돈을 움직일 권한을 받았는지 확인
  */
-function allowance(userAddr, contractAddr) {
+function allowance() {
+  var userAddr = "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b";
+  var contractAddr = "0x86541F02895c5d14434d28dA565E8793E810d848";
   var querydata = '{"from": "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78", "inputs": {"owner": "' + userAddr + '", "spender": "' + contractAddr + '"}}'
   console.log("Allowance", querydata);
   return $.ajax({
@@ -115,7 +118,7 @@ function allowance(userAddr, contractAddr) {
  * 잔고 확인
  */
 function balanceOf() {
-  var querydata = '{"from": "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78"}'
+  var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b"}'
   console.log("balanceOf", querydata);
   return $.ajax({
       url: "https://api.luniverse.io/tx/v1.0/transactions/balanceOf10",

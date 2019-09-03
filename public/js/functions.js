@@ -212,9 +212,32 @@ function autocomplete(arr) {
      closeSpinnerAndBody();
    });
 
+   // rent button listener
+   document.getElementById("rent").addEventListener("click", function(e) {
+     approve(100000000000000).done(function(msg){
+       console.log(msg);
+       setTimeout(function() {
+         allowance().done(function(msg){
+           console.log(msg);
+           rentBike(departure[2], (new Date()).getTime());
+         });
+       }, 3000);
+     });
+   });
+
+   // return button listener
+   document.getElementById("return").addEventListener("click", function(e) {
+     var returnTime = (new Date()).getTime();
+     returnBike(2386, returnTime).done(function(msg){
+       requestIncentive(returnTime, 2386, 0, infos);
+     });
+     alert("return to 2386");
+   });
+
   // < Get departure & arrival & targets >
+  var departure, arrival, targets;
+
   function getTargets(callback) {
-    var departure, arrival, targets;
     console.log("2. Get targets (top 10 closest stations)");
     for (var i = 0; i < arr.length; i++) {
         if (arr[i][3] == input[0].value) {
@@ -225,12 +248,12 @@ function autocomplete(arr) {
             targets = getCloseStations(i, 10) // Get top 10 close stations from here
         }
     }
-    callback(departure, targets, openSpinner);
+    callback(openSpinner);
   }
 
   // < Make all txs from departure to targets >
   // Get time (departure <-> targets)
-  function getArrivalTime(departure, targets, callback) {
+  function getArrivalTime(callback) {
     console.log("3. Get target station id & travel time (hr)");
     var targetIDs = [];
     var travelTimes = [];
@@ -239,37 +262,37 @@ function autocomplete(arr) {
       travelTimes.push(getTravelTimeHour(departure, targets[i]));
     }
     console.log(targetIDs, travelTimes);
-    callback(departure, targets, targetIDs, travelTimes, sendPredictTx);
+    callback(targetIDs, travelTimes, sendPredictTx);
   }
 
   // < Open loading status >
-  function openSpinner(departure, targets, targetIDs, travelTimes, callback) {
+  function openSpinner(targetIDs, travelTimes, callback) {
     console.log("4. Open spinner (loading status)");
     document.getElementById("spinner").style.display="";
     document.getElementById("go").style.display="none";
-    callback(departure, targets, targetIDs, travelTimes, getPredictResult);
+    callback(targetIDs, travelTimes, getPredictResult);
   }
 
   // Send expected arrival time & target id by Tx
-  function sendPredictTx(departure, targets, targetIDs, travelTimes, callback) {
+  function sendPredictTx(targetIDs, travelTimes, callback) {
     console.log("5. Send predict tx with timestamp [todo]");
     var reqTime = (new Date()).getTime();
-    requestPredict(reqTime, targetIDs, travelTimes, infos, departure, targets, callback);
+    requestPredict(reqTime, targetIDs, travelTimes, infos, callback);
     //callback(departure, targets, updateMap);
   }
 
   // < Get reply tx and update map>
   // Get (target station id, incentive)
-  function getPredictResult(data, departure, targets, callback) {
+  function getPredictResult(data, callback) {
     console.log("6. Get predict result");
     for (var i = 0; i < targets.length; i++) {
       targets[i].push(data.data.res[2][i]);
     }
-    callback(departure, targets);
+    callback();
   }
 
   // Update map
-  function updateMap(departure, targets) {
+  function updateMap() {
     // 지도 중심 계산
     let lat_mean = 0;
     let long_mean = 0;
@@ -343,7 +366,29 @@ function autocomplete(arr) {
   /*
    * Send transactions
    */
-  function requestPredict(reqTime, targetIDs, travelTimes, infos, departure, targets, callback) {
+  function requestIncentive(reqTime, targetIDs, travelTimes, infos) {
+    var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"_reqTime": "'
+          + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
+
+    return $.ajax({
+        url: "https://api.luniverse.io/tx/v1.0/transactions/requestInference10",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        },
+        type: 'POST',
+        contentType: 'application/json',
+        processData: false,
+        data: querydata,
+        success: function (data) {
+          console.log(JSON.stringify(data));
+        },
+        error: function(){
+          console.log("Cannot get data");
+        }
+    });
+  }
+
+  function requestPredict(reqTime, targetIDs, travelTimes, infos, callback) {
     var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"_reqTime": "'
           + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
     //console.log("Send Tx 1 : requestPredict", querydata);
@@ -360,7 +405,7 @@ function autocomplete(arr) {
         success: function (data) {
           //console.log(JSON.stringify(data));
           // [for test] insert response
-          insertResponse(reqTime, targetIDs, departure, targets, callback);
+          insertResponse(reqTime, targetIDs, callback);
         },
         error: function(){
           console.log("Cannot get data");
@@ -368,7 +413,7 @@ function autocomplete(arr) {
     });
   }
 
-  function insertResponse(reqTime, targetIDs, departure, targets, callback) {
+  function insertResponse(reqTime, targetIDs, callback) {
     var bikeNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     var querydata = '{"from": "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b'
                       + reqTime + '","_stations": [' + targetIDs + '],"_bikeNums": [' + bikeNums + ']}}'
@@ -385,7 +430,7 @@ function autocomplete(arr) {
         success: function (data) {
           //console.log(JSON.stringify(data));
           // get Response
-          setTimeout(function () {getResponse(reqTime, departure, targets, callback)}, 3000);
+          setTimeout(function () {getResponse(reqTime, callback)}, 3000);
         },
         error: function(code){
           console.log("Cannot get data", JSON.stringify(code));
@@ -393,7 +438,7 @@ function autocomplete(arr) {
     });
   }
 
-  function getResponse(reqTime, departure, targets, callback) {
+  function getResponse(reqTime, callback) {
     var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b' + reqTime + '"}}'
     //console.log("Send Tx 3 : getResponse", querydata);
     return $.ajax({
@@ -407,7 +452,7 @@ function autocomplete(arr) {
         data: querydata,
         success: function (data) {
           console.log("Predict result", JSON.stringify(data));
-          callback(data, departure, targets, updateMap);
+          callback(data, updateMap);
         },
         error: function(code) {
           console.log(code);
