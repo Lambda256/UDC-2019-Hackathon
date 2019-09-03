@@ -6,19 +6,19 @@ class FLModel:
         self.__model = compiled_model
         self.__weight = self.get_weights()
         self.loss = None
-        self.acc = None
+        self.metrics = None
 
-    def fit(self, x_train, y_train, epochs=5, verbose=0):
-        self.__model.fit(x_train, y_train, epochs=epochs, verbose=verbose)
+    def fit(self, x_train, y_train, epochs=5, callbacks=[], verbose=0):
+        self.__model.fit(x_train, y_train, epochs=epochs, callbacks=callbacks, verbose=verbose)
 
     def evaluate(self, x_test, y_test, verbose=0):
         res = self.__model.evaluate(x_test, y_test, verbose=verbose)
         self.loss = res[0]
-        self.acc = res[1]
+        self.metrics = res[1:]
 
     def raw_evaluate(self, x_test, y_test, verbose=0):
         res = self.__model.evaluate(x_test, y_test, verbose=verbose)
-        return res[0], res[1]  # loss, acc
+        return res[0], res[1:]  # loss, metrics
 
     def get_weights(self):
         self.__weight = self.__model.get_weights()
@@ -26,6 +26,9 @@ class FLModel:
 
     def set_weights(self, new_weights):
         self.__model.set_weights(new_weights)
+    
+    def predict(self, x_input):
+        return self.__model.predict(x_input)
 
 
 if __name__ == "__main__":
@@ -52,4 +55,4 @@ if __name__ == "__main__":
     flmodel.fit(x_train, y_train, epochs=5, verbose=1)
 
     flmodel.evaluate(x_test, y_test, verbose=1)
-    print(flmodel.loss, flmodel.acc)
+    print(flmodel.loss, flmodel.metrics)

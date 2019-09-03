@@ -1,27 +1,34 @@
 import hashlib
-import rlp
 import numpy as np
 import tensorflow as tf
+import os
+import pickle
+import time
 
 
 class Header:
-    def __init__(self, n: int, prev, w, t):
+    def __init__(self, n: int, prev, w, t, p, timestamp: int):
         self.blockNumber = n
         self.prevBlockHash = prev
         self.weightHash = w
         self.testsetHash = t
+        self.participantHash = p
+        self.timestamp = timestamp
 
 
 class Block:
-    def __init__(self, blockNumber: int, prevBlockHash, weights: list, testset: tuple):
+    def __init__(self, blockNumber: int, prevBlockHash, weights: list, testset: tuple, participants: list, timestamp: int):
         self.header = Header(
             blockNumber,
             prevBlockHash,
             self.calWeightHash(weights),
-            self.calTestsetHash(testset)
+            self.calTestsetHash(testset),
+            self.calParticipantHash(participants),
+            timestamp
         )
         self.weights = weights
         self.testset = testset
+        self.participants = participants
 
     def calBlockHash(self):
         header_list = list()
@@ -60,6 +67,11 @@ class Block:
 
         return self.__getHash(testset_list)
 
+    def calParticipantHash(self, participants: list):
+        participants = np.array(participants)
+        participants.tobytes()
+        return self.__getHash(participants)
+
     def __getHash(self, inputs=[]):
         SHA3 = hashlib.sha3_256()
         for i in inputs:
@@ -67,6 +79,16 @@ class Block:
         return SHA3.hexdigest()
 
 
+def delegate(method, prop):
+    def decorate(cls):
+        setattr(cls, method,
+                lambda self, *args, **kwargs:
+                getattr(getattr(self, prop), method)(*args, **kwargs))
+        return cls
+    return decorate
+
+
+@delegate("__len__", "blocks")
 class Blockchain:
     def __init__(self, genesisBlock):
         self.blocks = [genesisBlock]
@@ -77,21 +99,62 @@ class Blockchain:
     def getBlock(self, blockNumber):
         return self.blocks[blockNumber]
 
+    # def len(self):
+    #     pass
+
 
 def printBlock(block: Block):
     print("{")
     print("    \"blockNumber\"    :", block.header.blockNumber, end=",\n")
     print("    \"prevBlockHash\"  :", block.header.prevBlockHash, end=",\n")
+    print("    \"timestamp\"      :", block.header.timestamp, end=",\n")
     print("    \"weightHash\"     :", block.header.weightHash, end=",\n")
     print("    \"testsetHash\"    :", block.header.testsetHash, end=",\n")
+    print("    \"participantHash\":", block.header.participantHash, end=",\n")
     print("    \"(+)testsetSize\" :", len(block.testset[0]), end=",\n")
+    print("    \"(+)participants\":", len(block.participants), end=",\n")
     print("    \"(+)blockHash\"   :", block.calBlockHash())
     print("}")
+
+
+def writeBlock(PATH, block: Block):
+    # Create directory
+    try:
+        os.mkdir(PATH)  # Create target Directory
+    except FileExistsError:
+        pass
+
+    # Write
+    with open(PATH + "/block_" + str(block.header.blockNumber) + ".bin", "wb") as f:
+        pickle.dump(block, f)
+
+
+def readBlock(PATH, blockNumber: int):
+    with open(PATH + "/block_" + str(blockNumber) + ".bin", "rb") as f:
+        return pickle.load(f)
+
+
+def writeBlockchain(PATH, blockchain: Blockchain):
+    # Create directory
+    try:
+        os.mkdir(PATH)  # Create target Directory
+    except FileExistsError:
+        pass
+
+    # Write
+    with open(PATH + "/chain.bin", "wb") as f:
+        pickle.dump(blockchain, f)
+
+
+def readBlockchain(PATH):
+    with open(PATH + "/chain.bin", "rb") as f:
+        return pickle.load(f)
 
 
 if __name__ == "__main__":
     from model import FLModel
     import tensorflow as tf
+    from time import time
 
     # load data
     mnist = tf.keras.datasets.mnist
@@ -118,7 +181,9 @@ if __name__ == "__main__":
         0,
         "0" * 64,
         init_weights,
-        testset
+        testset,
+        [],
+        int(time())
     )
     flchain = Blockchain(genesis)  # set blockchain with genesis block
 
@@ -130,9 +195,19 @@ if __name__ == "__main__":
         nextBlockNumber,
         flchain.getBlock(nextBlockNumber - 1).calBlockHash(),
         modified_weight,
-        testset
+        testset,
+        [],
+        int(time())
     )
     flchain.append(new_block)
 
     flmodel.evaluate(x_test, y_test)
-    print(flmodel.loss, flmodel.acc)
+    print(flmodel.loss, flmodel.metrics)
+
+    # write blockchain
+    writeBlockchain("../data", flchain)
+
+    # read blockchain
+    flchain = readBlockchain("../data")
+    print(flchain.blocks[0].calBlockHash())
+    print(flchain.blocks[1].header.prevBlockHash)

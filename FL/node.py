@@ -36,6 +36,9 @@ class Node:
         :param array peer_weights: neighbors' weights
         :param array peer_reputations: my reputations about neighbors
         """
+        if len(peer_weights) == 0:
+            return
+
         total_reputations = sum(peer_reputations)
         num_peer = len(peer_reputations)
 
