@@ -7,8 +7,8 @@ def parser():
     #                     const=sum, default=max,
     #                     help='sum the integers (default: find the max)')
 
-    parser.add_argument('--block', metavar='N', type=int, default=0,
-                        help='number of blocks')
+    # parser.add_argument('--block', metavar='N', type=int, default=0,
+    #                     help='number of blocks')
 
     args = parser.parse_args()
     return args
