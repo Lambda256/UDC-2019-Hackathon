@@ -563,7 +563,12 @@ function showbody2() {
   document.getElementById("body2").style.display="";
 }
 
-
+function updateBalance() {
+  balanceOf().done(function(msg){
+      console.log(msg);
+      document.getElementById("balance").textContent = msg.data.res[0];
+    });
+}
 
 function queryInfos() {
   var weather = [];

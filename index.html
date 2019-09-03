@@ -39,8 +39,8 @@
         <div class="uk-offcanvas-bar" style="font-family: 'Noto Sans KR', sans-serif;">
           <button class="uk-offcanvas-close" type="button" uk-close></button>
           <h3 style="margin-bottom:5px;">YEONJAE</h3>
-          <span class="uk-label" style="background-color:#ffd250;color:#000;">
-            <span uk-icon="bolt"></span>10,000
+          <span class="uk-label" style="background-color:#ffd250;color:#000;" onclick="updateBalance()">
+            <span uk-icon="bolt"></span><span id="balance"></span>
           </span>
           <span class="uk-label" style="background-color:#317bfd;color:#fff;">
             <span uk-icon="sign-out"></span>반납
@@ -151,4 +151,5 @@
       </div>
     </body>
 </html>
+<script src="js/txs.js"></script>
 <script src="js/functions.js"></script>
