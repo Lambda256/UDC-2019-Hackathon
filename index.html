@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="css/leaflet.css" />
         <script src="js/leaflet.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="js/uikit.min.js"></script>
+        <script src="js/uikit.js"></script>
         <script src="js/uikit-icons.min.js"></script>
     </head>
 
@@ -39,10 +39,10 @@
         <div class="uk-offcanvas-bar" style="font-family: 'Noto Sans KR', sans-serif;">
           <button class="uk-offcanvas-close" type="button" uk-close></button>
           <h3 style="margin-bottom:5px;">YEONJAE</h3>
-          <span class="uk-label" style="background-color:#ffd250;color:#000;">
-            <span uk-icon="bolt"></span>10,000
+          <span class="uk-label" style="background-color:#ffd250;color:#000;" onclick="updateBalance()">
+            <span uk-icon="bolt"></span><span id="balance"></span>
           </span>
-          <span class="uk-label" style="background-color:#317bfd;color:#fff;">
+          <span id="return" class="uk-label" style="background-color:#317bfd;color:#fff;">
             <span uk-icon="sign-out"></span>반납
           </span>
           <p>
@@ -145,10 +145,11 @@
               <p id="departure"></p>
               <p class="uk-text-right">
                   <button class="uk-button uk-button-secondary uk-modal-close" type="button">취소</button>
-                  <button class="uk-button uk-button-primary" type="button">결제</button>
+                  <button id="rent" class="uk-button uk-button-primary" type="button">결제</button>
               </p>
           </div>
       </div>
     </body>
 </html>
+<script src="js/txs.js"></script>
 <script src="js/functions.js"></script>
