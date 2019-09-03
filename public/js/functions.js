@@ -1,9 +1,13 @@
 /*
+ * Query weather & date infos
+ */
+var infos = [];
+queryInfos();
+
+/*
  * Read station data
  */
 // Retrieved from http://jsfiddle.net/e6220t92/2/
-
-var targets =[];
 var mymap = L.map('mapid');
 const fileUrl = '../src/stations.csv' // provide file location
 fetch(fileUrl)
@@ -249,26 +253,8 @@ function autocomplete(arr) {
   // Send expected arrival time & target id by Tx
   function sendPredictTx(departure, targets, targetIDs, travelTimes, callback) {
     console.log("5. Send predict tx with timestamp [todo]");
-    reqTime = (new Date()).getTime();
-    console.log(reqTime);
-    /*
-    $.ajax({
-        url: "https://api.luniverse.io/tx/v1.0/transactions/getBikeNum3",
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
-        },
-        type: 'POST',
-        contentType: 'application/json',
-        processData: false,
-        data: '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"stationID": "987"}}',
-        success: function (data) {
-          alert(JSON.stringify(data));
-        },
-        error: function(){
-          alert("Cannot get data");
-        }
-    });
-    */
+    var reqTime = (new Date()).getTime();
+    requestPredict(reqTime, targetIDs, travelTimes, infos);
     callback(departure, targets, updateMap);
   }
 
@@ -499,16 +485,17 @@ function showbody2() {
   document.getElementById("body2").style.display="";
 }
 
-var weather = [];
 
-function queryWeather() {
+
+function queryInfos() {
+  var weather = [];
   const weatherFileUrl = '../src/weather.csv' // provide file location
   var d = new Date();
-  var datestring = 
+  var datestring =
     (d.getFullYear()-1) + "-" + // use last year's data
     ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-    ("0" + d.getDate()).slice(-2) + " " + 
-    ("0" + d.getHours()).slice(-2) + ":" + 
+    ("0" + d.getDate()).slice(-2) + " " +
+    ("0" + d.getHours()).slice(-2) + ":" +
     ("00");
 
   fetch(weatherFileUrl)
@@ -525,7 +512,55 @@ function queryWeather() {
       console.log("weather set to default");
       weather = _array[1].slice(2,7);
     }
-    console.log(weather);
+    infos = [d.getMonth()+1, Math.round(weather[0]), Math.round(weather[1]), Math.round(weather[2]), Math.round(weather[3]), Math.round(weather[4]), new Date(datestring).getDay()];
+    console.log("infos", infos)
    });
 }
-queryWeather();
+
+
+/*
+ * Send transactions
+ */
+function requestPredict(reqTime, targetIDs, travelTimes, infos) {
+  var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"_reqTime": "'
+        + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
+  console.log("Send Tx : requestPredict", querydata);
+
+  $.ajax({
+      url: "https://api.luniverse.io/tx/v1.0/transactions/requestInference10",
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+      },
+      type: 'POST',
+      contentType: 'application/json',
+      processData: false,
+      data: querydata,
+      success: function (data) {
+        console.log(JSON.stringify(data));
+        // Check result
+      },
+      error: function(){
+        console.log("Cannot get data");
+      }
+  });
+}
+
+function getResponse(reqTime) {
+  var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b' + reqTime + '"}}'
+  $.ajax({
+      url: "https://api.luniverse.io/tx/v1.0/transactions/getResponse10",
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+      },
+      type: 'POST',
+      contentType: 'application/json',
+      processData: false,
+      data: querydata,
+      success: function (data) {
+        console.log(JSON.stringify(data));
+      },
+      error: function(code){
+        console.log("Cannot get data", JSON.stringify(code));
+      }
+  });
+}
