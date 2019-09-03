@@ -11,6 +11,8 @@ def parser():
                         help='total number of nodes')
     parser.add_argument('--round', metavar='R', type=int, default=5000,
                         help='number of round')
+    parser.add_argument('--preTrain', metavar='P', type=int, default=-1,
+                        help='pre-trained block number')
     parser.add_argument('--globalSet', metavar='G', type=int, default=10000,
                         help='number of global testset')
 

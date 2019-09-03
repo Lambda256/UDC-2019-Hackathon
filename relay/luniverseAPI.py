@@ -73,25 +73,25 @@ def insertBlock(flblock, from_):
     return r
 
 
-# def getBlock(blockNumber, from_):
-#     # data
-#     data_inputs = dict()
-#     data_inputs['_blockNumber'] = blockNumber
+def getBlock(blockNumber, from_):
+    # data
+    data_inputs = dict()
+    data_inputs['_blockNumber'] = blockNumber
 
-#     data = dict()
-#     data['from'] = from_
-#     data['inputs'] = data_inputs
+    data = dict()
+    data['from'] = from_
+    data['inputs'] = data_inputs
 
-#     # curl
-#     url = "https://api.luniverse.io/tx/v1.0/transactions/readBlock9"
-#     headers = {
-#         'Content-type': 'application/json',
-#         'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
-#     }
-#     data = json.dumps(data)
+    # curl
+    url = "https://api.luniverse.io/tx/v1.0/transactions/readBlock9"
+    headers = {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+    }
+    data = json.dumps(data)
 
-#     r = curlPost(url, data, headers)
-#     return r
+    r = curlPost(url, data, headers)
+    return r
 
 
 def getBlocksLength(from_):
@@ -126,3 +126,10 @@ def resetBlocks(from_):
 
     r = curlPost(url, data, headers)
     return r
+
+
+if __name__ == "__main__":
+    REOA = "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78"
+
+    res = getBlock(1, REOA)
+    print(res)

@@ -2,42 +2,23 @@ import random
 import numpy as np
 import tensorflow as tf
 import arguments
-from time import time
+import time
 
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from block import Blockchain, Block, printBlock, writeBlockchain, writeBlock
+from block import Blockchain, Block, printBlock, writeBlockchain, writeBlock, readBlock
 from node import Node, split_dataset
 from model import FLModel
 import preprocessing
 
 
-# python main.py --nodes=5 --round=1000 --globalSet=10000
-if __name__ == "__main__":
-    # parsing hyperparameters
-    args = arguments.parser()
-    num_nodes = args.nodes
-    num_round = args.round
-    num_global_testset = args.globalSet
-    print(">>> Setting:", args)
+# hardcoding factors
+AvgBlockInterval = 3
 
-    # Set Tensorflow GPU
-    # tf.device('/device:GPU:0')
 
-    # Load datasets
-    features, x_train, y_train, x_test, y_test = preprocessing.get_train_test(
-        "./data/realworld")
-
-    # get global testset by train
-    global_x_test = x_train[:num_global_testset]
-    global_y_test = y_train[:num_global_testset]
-    x_train = x_train[num_global_testset:]
-    y_train = y_train[num_global_testset:]
-
-    # set FL model
-    # TODO: modified model with concatenate layer
+def create_model(features):
     nn_model = tf.keras.models.Sequential([
         # input & first layer
         tf.keras.layers.Dense(
@@ -64,21 +45,63 @@ if __name__ == "__main__":
         loss='mean_absolute_error',
         metrics=['mse'])
 
-    flmodel = FLModel(nn_model)
+    return FLModel(nn_model)
+
+
+# python main.py --nodes=5 --round=1000 --globalSet=10000
+if __name__ == "__main__":
+    # parsing hyperparameters
+    args = arguments.parser()
+    num_nodes = args.nodes
+    num_round = args.round
+    preTrained = args.preTrain
+    num_global_testset = args.globalSet
+    print("> Setting:", args)
+
+    # Set Tensorflow GPU
+    # tf.device('/device:GPU:0')
+
+    """Load datasets"""
+    features, x_train, y_train, x_test, y_test = preprocessing.get_train_test(
+        "./data/realworld")
+
+    # get global testset by train
+    global_x_test = x_train[:num_global_testset]
+    global_y_test = y_train[:num_global_testset]
+    x_train = x_train[num_global_testset:]
+    y_train = y_train[num_global_testset:]
+
+    """set FL model"""
+    flmodel = create_model(features)
 
     """set blockchain"""
-    init_weights = flmodel.get_weights()
-    genesis = Block(
-        0,
-        "0" * 64,
-        init_weights,
-        (global_x_test, global_y_test),
-        [],
-        int(time())
-    )
-    flchain = Blockchain(genesis)  # set blockchain with genesis block
-    # writeBlockchain("./data", flchain)  # save blockchain
-    writeBlock("./data/blocks", flchain.blocks[-1])
+    if preTrained == -1:
+        file_list = os.listdir("./data/blocks")
+        preTrained = len(file_list) - 1
+        genesis = readBlock("./data/blocks", 0)
+        flchain = Blockchain(genesis)  # set blockchain with genesis block
+        for i in range(1, preTrained + 1):
+            flblock = readBlock("./data/blocks", i)
+            flchain.append(flblock)  # append next block
+    elif preTrained == 0:
+        init_weights = flmodel.get_weights()
+        genesis = Block(
+            0,
+            "0" * 64,
+            init_weights,
+            (global_x_test, global_y_test),
+            [],
+            int(time.time())
+        )
+        flchain = Blockchain(genesis)  # set blockchain with genesis block
+        # writeBlockchain("./data", flchain)  # save blockchain
+        writeBlock("./data/blocks", flchain.blocks[-1])
+    else:
+        genesis = readBlock("./data/blocks", 0)
+        flchain = Blockchain(genesis)  # set blockchain with genesis block
+        for i in range(1, preTrained + 1):
+            flblock = readBlock("./data/blocks", i)
+            flchain.append(flblock)  # append next block
 
     """set nodes"""
     # split dataset
@@ -97,7 +120,9 @@ if __name__ == "__main__":
     Leader = Node(flmodel, (None, None), (global_x_test, global_y_test))
 
     """main"""
-    for nextBlockNumber in range(1, num_round + 1):
+    for nextBlockNumber in range(preTrained + 1, num_round + 1):
+        time.sleep(AvgBlockInterval)
+
         currentBlockNumber = nextBlockNumber - 1
         currentBlockWeight = flchain.blocks[currentBlockNumber].weights
 
@@ -145,7 +170,7 @@ if __name__ == "__main__":
             nextBlockWeight,
             (Leader.x_test, Leader.y_test),
             participants,
-            int(time())
+            int(time.time())
         )
         flchain.append(new_block)  # append next block
 
