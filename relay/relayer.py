@@ -1,5 +1,4 @@
 import arguments
-import luniverseAPI as API
 
 import time
 import os
@@ -8,11 +7,12 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))) + "/FL")
 
 from block import readBlock, printBlock
+import luniverseAPI as API
 
 
 # hardcoding factors
 REOA = "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78"
-AvgBlockInterval = 3
+AvgBlockInterval = 3.0
 
 
 def pinwheel(t, keyword=""):
@@ -27,18 +27,22 @@ def pinwheel(t, keyword=""):
         print(keyword, "-", end='\r')
 
 
+# TODO
+def pinwheel_with_ETA(t, keyword=""):
+    pass
+
+
 fileTimes = []
 respTimes = []
 
 
-def avgTime(times):
-    if len(times) == 0:
-        return 0.0
-    else:
-        return sum(times) / len(times)
-
-
 def sendTransaction(currentBlock, i, from_):
+    def avgTime(times):
+        if len(times) == 0:
+            return 0.0
+        else:
+            return sum(times) / len(times)
+
     file_list = os.listdir("./data/blocks")
     print()
     print("> Relay block (%d / %d)" % (i, len(file_list) - 1))
@@ -109,5 +113,5 @@ if __name__ == "__main__":
             i += 1
 
     # CASE 2: limitation
-    for i in range(startBlock, endBlock):
+    for i in range(startBlock, endBlock + 1):
         currentBlock = sendTransaction(currentBlock, i, from_)

@@ -15,7 +15,7 @@ import preprocessing
 
 
 # hardcoding factors
-AvgBlockInterval = 3
+AvgBlockInterval = 0.1
 
 
 def create_model(features):
@@ -121,8 +121,6 @@ if __name__ == "__main__":
 
     """main"""
     for nextBlockNumber in range(preTrained + 1, num_round + 1):
-        time.sleep(AvgBlockInterval)
-
         currentBlockNumber = nextBlockNumber - 1
         currentBlockWeight = flchain.blocks[currentBlockNumber].weights
 
@@ -178,6 +176,7 @@ if __name__ == "__main__":
 
         # print
         print(" " * 64, end="\r")
+        print()
         print("round: %-6d" % nextBlockNumber, end="\t")
         print("mae: %-8.4f" % Leader.flmodel.loss, end="\t")
         print("mse: %-8.4f" % Leader.flmodel.metrics[0])
@@ -185,6 +184,8 @@ if __name__ == "__main__":
 
         # save block
         writeBlock("./data/blocks", flchain.blocks[-1])
+
+        time.sleep(AvgBlockInterval)
 
     # save blockchain
     writeBlockchain("./data", flchain)
