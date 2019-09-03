@@ -260,8 +260,11 @@ function autocomplete(arr) {
 
   // < Get reply tx and update map>
   // Get (target station id, incentive)
-  function getPredictResult(departure, targets, callback) {
-    console.log("6. Get predict result [todo]");
+  function getPredictResult(data, departure, targets, callback) {
+    console.log("6. Get predict result");
+    for (var i = 0; i < targets.length; i++) {
+      targets[i].push(data.data.res[2][i]);
+    }
     callback(departure, targets);
   }
 
@@ -292,7 +295,7 @@ function autocomplete(arr) {
       var marker = L.marker(targets[i].slice(6,8));
       marker.addTo(mymap);
       marker.bindPopup(targets[i][2] + '. ' + targets[i][3] + '\n'
-                        + '<span class\="uk-label\" style=\"background-color:#ffd250;color:#000;\"><span uk-icon=\"bolt\"></span>10,000</span>');
+                        + '<span class\="uk-label\" style=\"background-color:#ffd250;color:#000;\"><span uk-icon=\"bolt\"></span>'+targets[i][8]+'</span>');
       if (i==0) marker.openPopup();
     }
     console.log("7. update map");
@@ -343,7 +346,7 @@ function autocomplete(arr) {
   function requestPredict(reqTime, targetIDs, travelTimes, infos, departure, targets, callback) {
     var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"_reqTime": "'
           + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
-    console.log("Send Tx 1 : requestPredict", querydata);
+    //console.log("Send Tx 1 : requestPredict", querydata);
 
     return $.ajax({
         url: "https://api.luniverse.io/tx/v1.0/transactions/requestInference10",
@@ -355,7 +358,7 @@ function autocomplete(arr) {
         processData: false,
         data: querydata,
         success: function (data) {
-          console.log(JSON.stringify(data));
+          //console.log(JSON.stringify(data));
           // [for test] insert response
           insertResponse(reqTime, targetIDs, departure, targets, callback);
         },
@@ -369,7 +372,7 @@ function autocomplete(arr) {
     var bikeNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     var querydata = '{"from": "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b'
                       + reqTime + '","_stations": [' + targetIDs + '],"_bikeNums": [' + bikeNums + ']}}'
-    console.log("Send Tx 2 : insertResponse", querydata);
+    //console.log("Send Tx 2 : insertResponse", querydata);
     return $.ajax({
         url: "https://api.luniverse.io/tx/v1.0/transactions/insertResponse10",
         beforeSend: function (xhr) {
@@ -380,7 +383,7 @@ function autocomplete(arr) {
         processData: false,
         data: querydata,
         success: function (data) {
-          console.log(JSON.stringify(data));
+          //console.log(JSON.stringify(data));
           // get Response
           setTimeout(function () {getResponse(reqTime, departure, targets, callback)}, 3000);
         },
@@ -392,7 +395,7 @@ function autocomplete(arr) {
 
   function getResponse(reqTime, departure, targets, callback) {
     var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b' + reqTime + '"}}'
-    console.log("Send Tx 3 : getResponse", querydata);
+    //console.log("Send Tx 3 : getResponse", querydata);
     return $.ajax({
         url: "https://api.luniverse.io/tx/v1.0/transactions/getResponse10",
         beforeSend: function (xhr) {
@@ -403,8 +406,8 @@ function autocomplete(arr) {
         processData: false,
         data: querydata,
         success: function (data) {
-          console.log(JSON.stringify(data));
-          callback(departure, targets, updateMap);
+          console.log("Predict result", JSON.stringify(data));
+          callback(data, departure, targets, updateMap);
         },
         error: function(code) {
           console.log(code);
