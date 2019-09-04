@@ -1,4 +1,11 @@
 /*
+ * REOA Addresses for test
+ */
+var userAddr = '0x408306bca6f0b15da485d8009cb0e12dfe0ef28c';
+var ownerAddr = '0x128a8b8c9507aec53d949c53d5be57c4d98f9256';
+var contractAddr = '0x2e3bA822FaEd2f7E77D74f6B79620195cAB3cc8a';
+
+/*
  * Query weather & date infos
  */
 var infos = [];
@@ -214,12 +221,12 @@ function autocomplete(arr) {
 
    // rent button listener
    document.getElementById("rent").addEventListener("click", function(e) {
-     approve(100000000000000).done(function(msg){
+     approve(userAddr, 100000000000000, contractAddr).done(function(msg){
        console.log(msg);
        setTimeout(function() {
-         allowance().done(function(msg){
+         allowance(userAddr, userAddr, contractAddr).done(function(msg){
            console.log(msg);
-           rentBike(departure[2], (new Date()).getTime());
+           rentBike(userAddr, departure[2], (new Date()).getTime());
          });
        }, 3000);
      });
@@ -228,15 +235,15 @@ function autocomplete(arr) {
    // return button listener
    document.getElementById("return").addEventListener("click", function(e) {
      var returnTime = (new Date()).getTime();
-     returnBike(2386, returnTime).done(function(msg){
-       requestIncentive(returnTime, 2386, 0, infos);
+     returnBike(userAddr, 2386, returnTime).done(function(msg){
+       requestIncentive(userAddr, returnTime, 2386, 0, infos);
      });
      alert("return to 2386");
    });
 
    // refresh button listener
    document.getElementById("refresh").addEventListener("click", function(e) {
-     getRecord().done(function(msg){
+     getRecord(userAddr, userAddr).done(function(msg){
        updateHistory(msg.data.res);
      });
    });
@@ -284,7 +291,7 @@ function autocomplete(arr) {
   function sendPredictTx(targetIDs, travelTimes, callback) {
     console.log("5. Send predict tx with timestamp [todo]");
     var reqTime = (new Date()).getTime();
-    requestPredict(reqTime, targetIDs, travelTimes, infos, callback);
+    requestPredict(userAddr, reqTime, targetIDs, travelTimes, infos, callback);
     //callback(departure, targets, updateMap);
   }
 
@@ -388,8 +395,8 @@ function autocomplete(arr) {
   /*
    * Send transactions
    */
-  function requestIncentive(reqTime, targetIDs, travelTimes, infos) {
-    var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"_reqTime": "'
+  function requestIncentive(from, reqTime, targetIDs, travelTimes, infos) {
+    var querydata = '{"from": "' + from + '","inputs": {"_reqTime": "'
           + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
 
     return $.ajax({
@@ -410,10 +417,9 @@ function autocomplete(arr) {
     });
   }
 
-  function requestPredict(reqTime, targetIDs, travelTimes, infos, callback) {
-    var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"_reqTime": "'
+  function requestPredict(from, reqTime, targetIDs, travelTimes, infos, callback) {
+    var querydata = '{"from": "' + from + '","inputs": {"_reqTime": "'
           + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
-    //console.log("Send Tx 1 : requestPredict", querydata);
 
     return $.ajax({
         url: "https://api.luniverse.io/tx/v1.0/transactions/requestInference10",
@@ -427,7 +433,7 @@ function autocomplete(arr) {
         success: function (data) {
           //console.log(JSON.stringify(data));
           // [for test] insert response
-          insertResponse(reqTime, targetIDs, callback);
+          insertResponse(ownerAddr, reqTime, targetIDs, callback);
         },
         error: function(){
           console.log("Cannot get data");
@@ -435,11 +441,11 @@ function autocomplete(arr) {
     });
   }
 
-  function insertResponse(reqTime, targetIDs, callback) {
+  function insertResponse(from, reqTime, targetIDs, callback) {
     var bikeNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    var querydata = '{"from": "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b'
+    var querydata = '{"from": "' + from + '", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b'
                       + reqTime + '","_stations": [' + targetIDs + '],"_bikeNums": [' + bikeNums + ']}}'
-    //console.log("Send Tx 2 : insertResponse", querydata);
+
     return $.ajax({
         url: "https://api.luniverse.io/tx/v1.0/transactions/insertResponse10",
         beforeSend: function (xhr) {
@@ -452,13 +458,13 @@ function autocomplete(arr) {
         success: function (data) {
           //console.log(JSON.stringify(data));
           // get Response
-          
+
           // 지도 초기화
-          
+
           // 지도 중심 계산
           let lat_center = parseFloat(targets[0][6]);
           let long_center = parseFloat(targets[0][7]);
-          
+
           // 지도 중심 이동
           mymap.setView([lat_center,long_center], 14);
           L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -471,7 +477,7 @@ function autocomplete(arr) {
 
           markersLayer.clearLayers();
           mymap.spin(true);
-          setTimeout(function () {getResponse(reqTime, callback)}, 3000);
+          setTimeout(function () {getResponse(userAddr, reqTime, callback)}, 3000);
         },
         error: function(code){
           console.log("Cannot get data", JSON.stringify(code));
@@ -479,9 +485,9 @@ function autocomplete(arr) {
     });
   }
 
-  function getResponse(reqTime, callback) {
-    var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b' + reqTime + '"}}'
-    //console.log("Send Tx 3 : getResponse", querydata);
+  function getResponse(from, reqTime, callback) {
+    var querydata = '{"from": "' + from + '", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b' + reqTime + '"}}'
+
     return $.ajax({
         url: "https://api.luniverse.io/tx/v1.0/transactions/getResponse10",
         beforeSend: function (xhr) {
@@ -650,7 +656,7 @@ function showbody2() {
 }
 
 function updateBalance() {
-  balanceOf().done(function(msg){
+  balanceOf(userAddr).done(function(msg){
       console.log(msg);
       document.getElementById("balance").textContent = msg.data.res[0];
     });
@@ -694,13 +700,13 @@ document.getElementById("userProfileButton").style.visibility = "hidden";
     var profile = googleUser.getBasicProfile();
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.disconnect();
-    
+
     var myUserEntity = {};
     signedInFlag = true;
     myUserEntity.Name = profile.getName();
     myUserEntity.Email = profile.getEmail();
     sessionStorage.setItem('myUserEntity',JSON.stringify(myUserEntity));
-    
+
 
     document.getElementById("userProfileButton").src=profile.getImageUrl();
     document.getElementById("userProfileButton").style.visibility = "visible";
@@ -722,7 +728,7 @@ document.getElementById("userProfileButton").style.visibility = "hidden";
     });
     sessionStorage.clear();
     signedInFlag = false;
-    
+
     document.getElementById("userProfileButton").style.visibility = "hidden";
     document.getElementById("signInButton").style.display = "";
   }
