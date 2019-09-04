@@ -15,7 +15,7 @@
                 {{link.name}}
             </v-btn>
         </v-toolbar-items>
-        <template v-if="isDates||isMerchandise" v-slot:extension>
+        <template v-if="isMerchandise" v-slot:extension>
         <v-tabs
           v-model="model"
           centered

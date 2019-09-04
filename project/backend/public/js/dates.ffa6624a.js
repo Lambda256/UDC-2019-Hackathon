@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["dates"],{f6c9:function(e,t,n){"use strict";n.r(t);var a=function(){var e=this,t=e.$createElement;e._self._c;return e._m(0)},c=[function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[n("h4",[e._v(" Dates ")])])}],l=n("bc3a"),s=n.n(l),o={created(){s.a.get("http://localhost:3000/api/schedule").then(e=>{console.log(e.data)}).catch(e=>{})}},r=o,u=n("2877"),i=Object(u["a"])(r,a,c,!1,null,null,null);t["default"]=i.exports}}]);
+//# sourceMappingURL=dates.ffa6624a.js.map

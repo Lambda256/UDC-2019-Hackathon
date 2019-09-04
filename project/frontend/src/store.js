@@ -32,6 +32,7 @@ export default new Vuex.Store({
       }
     ],
     Teams: [
+      'All',
       'Tigers', 
       'Eagles', 
       'Heroes', 
