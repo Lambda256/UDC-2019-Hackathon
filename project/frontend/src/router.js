@@ -54,6 +54,7 @@ export default new Router({
       path: '/mypage',
       name: 'mypage',
       component: Mypage,
+      
       beforeEnter: (to, from, next) => {
         if(!store.state.isLogin){
           alert('로그인이 필요한 기능입니다.')

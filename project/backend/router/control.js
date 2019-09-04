@@ -43,7 +43,7 @@ exports.login = (req, res) => {
       }
       else{
         const accessToken = auth.signToken(email);
-        res.status(200).json({accessToken})
+        res.status(200).json({userName: respond[0].User_Name, accessToken: accessToken})
       }
     }
   })

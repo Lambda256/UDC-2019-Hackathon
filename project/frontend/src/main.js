@@ -6,6 +6,10 @@ import vuetify from './plugins/vuetify';
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 Vue.config.productionTip = false
 
+router.beforeEach((to, from, next) => {
+  //todo
+})
+
 new Vue({
   router,
   store,
