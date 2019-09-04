@@ -2,7 +2,7 @@
 lock "~> 3.11.1"
 
 set :application, "intime"
-set :repo_url, "git@github.com:UDC-InTime/api.git"
+set :repo_url, "git@github.com:sydneyitguy/UDC-2019-Hackathon.git"
 
 current_branch = `git branch`.match(/\* (\S+)\s/m)[1]
 set :branch, ENV['branch'] || current_branch || "master"
