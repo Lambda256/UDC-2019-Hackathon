@@ -3,8 +3,8 @@
  */
 var userAddr = '0x408306bca6f0b15da485d8009cb0e12dfe0ef28c';
 var ownerAddr = '0x128a8b8c9507aec53d949c53d5be57c4d98f9256';
-var contractAddr = '0x2e3bA822FaEd2f7E77D74f6B79620195cAB3cc8a';
-var version = '2';
+var contractAddr = '0xaa7De5581188449339058e5908fC0B06e61db3f9';
+var version = '3';
 
 /*
  * Query weather & date infos
@@ -451,8 +451,8 @@ function autocomplete(arr) {
           }).addTo(mymap);
           markersLayer.clearLayers();
           mymap.spin(true);
-          
-          setTimeout(function () {getResponse(userAddr, reqTime, callback)}, 15000);
+
+          setTimeout(function () {getResponse(userAddr, reqTime, callback)}, 3000);
         },
         error: function(){
           console.log("Cannot get data");
@@ -517,7 +517,8 @@ function autocomplete(arr) {
           callback(data, updateMap);
         },
         error: function(code) {
-          console.log(code);
+          console.log("ERROR! RETRY!");
+          setTimeout(function () {getResponse(from, reqTime, callback)}, 1000);
         }
     });
   }

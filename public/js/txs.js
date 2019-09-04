@@ -1,7 +1,7 @@
 /*
  * Transactions
  */
- var version = '2';
+ var version = '3';
 
 /*
  * 유저가 자전거를 하나 빌린다
