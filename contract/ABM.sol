@@ -14,13 +14,13 @@ contract ERC20 {
 contract ABM{
     
     // address of ABMTT token
-    address tokenAddr = 0x9796833d40A3B129660fb1d067434922C9b13ed6;
+    address tokenAddr = 0xaA4060a8BbA893Fa590b3C9CB841B2e877cC5EB1;
     
     // ABM token
     ERC20 ABMtoken = ERC20(tokenAddr);
     
     // address of luniverse REOA owner account
-    address REOAowner = 0x7F9e54d53549ba46DbE32AB39Fd5feE3Fd7CBE78;
+    address REOAowner = 0x128a8b8C9507AEc53D949C53D5Be57C4d98F9256;
     
     // owner of this contract
     address public owner;
@@ -33,7 +33,7 @@ contract ABM{
         owner = msg.sender;
         
         // register luniverse REOA owner account as administrator
-        registerCompany("luniverseOwner", 0x7F9e54d53549ba46DbE32AB39Fd5feE3Fd7CBE78);
+        registerCompany("luniverseOwner", REOAowner);
     }
     
     // only owner can execute a function
@@ -75,7 +75,7 @@ contract ABM{
     mapping(int=>int) bikes;
     
     // user rent timestamp (to calculate rent fee later)
-    mapping(address=>uint) rentTimes;
+    mapping(address=>uint) public rentTimes;
     
     // bike return info to calculate return incentive
     struct returnInfo{
@@ -370,6 +370,7 @@ contract ABM{
     
     
 }
+
 
 
 
