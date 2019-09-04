@@ -13,6 +13,8 @@ import CardUnit from "../Components/Card";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
+  "@import":
+    "url('https://fonts.googleapis.com/css?family=Anton|Libre+Baskerville&display=swap')",
   "@global": {
     body: {
       backgroundColor: theme.palette.common.white
@@ -87,6 +89,9 @@ const useStyles = makeStyles(theme => ({
   cardUnit: {
     display: "flex",
     justifyContent: "center"
+  },
+  bcc: {
+    fontSize: "20px"
   }
 }));
 
@@ -130,7 +135,7 @@ export default () => {
       }
     });
     myCards.sort(() => {
-      return Math.random();
+      return Math.random() - Math.random();
     });
     return myCards;
   };
@@ -187,7 +192,12 @@ export default () => {
                     />
                   </div>
                   <CardContent className={classes.cardContent}>
-                    <Typography variant="h4">$ {card.price}</Typography>
+                    <Typography variant="h4">
+                      {card.price}{" "}
+                      <Typography variant="button" className={classes.bcc}>
+                        BCC
+                      </Typography>
+                    </Typography>
                     <div className={classes.buyBotton}>
                       <CardButton
                         value={card.id}

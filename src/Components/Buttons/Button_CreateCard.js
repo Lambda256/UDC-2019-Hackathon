@@ -1,32 +1,79 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import axios from "axios";
 import { Config } from "../../js/config";
 import cards from "../../players";
+import { makeStyles } from "@material-ui/core/styles";
+import CreateCard from "../CreateCard";
+import Modal from "@material-ui/core/Modal";
+import CardDetail from "../CardDetail";
+import { Link } from "react-router-dom";
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    position: "absolute",
+    width: "300px",
+    height: "600px",
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignItems: "center"
+  },
+  button: {}
+}));
+
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`
+  };
+}
 
 const CreateCardButton = () => {
-  let user0 = localStorage.getItem("user0").split(",");
-  let user1 = localStorage.getItem("user1").split(",");
-  let user2 = localStorage.getItem("user2").split(",");
-  let user3 = localStorage.getItem("user3").split(",");
-  let user4 = localStorage.getItem("user4").split(",");
-  let user5 = localStorage.getItem("user5").split(",");
+  const classes = useStyles();
+
+  const [modalStyle] = useState(getModalStyle);
+  const [open, setOpen] = useState(false);
+  const [itemUrl, setItemUrl] = useState("");
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  let Me = localStorage.getItem("Me").split(",");
+  let Euijin = localStorage.getItem("Euijin").split(",");
+  let Sinhyeok = localStorage.getItem("Sinhyeok").split(",");
+  let Hyeonjun = localStorage.getItem("Hyeonjun").split(",");
+  let Jungho = localStorage.getItem("Jungho").split(",");
+  let Junhee = localStorage.getItem("Junhee").split(",");
   let noUser = localStorage.getItem("noUser").split(",");
 
   const cardOwner = () => {
     cards.forEach(card => {
-      if (user0.includes(card.id.toString())) {
-        card.currentOwner = "user0";
-      } else if (user1.includes(card.id.toString())) {
-        card.currentOwner = "user1";
-      } else if (user2.includes(card.id.toString())) {
-        card.currentOwner = "user2";
-      } else if (user3.includes(card.id.toString())) {
-        card.currentOwner = "user3";
-      } else if (user4.includes(card.id.toString())) {
-        card.currentOwner = "user4";
-      } else if (user5.includes(card.id.toString())) {
-        card.currentOwner = "user5";
+      if (Me.includes(card.id.toString())) {
+        card.currentOwner = "Me";
+      } else if (Euijin.includes(card.id.toString())) {
+        card.currentOwner = "Euijin";
+      } else if (Sinhyeok.includes(card.id.toString())) {
+        card.currentOwner = "Sinhyeok";
+      } else if (Hyeonjun.includes(card.id.toString())) {
+        card.currentOwner = "Hyeonjun";
+      } else if (Jungho.includes(card.id.toString())) {
+        card.currentOwner = "Jungho";
+      } else if (Junhee.includes(card.id.toString())) {
+        card.currentOwner = "Junhee";
       } else if (noUser.includes(card.id.toString())) {
         card.currentOwner = "noUser";
       }
@@ -59,7 +106,7 @@ const CreateCardButton = () => {
 
     axios
       .post(
-        `https://api.luniverse.io/tx/v1.0/transactions/mint`,
+        `https://api.luniverse.net/tx/v1.0/transactions/mint`,
         {
           from: `${Config.walletAddress.pd}`,
           inputs: {
@@ -84,6 +131,7 @@ const CreateCardButton = () => {
 
         let pos = noUserCards.indexOf(cardId);
         let removedItem = noUserCards.splice(pos, 1);
+        setItemUrl(removedItem[0].url);
         console.log(noUserCards);
         console.log(removedItem[0].id);
 
@@ -95,19 +143,45 @@ const CreateCardButton = () => {
         localStorage.setItem("noUser", noUserCardsId);
 
         let newArray = [];
-        user0 = localStorage.getItem("user0").split(",");
-        newArray.push(user0);
+        Me = localStorage.getItem("Me").split(",");
+        newArray.push(Me);
         newArray.push(removedItem[0].id);
-        localStorage.setItem("user0", newArray);
+        localStorage.setItem("Me", newArray);
         alert(`카드 발행에 성공했습니다`);
-        window.location.href = `http://localhost:3000/player/${removedItem[0].id}`;
+
+        setOpen(true);
+        // window.location.href = `http://localhost:3000/player/${removedItem[0].id}`;
       })
       .catch(() => {
         alert("카드 발행에 실패했습니다!");
       });
   };
-
-  return <Button text={"카드 발행"} onClick={onClick} size={"buyCard"} />;
+  console.log(itemUrl);
+  return (
+    <div>
+      <Button
+        text={"카드 발행"}
+        onClick={onClick}
+        size={"buyCard"}
+        borderRadius={"2%"}
+      />
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={open}
+        onClose={handleClose}>
+        <div style={modalStyle} className={classes.paper}>
+          <CardDetail className={classes.detail} bgPhoto={itemUrl} />
+          <Link to={"/profile/Me"}>
+            <Button
+              size={"buyCard"}
+              text={"앨범으로 가기"}
+              className={classes.button}></Button>
+          </Link>
+        </div>
+      </Modal>
+    </div>
+  );
 };
 
 export default CreateCardButton;

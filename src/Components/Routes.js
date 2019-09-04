@@ -5,6 +5,7 @@ import Album from "../Routes/Album";
 import Market from "../Routes/Market";
 import Tickets from "../Routes/Tickets";
 import Test from "../Routes/Test";
+import Match from "../Routes/Match";
 import CardDetail from "../Components/CardDetail";
 
 const LoggedInRoutes = () => (
@@ -16,6 +17,7 @@ const LoggedInRoutes = () => (
     <Route path="/player/:playerId" component={CardDetail} />
     <Route path="/album/:playerId" component={CardDetail} />
     <Route path="/profile/:username" component={Album} />
+    <Route path="/match" component={Match} />
   </Switch>
 );
 

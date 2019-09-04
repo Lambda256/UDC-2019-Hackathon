@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+// linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)),
+
 const Container = styled.div`
   position: relative;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)),
-    url(${props => props.bgPhoto});
+  background-image: url(${props => props.bgPhoto});
   background-size: cover;
   border-radius: ${props => props.borderRadius};
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.08);
@@ -16,34 +17,34 @@ const Container = styled.div`
   justify-content: space-between;
   padding: 20px;
   border-bottom: 5px solid ${props => props.borderBottomColor};
-  height: 430px;
+  height: 460px;
   width: ${props => props.width};
 `;
 
-const Content = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  color: white;
-  margin-top: 40px;
-  margin-bottom: 20px;
-`;
+// const Content = styled.div`
+//   width: 100%;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: flex-end;
+//   color: white;
+//   margin-top: 40px;
+//   margin-bottom: 20px;
+// `;
 
-const ContentColumn = styled.div``;
+// const ContentColumn = styled.div``;
 
-const Title = styled.span`
-  font-size: 24px;
-  font-weight: 900;
-  color: white;
-`;
+// const Title = styled.span`
+//   font-size: 24px;
+//   font-weight: 900;
+//   color: white;
+// `;
 
-const Subtitle = styled.span`
-  margin-top: 8px;
-  font-size: 14px;
-  display: block;
-  color: white;
-`;
+// const Subtitle = styled.span`
+//   margin-top: 8px;
+//   font-size: 14px;
+//   display: block;
+//   color: white;
+// `;
 
 const IconContainer = styled.div`
   cursor: pointer;
@@ -59,10 +60,10 @@ const Top = styled.div`
   z-index: 0;
 `;
 
-const TitleContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
+// const TitleContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+// `;
 
 const CardUnit = ({
   title,
@@ -80,22 +81,22 @@ const CardUnit = ({
     borderBottomColor={borderBottomColor}
     borderRadius={borderRadius}
     width={width}>
-    <Top>
+    {/* <Top>
       {iconName && (
         <IconContainer color={iconColor}>
           <i className={`${iconName} fa-${iconSize}x`} />
         </IconContainer>
       )}
-    </Top>
+    </Top> */}
 
-    {(title || subtitle) && (
+    {/* {(title || subtitle) && (
       <Content>
         <ContentColumn>
           <TitleContainer>{title && <Title>{title}</Title>}</TitleContainer>
           {subtitle && <Subtitle>{subtitle}</Subtitle>}
         </ContentColumn>
       </Content>
-    )}
+    )} */}
   </Container>
 );
 

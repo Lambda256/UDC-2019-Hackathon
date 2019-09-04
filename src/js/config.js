@@ -1,29 +1,30 @@
 module.exports = {
   Config: {
-    chainId: "5300575914426995782",
+    chainId: "1926118690799557473",
     mt: {
-      symbol: "FT9754"
+      symbol: "LN"
     },
     st: {
-      symbol: "zz363"
+      symbol: "BCC"
     },
     walletAddress: {
-      pd: "0xfa3d18ad3b0333dda5ece35e7b25078c0ecdc552",
-      user: "0x77679c42bfbd7a568000aea5d509ce6dcc485119"
+      pd: "0x08657343fa7c24f457cf8d7c2427613b3a873c2c",
+      user: "0x9767cbbaad31c13aae9b2767e98335224fc523f8",
+      user2: "0xc8477875e9146a5cf36c197cfe60bca18dc8db38"
     },
     dapp: {
-      apiKey: "sHxhZKFCrHP77spAWN53izMxfU27NmGgZ6ob9tcKs4WE75qGM8eeSU9nJSWwhCGN"
+      apiKey: "9mT8pMN7dQPPfXhJEidir5G9Ja7cLkM8xYVNLajUnT4bWoFqMKDUCgtPiQ75QkZk"
     },
     txActionName: {
-      like: "like2",
+      like: "like",
       funding: "mint",
-      purchase: "purchase2",
+      purchase: "purchase",
       getOwner: "getOwner",
       setOwner: "setOwner",
       getCardStruct_1: "getCardStruct_1",
       buyCards: "buyCards",
       ownerOf: "ownerOf",
-      balanceOf: "balanceOf2",
+      balanceOf: "balanceOf",
       setOwners: "setOwners",
       getOwners: "getOwners"
     },

@@ -9,7 +9,7 @@ const CardButton = ({ value, user, price }) => {
     const user = e.target.name;
 
     let sender = user;
-    let receiver = "user0";
+    let receiver = "Me";
 
     const sendersItems = localStorage.getItem(sender).split(",");
     const receiversItems = localStorage.getItem(receiver).split(",");
@@ -21,7 +21,7 @@ const CardButton = ({ value, user, price }) => {
     console.log(CardId);
     console.log(sender);
 
-    if (user !== "user0") {
+    if (user !== "Me") {
       if (sendersItems.includes(CardId)) {
         let pos = sendersItems.indexOf(CardId);
         let removedItem = sendersItems.splice(pos, 1);
@@ -38,7 +38,7 @@ const CardButton = ({ value, user, price }) => {
 
     axios
       .post(
-        `https://api.luniverse.io/tx/v1.0/transactions/buyCards`,
+        `https://api.luniverse.net/tx/v1.0/transactions/buyCards`,
         {
           from: `${Config.walletAddress.user}`,
           inputs: {
@@ -60,7 +60,7 @@ const CardButton = ({ value, user, price }) => {
 
     axios
       .post(
-        `https://api.luniverse.io/tx/v1.0/transactions/purchase2`,
+        `https://api.luniverse.net/tx/v1.0/transactions/purchase`,
         {
           from: `${Config.walletAddress.user}`,
           inputs: {

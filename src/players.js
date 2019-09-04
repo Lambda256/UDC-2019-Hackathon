@@ -12,7 +12,7 @@ const cards = [
     currentOwner: "",
     price: 500,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fk9Hl2%2FbtqxXI7cTvm%2FMiRiGT6zbkNduKvWJxLlG1%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FccCb1z%2Fbtqx4rD5583%2FBXXQ9csSacEPhzLkkR7QwK%2Fimg.png",
     event: ""
   },
   {
@@ -28,7 +28,7 @@ const cards = [
     currentOwner: "",
     price: 200,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FCrDIC%2FbtqxVzDn2pQ%2FbGYtNdyDZv8MrviuT6Ng41%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FFJk3d%2Fbtqx1Avcjly%2FFbfDxceRQEw5sFRcZ9R5sK%2Fimg.png",
     event: ""
   },
   {
@@ -44,7 +44,7 @@ const cards = [
     currentOwner: "",
     price: 100,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FHeAh3%2FbtqxVzXGsqJ%2FTOhVE2Beu4uoLYwUZ2NmI1%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FMoLgl%2Fbtqx1hbBF7v%2FhNKKyarDl7bMt0Yto0iRMk%2Fimg.png",
     event: ""
   },
   {
@@ -60,7 +60,7 @@ const cards = [
     currentOwner: "",
     price: 700,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2F32k6q%2FbtqxXa3VDFL%2FBqAEU3P6psLOSo68spJbR1%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FL6F3E%2Fbtqx1ZVVhv6%2FIomnNsHdTHjiagzu5DFU90%2Fimg.png",
     event: ""
   },
   {
@@ -76,7 +76,7 @@ const cards = [
     currentOwner: "",
     price: 1000,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fba2AXv%2FbtqxWKYIDCF%2Fm1WxSbvVicixMUKSyX2tSk%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FvF5Cx%2Fbtqx1Z9pMk5%2FRKWREk418d7yCb4nZHXvQK%2Fimg.png",
     event: ""
   },
   {
@@ -92,7 +92,7 @@ const cards = [
     currentOwner: "",
     price: 300,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fc1Pgaq%2FbtqxVesJF6y%2FX9SoeYTC6vUtiZYykrj310%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FdgMRlI%2Fbtqx3UmfCMb%2FMHwMSd3ekhP4BWIaY1f46k%2Fimg.png",
     event: ""
   },
   {
@@ -108,7 +108,7 @@ const cards = [
     currentOwner: "",
     price: 200,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fco7P16%2FbtqxXboff8h%2FQPm6jhojJFRLKpvJk8T8Ek%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fclk48w%2Fbtqx1f5ZDXE%2FkKksTJz44iYk8q1dZ9sYhk%2Fimg.png",
     event: ""
   },
   {
@@ -124,23 +124,23 @@ const cards = [
     currentOwner: "",
     price: 800,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FkE488%2FbtqxWKqTm9W%2F7mQdYMsu2gKEIuuIlsf3Bk%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fl23Nm%2FbtqxZTvCzBW%2F3HVfScwT2ks1pCUNgoF2Rk%2Fimg.png",
     event: ""
   },
   {
     id: 8,
-    playername: "Song Jin Kyu",
+    playername: "Yeom Ki Hun",
     teamname: "Suwon Samsung BlueWings",
     position: "MF",
-    uniformNumber: 6,
-    weight: 70,
-    height: 177,
-    birthday: "1997-07-12",
+    uniformNumber: 26,
+    weight: 78,
+    height: 182,
+    birthday: "1993-03-30",
     firstOwner: "0",
     currentOwner: "",
     price: 900,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2F561ol%2FbtqxVBHWa3L%2FDYuFaQmZqqIrzAzitbq7h1%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fen4DXY%2Fbtqx1ziSJEW%2FkdUTprad63GpMtkmGdeJIK%2Fimg.png",
     event: ""
   },
   {
@@ -156,7 +156,7 @@ const cards = [
     currentOwner: "",
     price: 400,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fc9fw9x%2FbtqxVAWAV5V%2FIjZxH9VXmRdMyNDk2LYof1%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FdqhILT%2Fbtqx0rZQLKE%2FdKOWkCRW5CCwIQEyKiWBy0%2Fimg.png",
     event: ""
   },
   {
@@ -172,7 +172,7 @@ const cards = [
     currentOwner: "",
     price: 700,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FcSLr3x%2FbtqxUKk33Pr%2FPOavHGP0PKrRdB4khCkKz0%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FDM4Qd%2Fbtqx1zQIrEs%2Fv5Uf96pBenXU3fKDAqrQak%2Fimg.png",
     event: ""
   },
   {
@@ -188,7 +188,7 @@ const cards = [
     currentOwner: "",
     price: 700,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FrSHlu%2FbtqxWJ6zG5u%2FsVAwfTi6FWKcMdYuIx8hZk%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FyA7Zu%2Fbtqx1fZbjvE%2Fve6sgeDstYayM57awsWV2k%2Fimg.png",
     event: ""
   },
   {
@@ -220,7 +220,7 @@ const cards = [
     currentOwner: "",
     price: 700,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FOugIo%2FbtqxVBnGt5W%2FDkbuCT0SCskHbdzE9WDsY0%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FccCb1z%2Fbtqx4rD5583%2FBXXQ9csSacEPhzLkkR7QwK%2Fimg.png",
     event: ""
   },
   {
@@ -348,7 +348,7 @@ const cards = [
     currentOwner: "",
     price: 700,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FbTLs4a%2FbtqxUKek7QY%2FGgQjkhB834j0zXkwOOXDik%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2F2uNos%2FbtqxZpOKoKG%2FtzcOLSjLGKsgD6AvHWKk50%2Fimg.png",
     event: ""
   },
   {
@@ -364,7 +364,7 @@ const cards = [
     currentOwner: "",
     price: 700,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FdalyLA%2FbtqxTKMFTpA%2Fu87baO6Mkruzphe3fqta70%2Fimg.jpg",
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FbRnort%2Fbtqx2U7PLVu%2FrYKikELM7bWy3wkgbKWjZK%2Fimg.png",
     event: ""
   },
   // 다른 선수 카드
@@ -381,7 +381,7 @@ const cards = [
     currentOwner: "",
     price: 700,
     url:
-      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FbLdVi7%2FbtqxZqM1YTC%2Fgtgh0BT43hBJGFM9EID3MK%2Fimg.jpg",
+      "https://k.kakaocdn.net/dn/nsZL5/btqx2TOBDil/4mL9BdhNDvSFuWt4vM6GO1/img.jpg",
     event: ""
   },
   {

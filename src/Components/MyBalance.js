@@ -15,7 +15,7 @@ const MyBalance = ({ margin }) => {
   const getBalance = async () => {
     const balance = await axios
       .get(
-        `https://api.luniverse.io/tx/v1.0/wallets/${Config.walletAddress.user}/${Config.mt.symbol}/${Config.st.symbol}/balance`,
+        `https://api.luniverse.net/tx/v1.0/wallets/${Config.walletAddress.user}/${Config.mt.symbol}/${Config.st.symbol}/balance`,
         {
           headers: {
             Authorization: `Bearer ${Config.dapp.apiKey}`
@@ -29,7 +29,9 @@ const MyBalance = ({ margin }) => {
 
   getBalance();
 
-  return <Text margin={margin}>{balance / 100000000000000000} BLC</Text>;
+  return (
+    <Text margin={margin}>{Math.round(balance / 100000000000000000)} BLC</Text>
+  );
 };
 
 export default MyBalance;

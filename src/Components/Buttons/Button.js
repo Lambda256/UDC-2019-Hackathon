@@ -24,16 +24,21 @@ const getSize = size => {
 const StyledButton = styled.button`
   background: linear-gradient(45deg, #2196f3 30%, #21cbf3 90%);
   border: 0;
-  border-radius: 2%;
   color: white;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
   ${props => getSize(props.size)}
+  border-radius: ${props => props.borderRadius}
 `;
 
-const Button = ({ text, onClick, size = "sm", value, user }) => (
-  <StyledButton onClick={onClick} size={size} value={value} name={user}>
+const Button = ({ text, onClick, size = "sm", value, user, borderRadius }) => (
+  <StyledButton
+    onClick={onClick}
+    size={size}
+    value={value}
+    name={user}
+    borderRadius={borderRadius}>
     {text}
   </StyledButton>
 );

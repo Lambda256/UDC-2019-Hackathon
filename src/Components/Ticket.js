@@ -66,11 +66,11 @@ export default props => {
     <Card className={classes.card}>
       <CardContent className={classes.content}>
         <Typography component="h4" variant="h4">
-          09.05
+          {props.date}
         </Typography>
 
         <Typography component="h4" variant="h4">
-          19:00
+          {props.time}
         </Typography>
         <div className={classes.team}>
           <div className={classes.imageContainer}>
@@ -103,7 +103,7 @@ export default props => {
         </div>
 
         <Typography component="h6" variant="h6" className={classes.smallText}>
-          수원종합운동장
+          {props.stadium}
         </Typography>
       </CardContent>
 

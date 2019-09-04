@@ -48,12 +48,10 @@ const TicketButton = () => {
 
   const onClick = () => {
     alert("구매하시겠습니까?");
-    console.log("Buy Ticket");
-    setOpen(true);
 
     axios
       .post(
-        `https://api.luniverse.io/tx/v1.0/transactions/setOwners`,
+        `https://api.luniverse.net/tx/v1.0/transactions/setOwners`,
         {
           from: `${Config.walletAddress.pd}`,
           inputs: {
@@ -69,6 +67,8 @@ const TicketButton = () => {
       )
       .then(() => {
         alert("티켓을 구입하였습니다.");
+        window.location.href = `http://localhost:3000/match`;
+        // setOpen(true);
       })
       .catch(() => {
         alert("티켓 구입에 실패했습니다!");
@@ -76,7 +76,7 @@ const TicketButton = () => {
 
     axios
       .post(
-        `https://api.luniverse.io/tx/v1.0/transactions/purchase2`,
+        `https://api.luniverse.net/tx/v1.0/transactions/purchase`,
         {
           from: `${Config.walletAddress.user}`,
           inputs: {
@@ -102,7 +102,12 @@ const TicketButton = () => {
 
   return (
     <div>
-      <Button text={"예매하기"} onClick={onClick} size={"buyTicket"} />
+      <Button
+        text={"예매하기"}
+        onClick={onClick}
+        size={"buyTicket"}
+        borderRadius={0}
+      />
       <Modal
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
