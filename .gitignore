@@ -1,3 +1,4 @@
 
 .DS_Store
 FL/data/chain.bin
+node_modules/*
