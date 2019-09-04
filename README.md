@@ -64,6 +64,7 @@ UDC와 루니버스는 이런 물음에 답하는 개발자를 만나고자 ‘�
 12. [VMO](https://github.com/Lambda256/UDC-2019-Hackathon/tree/vmo)
 
 ## Contract deploy API
+domain: https://api.luniverse.net
 
 ### Contracts [/be/chains/contracts]
 #### Contract 등록 [POST /be/chains/{chainId}/contracts]
