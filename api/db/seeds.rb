@@ -153,7 +153,7 @@ token3.images.attach([{
 }])
 
 token4 = PrivateToken.create!(
-  owner_id: user3.id,
+  owner_id: user4.id,
   symbol: 'EMILEE',
   initial_price: 100.0,
   charity: 'wwf',
@@ -177,7 +177,7 @@ token4.images.attach([{
 }])
 
 token5 = PrivateToken.create!(
-  owner_id: user3.id,
+  owner_id: user5.id,
   symbol: 'SWP',
   initial_price: 30.0,
   charity: 'unhcr',
@@ -198,7 +198,7 @@ token5.images.attach([{
 }])
 
 token6 = PrivateToken.create!(
-  owner_id: user3.id,
+  owner_id: user6.id,
   symbol: 'MATHEW',
   initial_price: 10.0,
   charity: 'national_trust',
@@ -222,19 +222,30 @@ token6.images.attach([{
   user1.donate_and_buy!(token1)
   user1.donate_and_buy!(token2)
   user1.donate_and_buy!(token3)
+  user1.donate_and_buy!(token6)
 }
-30.times { user2.donate_and_buy!(token1) }
+30.times {
+  user2.donate_and_buy!(token1)
+  user1.donate_and_buy!(token5)
+}
 10.times {
   user2.donate_and_buy!(token3)
   user3.donate_and_buy!(token1)
+  user1.donate_and_buy!(token4)
 }
 
 token1 = PrivateToken.find(1)
 token2 = PrivateToken.find(2)
 token3 = PrivateToken.find(3)
+token4 = PrivateToken.find(4)
+token5 = PrivateToken.find(5)
+token6 = PrivateToken.find(6)
 user1 = User.find(1)
 user2 = User.find(2)
 user3 = User.find(3)
+user4 = User.find(4)
+user5 = User.find(5)
+user6 = User.find(6)
 
 # Pending request
 RedeemRequest.create!(private_token_id: token2.id, owner_id: token2.owner_id, sender_id: user1.id, amount: 1)
