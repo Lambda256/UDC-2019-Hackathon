@@ -434,14 +434,32 @@ function autocomplete(arr) {
         success: function (data) {
           //console.log(JSON.stringify(data));
           // [for test] insert response
-          insertResponse(ownerAddr, reqTime, targetIDs, callback);
+          // insertResponse(ownerAddr, reqTime, targetIDs, callback);
+          // get Response
+          // 지도 초기화
+          // 지도 중심 계산
+          let lat_center = parseFloat(targets[0][6]);
+          let long_center = parseFloat(targets[0][7]);
+          // 지도 중심 이동
+          mymap.setView([lat_center,long_center], 14);
+          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            // 용환 mapbox public accesToken (이대로 두면 됨)
+            accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
+          }).addTo(mymap);
+          markersLayer.clearLayers();
+          mymap.spin(true);
+          
+          setTimeout(function () {getResponse(userAddr, reqTime, callback)}, 15000);
         },
         error: function(){
           console.log("Cannot get data");
         }
     });
   }
-
+/*
   function insertResponse(from, reqTime, targetIDs, callback) {
     var bikeNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     var querydata = '{"from": "' + from + '", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b'
@@ -459,13 +477,10 @@ function autocomplete(arr) {
         success: function (data) {
           //console.log(JSON.stringify(data));
           // get Response
-
           // 지도 초기화
-
           // 지도 중심 계산
           let lat_center = parseFloat(targets[0][6]);
           let long_center = parseFloat(targets[0][7]);
-
           // 지도 중심 이동
           mymap.setView([lat_center,long_center], 14);
           L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -475,7 +490,6 @@ function autocomplete(arr) {
             // 용환 mapbox public accesToken (이대로 두면 됨)
             accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
           }).addTo(mymap);
-
           markersLayer.clearLayers();
           mymap.spin(true);
           setTimeout(function () {getResponse(userAddr, reqTime, callback)}, 3000);
@@ -485,10 +499,10 @@ function autocomplete(arr) {
         }
     });
   }
-
+*/
   function getResponse(from, reqTime, callback) {
-    var querydata = '{"from": "' + from + '", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b' + reqTime + '"}}'
-
+    var querydata = '{"from": "' + from + '", "inputs": {"requestID": "' + from + reqTime + '"}}'
+    console.log("getresponse",querydata);
     return $.ajax({
         url: "https://api.luniverse.net/tx/v1.0/transactions/getResponse" + version,
         beforeSend: function (xhr) {
