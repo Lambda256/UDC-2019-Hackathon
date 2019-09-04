@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_04_075704) do
+ActiveRecord::Schema.define(version: 2019_09_04_093200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,19 @@ ActiveRecord::Schema.define(version: 2019_09_04_075704) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "orders", force: :cascade do |t|
+    t.bigint "private_token_id", null: false
+    t.bigint "maker_id", null: false
+    t.bigint "taker_id"
+    t.decimal "price", null: false
+    t.decimal "amount", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["maker_id"], name: "index_orders_on_maker_id"
+    t.index ["private_token_id", "price", "created_at"], name: "index_orders_on_private_token_id_and_price_and_created_at"
+    t.index ["taker_id"], name: "index_orders_on_taker_id"
+  end
+
   create_table "private_tokens", force: :cascade do |t|
     t.string "symbol", null: false
     t.bigint "owner_id", null: false
@@ -51,6 +64,20 @@ ActiveRecord::Schema.define(version: 2019_09_04_075704) do
     t.datetime "updated_at", null: false
     t.index ["owner_id"], name: "index_private_tokens_on_owner_id", unique: true
     t.index ["symbol"], name: "index_private_tokens_on_symbol", unique: true
+  end
+
+  create_table "redeem_requests", force: :cascade do |t|
+    t.bigint "private_token_id", null: false
+    t.bigint "owner_id", null: false
+    t.bigint "sender_id", null: false
+    t.bigint "amount", null: false
+    t.boolean "signed_by_owner", default: false
+    t.boolean "signed_by_sender", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_redeem_requests_on_owner_id"
+    t.index ["private_token_id"], name: "index_redeem_requests_on_private_token_id"
+    t.index ["sender_id"], name: "index_redeem_requests_on_sender_id"
   end
 
   create_table "transactions", force: :cascade do |t|
