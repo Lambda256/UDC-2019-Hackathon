@@ -27,6 +27,14 @@
     width: 240px;
     height: 32px;
     border: solid 1px #4f4f4f;
+
+    &::selection{
+      background: #ee0804;
+    }
+
+    &::-moz-selection{
+      background: #ee0804;
+    }
   }
 
   .ant-input-suffix {
