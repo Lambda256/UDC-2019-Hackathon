@@ -4,7 +4,7 @@ import moment from "moment";
 import numeral from "numeral";
 import * as d3 from "d3";
 
-var margin = { top: 40, right: 20, bottom: 30, left: 50 };
+var margin = { top: 40, right: 20, bottom: 30, left: 40 };
 
 const Chart = props => {
   const { width, height, showAxis, graphData } = props;
@@ -41,11 +41,12 @@ const Chart = props => {
 
         const y = d3
           .scaleLinear()
-          .domain([0, d3.max(data, d => d.value)])
+          .domain(d3.extent(data, d => d.value))
+          // .domain([0, d3.max(data, d => d.value)])
           // .domain([0, 260])
           .nice()
-          .range([height - margin.bottom, 0]);
-          // .range([height - margin.bottom, 0]);
+          // .range([height + margin.bottom, margin.top]);
+          .range([height - margin.bottom, margin.top]);
 
         var initialarea = d3
           .area()
@@ -76,12 +77,12 @@ const Chart = props => {
         const xAxis = g =>
           g
             .attr("color", "#fff")
-            // .attr("color", "#ee0804")
+            // .attr("color", "#000")
             .attr("transform", `translate(0,${height - margin.bottom})`)
             .call(
               d3
                 .axisBottom(x)
-                .ticks(width / 80)
+                .ticks(width / 200)
                 .tickSizeOuter(0)
             );
 
@@ -89,8 +90,8 @@ const Chart = props => {
           g
             .attr("color", "#fff")
             // .attr("color", "#ee0804")
-            .attr("transform", `translate(${margin.left},0)`)
-            .call(d3.axisLeft(y))
+            .attr("transform", `translate(${margin.left}, 0)`)
+            .call(d3.axisLeft(y).ticks(height / 50))
             .call(g => g.select(".domain").remove())
             .call(g =>
               g
