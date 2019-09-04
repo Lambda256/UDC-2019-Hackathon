@@ -38,7 +38,7 @@
       <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
         <div class="uk-offcanvas-bar" style="font-family: 'Noto Sans KR', sans-serif;">
           <button class="uk-offcanvas-close" type="button" uk-close></button>
-          <h3 style="margin-bottom:5px;">YEONJAE</h3>
+          <h3 style="margin-bottom:5px;">YEONJAE<span id="refresh" uk-icon="refresh" style="margin-left:5px;"></span></h3>
           <span class="uk-label" style="background-color:#ffd250;color:#000;" onclick="updateBalance()">
             <span uk-icon="bolt"></span><span id="balance"></span>
           </span>
@@ -48,10 +48,14 @@
           <p>
             최근 결제/보상 내역을 확인하세요
           </p>
-          <ul class="uk-list uk-list-divider">
-              <li>List item 1</li>
-              <li>List item 2</li>
-              <li>List item 3</li>
+          <ul id="history" class="uk-list uk-list-divider">
+              <li id="log1"></li>
+              <li id="log2"></li>
+              <li id="log3"></li>
+              <li id="log4"></li>
+              <li id="log5"></li>
+              <li id="log6"></li>
+              <li id="log7"></li>
           </ul>
         </div>
       </div>

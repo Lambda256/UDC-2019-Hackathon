@@ -234,6 +234,13 @@ function autocomplete(arr) {
      alert("return to 2386");
    });
 
+   // refresh button listener
+   document.getElementById("refresh").addEventListener("click", function(e) {
+     getRecord().done(function(msg){
+       updateHistory(msg.data.res);
+     });
+   });
+
   // < Get departure & arrival & targets >
   var departure, arrival, targets;
 
@@ -361,6 +368,33 @@ function autocomplete(arr) {
     dist = computeDistance(departure,arrival); // km
     time = dist / 10; // hour (10km/h)
     return Math.round(time);
+  }
+
+  // Update mypage history
+  function updateHistory(data) {
+    console.log("History", data);
+    for (var i = 1; i <= 7; i++) {
+      var N = data[0].length;
+      var icon = '';
+      var label = '';
+      var amount = data[1][N-i];
+      var time = data[2][N-i];
+
+      // Check log type and set icon
+      if (data[0][N-i] == 2) {
+        icon = '<span uk-icon="plus-circle" style="margin-right:5px;"></span>';
+        label = '<span class="uk-label" style="background-color:#ffd250;color:#fff;font-size: 0.8rem;">보상 ' + amount +'</span>'
+      } else if (data[0][N-i] == 1) {
+        icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
+        label = '<span class="uk-label" style="background-color:#0c7037;color:#fff;font-size: 0.8rem;">사용료 ' + amount +'</span>'
+      } else {
+        icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
+        label = '<span class="uk-label" style="background-color:#ff1500;color:#fff;font-size: 0.8rem;">대여료 ' + amount +'</span>'
+      }
+
+      // Print icon - amount - time
+      document.getElementById("log"+i).innerHTML= icon + label + " " + timeStampToTime(time);
+    }
   }
 
   /*
@@ -643,4 +677,16 @@ function queryInfos() {
     infos = [d.getMonth()+1, Math.round(weather[0]), Math.round(weather[1]), Math.round(weather[2]), Math.round(weather[3]), Math.round(weather[4]), new Date(datestring).getDay()];
     console.log("infos", infos)
    });
+}
+
+function timeStampToTime(timestamp) {
+  var date = new Date(parseInt(timestamp));
+  var year = date.getFullYear();
+  var month = ("0"+(date.getMonth()+1)).slice(-2);
+  var day = ("0"+date.getDate()).slice(-2);
+  var hours = date.getHours();
+  var minutes = "0" + date.getMinutes();
+  var seconds = "0" + date.getSeconds();
+  result = year + "." + month + "." + day + " " + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  return result;
 }

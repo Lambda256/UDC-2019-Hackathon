@@ -160,7 +160,7 @@ function getRecord() {
       processData: false,
       data: querydata,
       success: function (data) {
-        console.log(JSON.stringify(data));
+        //console.log(JSON.stringify(data));
         //alert("SUCCESS");
       },
       error: function(code) {
