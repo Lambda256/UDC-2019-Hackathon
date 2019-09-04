@@ -36,7 +36,7 @@
 .bg-white{ background-color: white; }
 .photo3 {width: 200px; margin: 2px 2px 2px 0; height: 200px; object-fit: cover; border-radius: 50%;}
 .photo4 {width: 200px; margin: 2px 2px 2px 0; height: 200px; object-fit: cover; border: 1px solid #ffc600;}
-.photo5 {width: 100%; margin: 2px 2px 2px 0; height: 200px; object-fit: cover; 
+.photo5 {margin: 2px 2px 2px 0; height: 200px; object-fit: cover; 
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0, 0, 0, .5)), color-stop(50%, transparent), color-stop(63%, transparent), to(rgba(0, 0, 0, .5)));
   background: linear-gradient(to bottom, rgba(0, 0, 0, .5) 0, transparent 50%, transparent 63%, rgba(0, 0, 0, .5) 100%);
 }

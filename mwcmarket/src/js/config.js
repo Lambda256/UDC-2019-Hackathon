@@ -2,25 +2,25 @@ module.exports = {
   Config : {
     chainId: '5300575914426995782',
     mt: {
-      symbol: 'FT9754',
+      symbol: 'MWC',
     },
     st: {
-      symbol: 'R1908',
+      symbol: 'MWRT',
     },
     walletAddress: {
-      pd: '0x12368a52a75aaf4aa2dbdad636be57690141e093',
-      user: '0xbfb07e725f66b2ac1187a5b134fbcf4a3f3beaf0',
-      market: '0x5afd0deaff628bfc66ffe9fbdf6e381d4278ce24'
+      // pd: '0x12368a52a75aaf4aa2dbdad636be57690141e093',
+      user: '0xf99c71b2cd6e4edeb115cefb409375735a5ff118',
+      market: '0x88efddaf6053c06cfe9c254d4952e319ddae3cba'
     },
     txActionName: {
-      transfer2PDA: 'transfer2PDA',
-      purchaseItem: 'purchaseItemV1',
-      purchaseList: 'purchaseListV1',
+      transfer2MWCA: 'transfer2MWCA',
+      purchaseItem: 'purchaseItem',
+      purchaseList: 'purchaseList',
       balance: 'balance',
       getOwner: 'getOwner',
       setOwner: 'setOwner'
     },
     userName: 'Gabriel',
-    apiKey: 'XVgsnDtJLUTZhVh112swjeKyqGQDDgWAL2rJTtSdD2PZhsypjifapM8nFZVWCV2J'
+    apiKey: 'sYjfGNX21yT4UUPMYczotVdAXAsUSjLQkpPpbkyN8qPZywgyoWqszkJiDuDXqMM9'
   }
 }

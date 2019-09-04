@@ -22,16 +22,7 @@
         class="portfolio-image detail-04"
         style="z-index: -1;"
       ></div>
-      <div
-        v-else-if="this.$route.params.idolId == '5'"
-        class="portfolio-image detail-05"
-        style="z-index: -1;"
-      ></div>
-      <div
-        v-else-if="this.$route.params.idolId == '6'"
-        class="portfolio-image detail-06"
-        style="z-index: -1;"
-      ></div>
+     
       <div class="pt-5 px-4 px-md-5">
         <div class="py-md-4 py-xl-5 mx-lg-5">
           <div class="portfolio-caption">
@@ -62,22 +53,6 @@
               SUPER DEVELOPER
               <br />SPECIAL PLANNER
               <br />GONJOY
-            </div>
-            <div
-              v-else-if="this.$route.params.idolId == '5'"
-              class="text-tiny t_white font-weight-400"
-            >
-              SO SWEET BOYS
-              <br />SPECIAL SWEET VOICE
-              <br />FRONT ATTACK
-            </div>
-            <div
-              v-else-if="this.$route.params.idolId == '6'"
-              class="text-tiny t_white font-weight-400"
-            >
-              냉동고를 준비하세요,
-              <br />당신의 고막이 녹아버릴지도 모르니까.
-              <br />Morning Glory
             </div>
           </div>
         </div>
@@ -178,22 +153,6 @@ export default {
           price: "11900",
           desc: "",
           like: "4"
-        },
-        {
-          id: "5",
-          name: "Front attack",
-          message: "Front Attack 데뷔 응원 프로젝트에 참여해보세요!",
-          price: "11900",
-          desc: "",
-          like: "5"
-        },
-        {
-          id: "6",
-          name: "Morning Glory",
-          message: "Morning Glory 스페셜 화보집 프로젝트에 참여해보세요!",
-          price: "11900",
-          desc: `아침 햇살같이 상큼한 멜로디로 ‘제 2의 아이유'를 꿈꾸고 있는 떠오르는 보컬. 청아한 목소리와 알 수 없는 강인함이 돋보이는 신인이다. 비공식 앨범 활동은 두 차례 진행한 것으로 알려졌으며, 소규모의 공연도 여러번 진행한 실력파로 알려져있다. 앞으로 많은 대중들에게 사랑받을 아티스트로 성장할 것이라는 평가가 계속해서 이어지고 있다.`,
-          like: "6"
         }
       ]
     };
@@ -218,7 +177,7 @@ export default {
   methods: {
     load() {
       this.axios
-        .get(`https://api.luniverse.io/tx/v1.0/histories?next=0`, {
+        .get(`https://api.luniverse.net/tx/v1.0/histories?next=0`, {
           headers: {
             Authorization: `Bearer ${this.apiKey}`,
             "products-Type": `application/json`
@@ -253,7 +212,7 @@ export default {
     purchase(productId) {
       this.axios
         .post(
-          `https://api.luniverse.io/tx/v1.0/transactions/${this.txActionName.transfer2PDA}`,
+          `https://api.luniverse.net/tx/v1.0/transactions/${this.txActionName.transfer2MWCA}`,
           {
             from: {
               userKey: "Gabriel",
@@ -261,7 +220,7 @@ export default {
             },
             inputs: {
               receiverAddress: this.walletAddress.market,
-              valueAmount: this.products[productId].price
+              valueAmount: this.products[productId].price * 1000000000000000000
             }
           },
           {
@@ -273,7 +232,7 @@ export default {
         .then(() => {
           this.axios
             .post(
-              `https://api.luniverse.io/tx/v1.0/transactions/${this.txActionName.purchaseItem}`,
+              `https://api.luniverse.net/tx/v1.0/transactions/${this.txActionName.purchaseItem}`,
               {
                 from: {
                   userKey: "APIAddress",
@@ -281,11 +240,11 @@ export default {
                 },
                 inputs: {
                   _userId: {
-                    userKey: "Celine",
+                    userKey: "Gabriel",
                     walletType: "LUNIVERSE"
                   },
                   _itemId: 1,
-                  _price: 100
+                  _price: this.products[productId].price * 1000000000000000000
                 }
               },
               {

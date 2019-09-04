@@ -36,6 +36,7 @@
 <script>
 import Header from "@/components/header";
 import { Config } from "../js/config";
+import BigNumber from "bignumber.js";
 
 export default {
   components: {
@@ -66,7 +67,7 @@ export default {
       return Config.txActionName;
     },
     products() {
-      return  [
+      return [
         {
           id: "1",
           name: "아이스 카페아메리카노 Tall"
@@ -82,16 +83,8 @@ export default {
         {
           id: "4",
           name: "Gonjoy"
-        },
-        {
-          id: "5",
-          name: "Front attack"
-        },
-        {
-          id: "6",
-          name: "Morning Glory"
         }
-      ]
+      ];
     }
   },
   mounted() {
@@ -101,7 +94,7 @@ export default {
     load() {
       this.axios
         .post(
-          `https://api.luniverse.io/tx/v1.0/transactions/${this.txActionName.purchaseList}`,
+          `https://api.luniverse.net/tx/v1.0/transactions/${this.txActionName.purchaseList}`,
           {
             from: {
               userKey: "Gabriel",
@@ -126,10 +119,23 @@ export default {
           var pTimes = response.data.data.res[4];
 
           for (var i = 0; i < pIds.length; i++) {
+            var date = new Date(pTimes[i] * 1000);
+
             this.History.push({
-              time: pTimes[i],
-              product: this.products[pIds[i]-1].name,
-              price: pPrices[i]
+              time:
+                date.getFullYear() +
+                "-" +
+                ("0" + date.getMonth()).substr(-2) +
+                "-" +
+                ("0" + date.getDate()).substr(-2) +
+                " " +
+                ("0" + date.getHours()).substr(-2) +
+                ":" +
+                ("0" + date.getMinutes()).substr(-2) +
+                ":" +
+                ("0" + date.getSeconds()).substr(-2),
+              product: this.products[pIds[i] - 1].name,
+              price: Math.trunc(BigNumber(pPrices[i]).div(BigNumber("10").pow(18)))
             });
           }
         })

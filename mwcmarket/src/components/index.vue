@@ -95,81 +95,29 @@
           </router-link>
 
           <router-link class="col-sm-6 col-lg-4 p-4" :to="{ name: 'detail', params: {idolId: 4} }">
-            <img src="@/assets/img/shinsegae50000.jpg" class="photo5" alt />
+            <img src="@/assets/img/bwg_logo_skyblue.png" width="300" alt />
             <div style="height: 30px;">&nbsp;</div>
             <div style="display: flow-root;">
               <span
                 class="font-weight-700 mb-2 f20 t_purple"
                 style="margin-top: -20px; float: right;"
-              >100,000 포인트</span>
+              >50,000 포인트</span>
             </div>
             <br />
             <div style="display: flow-root;">
               <span
                 class="font-weight-bold mb-2 f17"
                 style="margin-top: -20px; float: left;"
-              >신세계상품권 모바일교환권</span>
+              >휴가 교환권</span>
               <span
                 class="t_gry2 small mb-3"
                 style="margin-top: -15px; float: left;"
-              >&nbsp;ㅣ&nbsp;이마트, 신세계상품권</span>
+              >&nbsp;ㅣ&nbsp;뱅크웨어글로벌</span>
             </div>
             <div
               class="t_gry3 small"
               style=" text-align: left;"
-            >전국 이마트 매장내 설치된 상품권 교환 KIOSK에서 신세계 상품권으로 교환후 사용하실수 있습니다.</div>
-          </router-link>
-
-          <router-link class="col-sm-6 col-lg-4 p-4" :to="{ name: 'detail', params: {idolId: 5} }">
-            <img src="@/assets/img/shinsegae50000.jpg" class="photo5" alt />
-            <div style="height: 30px;">&nbsp;</div>
-            <div style="display: flow-root;">
-              <span
-                class="font-weight-700 mb-2 f20 t_purple"
-                style="margin-top: -20px; float: right;"
-              >100,000 포인트</span>
-            </div>
-            <br />
-            <div style="display: flow-root;">
-              <span
-                class="font-weight-bold mb-2 f17"
-                style="margin-top: -20px; float: left;"
-              >신세계상품권 모바일교환권</span>
-              <span
-                class="t_gry2 small mb-3"
-                style="margin-top: -15px; float: left;"
-              >&nbsp;ㅣ&nbsp;이마트, 신세계상품권</span>
-            </div>
-            <div
-              class="t_gry3 small"
-              style=" text-align: left;"
-            >전국 이마트 매장내 설치된 상품권 교환 KIOSK에서 신세계 상품권으로 교환후 사용하실수 있습니다.</div>
-          </router-link>
-
-          <router-link class="col-sm-6 col-lg-4 p-4" :to="{ name: 'detail', params: {idolId: 6} }">
-            <img src="@/assets/img/shinsegae50000.jpg" class="photo5" alt />
-            <div style="height: 30px;">&nbsp;</div>
-            <div style="display: flow-root;">
-              <span
-                class="font-weight-700 mb-2 f20 t_purple"
-                style="margin-top: -20px; float: right;"
-              >100,000 포인트</span>
-            </div>
-            <br />
-            <div style="display: flow-root;">
-              <span
-                class="font-weight-bold mb-2 f17"
-                style="margin-top: -20px; float: left;"
-              >신세계상품권 모바일교환권</span>
-              <span
-                class="t_gry2 small mb-3"
-                style="margin-top: -15px; float: left;"
-              >&nbsp;ㅣ&nbsp;이마트, 신세계상품권</span>
-            </div>
-            <div
-              class="t_gry3 small"
-              style=" text-align: left;"
-            >전국 이마트 매장내 설치된 상품권 교환 KIOSK에서 신세계 상품권으로 교환후 사용하실수 있습니다.</div>
+            >뱅크웨어글로벌 1박 2일 휴가권으로 교환후 사용하실수 있습니다.</div>
           </router-link>
 
           <div style="height: 80px;">&nbsp;</div>
@@ -221,7 +169,7 @@ export default {
     load() {
       this.axios
         .get(
-          `https://api.luniverse.io/tx/v1.0/wallets/${this.walletAddress.user}/${this.mtSymbol}/${this.stSymbol}/${this.txActionName.balance}`,
+          `https://api.luniverse.net/tx/v1.0/wallets/${this.walletAddress.user}/${this.mtSymbol}/${this.stSymbol}/${this.txActionName.balance}`,
           {
             headers: {
               Authorization: `Bearer ${this.apiKey}`
@@ -229,9 +177,9 @@ export default {
           }
         )
         .then(response => {
-          this.balance = BigNumber(response.data.data.balance).div(
+          this.balance = Math.trunc(BigNumber(response.data.data.balance).div(
             BigNumber("10").pow(18)
-          );
+          ));
         })
         .catch(() => {
           this.balance = 0;
