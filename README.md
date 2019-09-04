@@ -33,6 +33,12 @@ psql -d postgres -c "ALTER USER $PG_UNAME WITH SUPERUSER;"
 rake db:create db:migrate db:seed
 ```
 
+#### Packages
+```bash
+cd api && bundle install
+cd web && yarn install
+```
+
 ### Run
 ```
 cd api && rails start
