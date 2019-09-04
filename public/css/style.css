@@ -365,8 +365,11 @@ body {
 
 .border-widget-wrap,
 .community-list-wrap,
+.joinus-wrap,
+.welcome-wrap,
 .mypage-wrap,
 .rgc-wallet-wrap,
+.change-gold-wrap,
 .badge-purcha-wrap {    
     margin-bottom: 30px;
     background-color:#fff;
@@ -375,8 +378,11 @@ body {
 }
 .border-widget-wrap,
 .community-list-wrap,
+.joinus-wrap,
+.welcome-wrap,
 .mypage-wrap,
 .rgc-wallet-wrap,
+.change-gold-wrap,
 .badge-purcha-wrap {
     padding: 40px;
 }
@@ -387,8 +393,11 @@ body {
 .border-widget-wrap dt,
 .border-widget-wrap h3,
 .community-list-wrap dt,
+.joinus-wrap h3,
+.welcome-wrap h3,
 .mypage-wrap h3,
 .rgc-wallet-wrap h3,
+.change-gold-wrap h3,
 .badge-purcha-wrap h3 {
     position: relative;
     margin-bottom: 20px;
@@ -406,6 +415,9 @@ body {
 .community-list-wrap dt::before,
 .mypage-wrap h3::before,
 .rgc-wallet-wrap h3::before,
+.joinus-wrap h3::before,
+.welcome-wrap h3::before,
+.change-gold-wrap h3::before,
 .badge-purcha-wrap h3::before {
     content: "";
     display: inline-block;
@@ -721,7 +733,8 @@ body {
     color: #fff;
     text-align: center;
 }
-.send-paybox input {
+.send-paybox input,
+.joinus-wrap input {
     margin-top: 20px;
     width: 100%;
     max-width: 200px;
@@ -732,12 +745,14 @@ body {
     border: 1px solid #102556;
     border-radius: 10px;
 }
-.send-paybox input:focus {
+.send-paybox input:focus,
+.joinus-wrap input:focus, {
     border-color: #5361ff;
     box-shadow: 1px 1px 3px 1px rgba(83, 97, 255, 0.2);
 }
 
-.send-paybox button {
+.send-paybox button,
+.joinus-wrap button {
     padding: 9px 26px;
     font-size: 14px;
     letter-spacing: 0;
@@ -747,9 +762,105 @@ body {
     border-radius: 8px;
     cursor: pointer;
 }
-.send-paybox button:hover {
+.send-paybox button:hover,
+.joinus-wrap button:hover {
     box-shadow: 1px 1px 3px 1px rgba(83, 97, 255, 0.2);
 }
+
+.joinus-wrap .form-group,
+.welcome-wrap p{
+    padding: 15px 0px;
+    font-size: 14px;
+    color: #3c4cc5;
+}
+
+.change-gold-wrap h4 {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -.31px;
+    color: #5361ff;
+}
+
+.change-gold-wrap [data-uc-table]>[class*=is-table-] {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-top: 2px solid #000 !important;
+}
+.change-gold-wrap [data-uc-table]>[class*=is-table-] td, 
+.change-gold-wrap [data-uc-table]>[class*=is-table-] th {
+    position: relative;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: -.19px;
+    color: #393b3c;
+    border-bottom: 1px solid rgba(157, 157, 157, 0.18);
+    text-align: left;
+}
+.change-gold-wrap [data-uc-table]>[class*=is-table-] th {
+    padding: 7px 0;
+}
+.change-gold-wrap [data-uc-table]>[class*=is-table-] .is-arrow-add::after {
+    display: inline-block;
+    position: absolute;
+    right: 30px;
+    top: 14px;
+    content: ">>>";
+    font-size: 11px;
+    letter-spacing: -1.5px;
+    color: #5361ff;
+    vertical-align: top;
+}
+.change-gold-wrap input {
+    margin-top: auto;
+    width: 100%;
+    max-width: 200px;
+    height: 25px;
+    line-height: 20px;
+    padding: 5px 15px;
+    background-color:#fff;
+    border: 1px solid #102556;
+    border-radius: 7px;
+}
+.change-gold-wrap input:focus {
+    border-color: #5361ff;
+    box-shadow: 1px 1px 3px 1px rgba(83, 97, 255, 0.2);
+}
+.change-goldbox {
+    padding: 35px;
+    background-color: #f8f8f8;
+    border: 1px solid #b7b7b7;
+    border-radius: 10px;
+}
+.change-goldbox label {
+    font-size: 8px;
+    letter-spacing: -.3px;
+    color: #102556;
+}
+.change-goldbox label >i {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-style: normal;
+    background-color: #102556;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+}
+.change-goldbox button {
+    padding: 9px 26px;
+    font-size: 14px;
+    letter-spacing: 0;
+    color: #fff;
+    background-color: #3c4cc5;
+    border: 1px solid #5361ff;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.change-goldbox button:hover {
+    box-shadow: 1px 1px 3px 1px rgba(83, 97, 255, 0.2);
+}
+
 
 .badge-purcha-wrap h3 {
     float: left;

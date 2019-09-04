@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="vendors/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/fonts/line-awesome.css">
+    <link rel="stylesheet" href="vendors/fonts/SpoqaHanSans-kr.css">
+    <link rel="stylesheet" type="text/css" href="../css/style_overwatch.css">
+    <link rel="stylesheet" type="text/css" href="../css/uc.min.css">
+</head>
+
+<body>
+    <% include ./overwatch_header.ejs %>
+    <div class="container-frame is-pd-y_60">
+        <div data-uc-colgroup="row-md">
+            <div class="is-col-xs2">
+                <% include ./overwatch_left_side.ejs %>
+            </div>
+            <div class="is-col-xs8">
+                <div class="voting-list-wrap">
+                    <form action = "/ow/overwatch_voting" method="post">
+                    <dl>
+                        <dt>등록된 후보자</dt>
+                        <% candidateList.forEach(function(candidate){ %>
+                        <dd>
+                            <span class="is-label">후보 <b># <%= candidate.candidateId * 1 + 1 %></b></span>
+                            <span class="is-avatar"><img src="../images/dog.png" /></span>
+                            <h4 class="is-title"> <%= candidate.userName %></h4>
+                            <a href="http://<%= candidate.candidateURL %>" class="is-more">출마 선언문 보기</a>
+                            <br/>
+                            <label>
+                                <input type="radio" name="candi" value="<%= candidate.candidateId * 1 + 1 %>">
+                                <img src="../images/stamp.png">
+                            </label>
+                        </dd>
+                        <% }) %>
+                    </dl>
+                    <div class="is-txt-center">
+                        <input type="submit" class="concept-btn" value="투표하기">
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <div class="is-col-xs2">
+                <% include ./overwatch_right_side.ejs %>
+            </div>
+        </div>
+    </div>
+
+
+    <% include ./overwatch_footer.ejs %>
+</body>
+
+</html>''

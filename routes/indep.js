@@ -6,19 +6,11 @@ var User = require("../models/User");
 var headers = require("../config/headers");
 var client = require("../config/client");
 
-router.get("/", util.isLoggedin, function(req, res){
-
-    res.render("../views/root_index",{
-        title:"Regam Root",
-        ID : req.body.ID
-    });
-})
-
-router.get("/indep_board", function(req, res){
+router.get("/indep_board",util.isLoggedin, function(req, res){
     res.render("../views/root_independence_board",{
-        title:"Root Independence Board"
+        title:"Root Independence Board",
+        ID:req.body.ID
     });
 })
 
-
-module.exports = router;
+module.exports =router;

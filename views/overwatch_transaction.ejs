@@ -1,0 +1,86 @@
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="vendors/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/fonts/line-awesome.css">
+    <link rel="stylesheet" href="vendors/fonts/SpoqaHanSans-kr.css">
+    <link rel="stylesheet" type="text/css" href="css/style_overwatch.css">
+    <link rel="stylesheet" type="text/css" href="css/uc.min.css">
+</head>
+
+<body>
+    <% include ./overwatch_header.ejs %>
+
+
+    <div class="container-frame is-pd-y_60">
+        <div data-uc-colgroup="row-md">
+            <div class="is-col-xs2">
+                <% include ./overwatch_left_side.ejs %>
+            </div>
+            <div class="is-col-xs8">
+                <div class="transaction-wrap">
+                    <h3>RGC Transaction History</h3>
+
+                    <div class="is-info">
+                        <div class="is-label-icon">
+                            <span>R</span>
+                        </div>
+                        <div class="is-txt-box">
+                            <p class="is-label_1">OverWatch-KR Community’s RGC Balance</p>
+                            <p class="is-coinvalue">465,843,521,654 <sub>RGC</sub></p>
+                            <p class="is-label_2">Contract Address</p>
+                            <a class="is-code" href="">0x08F225b3D65aaeE3526B31111D8d994744dBcF38</a>
+                        </div>
+                    </div>
+
+                    <div data-uc-table>
+                        <table class="is-table-hor">
+                            <colgroup>
+                                <col width="5%" />
+                                <col width="21.25%" />
+                                <col width="21.25%" />
+                                <col width="21.25%" />
+                                <col width="21.25%" />
+                                <col width="10%" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>QUANTITY</th>
+                                    <th>FROM</th>
+                                    <th>TO</th>
+                                    <th>DETAIL</th>
+                                    <th>DATE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>12</td>
+                                    <td>500</td>
+                                    <td>Community Keeper
+                                        <span class="is-arrow-add"></span>
+                                    </td>
+                                    <td>BigLight</td>
+                                    <td>Open Celebrating</td>
+                                    <td>2019.08.20</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="is-col-xs2">
+                <% include ./overwatch_right_side.ejs %>
+            </div>
+        </div>
+    </div>
+
+
+    <% include ./overwatch_footer.ejs %>
+</body>
+
+</html>

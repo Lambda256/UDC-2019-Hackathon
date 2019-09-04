@@ -5,7 +5,7 @@ var bcrypt = require("bcrypt-nodejs");
 var userSchema = mongoose.Schema({
     ID:{type:String, required:[true, "ID is required!"], trim:true, unique:true},
     password:{type:String, required:[true, "Password is required!"], select:false},
-    address:{type:String},
+    badge:{type:Number, default:0},
     ggow:{type:Number, default:0},
     ggrt:{type:Number, default:0},
     gold:{type:Number, default:0}
@@ -14,9 +14,6 @@ var userSchema = mongoose.Schema({
 });
 
 // virtuals // 2
-userSchema.virtual("GGsum")
-.get(function(){return this._GGsum;})
-.set(function(value){ this._GGsum = value});
 
 userSchema.virtual("passwordConfirmation")
 .get(function(){return this._passwordConfirmation;})

@@ -1,0 +1,102 @@
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="vendors/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/fonts/line-awesome.css">
+    <link rel="stylesheet" href="vendors/fonts/SpoqaHanSans-kr.css">
+    <link rel="stylesheet" type="text/css" href="css/style_overwatch.css">
+    <link rel="stylesheet" type="text/css" href="css/uc.min.css">
+</head>
+
+<body>
+    <% include ./overwatch_header.ejs %>
+
+
+    <div class="container-frame is-pd-y_60">
+        <div data-uc-colgroup="row-md">
+            <div class="is-col-xs2">
+                <% include ./overwatch_left_side.ejs %>
+            </div>
+            <div class="is-col-xs8">
+                <div class="voting-history-wrap">
+                    <dl>
+                        <dt>투표 기록 및 실시간 득표수</dt>
+                        <dd>
+                            
+                            <span class="is-avatar"><img src="images/3 OverWatch/candidate-01.png" /> <span class="is-rank">1<sub>위</sub></span></span>
+                            <div class="info-wrap">
+                                <span class="is-label">후보 # 3</span>
+                                <h4 class="is-title">Henry.lee</h4>
+                                <a href="" class="is-num">713 <sub>표</sub></a>
+                            </div>
+                        </dd>
+                        <dd>
+                            <span class="is-avatar"><img src="images/3 OverWatch/candidate-02.png" />  <span class="is-rank">2<sub>위</sub></span></span>
+                            <div class="info-wrap">
+                                <span class="is-label">후보 # 3</span>
+                                <h4 class="is-title">Henry.lee</h4>
+                                <a href="" class="is-num">713 <sub>표</sub></a>
+                            </div>
+                        </dd>
+                        <dd>
+                            <span class="is-avatar"><img src="images/3 OverWatch/candidate-03.png" />  <span class="is-rank">3<sub>위</sub></span></span>
+                            <div class="info-wrap">
+                                <span class="is-label">후보 # 3</span>
+                                <h4 class="is-title">Henry.lee</h4>
+                                <a href="" class="is-num">713 <sub>표</sub></a>
+                            </div>
+                        </dd>
+                        
+                    </dl>
+
+                    <div data-uc-table>
+                        <table class="is-table-hor">
+                            <colgroup>
+                                <col width="5%" />
+                                <col width="21.25%" />
+                                <col width="21.25%" />
+                                <col width="21.25%" />
+                                <col width="21.25%" />
+                                <col width="10%" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>TOTAL VOTES</th>
+                                    <th>FROM</th>
+                                    <th>TO</th>
+                                    <th>ACCUMULATED VOTES CAST</th>
+                                    <th>DATE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>12</td>
+                                    <td>1400</td>
+                                    <td>B*********
+                                        <span class="is-arrow-add"></span>
+                                    </td>
+                                    <td>#1 Henry.lee</td>
+                                    <td>713</td>
+                                    <td>2019.08.20</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="is-col-xs2">
+                <% include ./overwatch_right_side.ejs %>
+            </div>
+        </div>
+    </div>
+
+
+    <% include ./overwatch_footer.ejs %>
+</body>
+
+</html>

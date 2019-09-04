@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="vendors/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/fonts/line-awesome.css">
+    <link rel="stylesheet" href="vendors/fonts/SpoqaHanSans-kr.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/uc.min.css">
+</head>
+
+<body>
+    <% include ./header.ejs %>
+
+
+    <div class="container-frame is-pd-y_60">
+        <div data-uc-colgroup="row-md">
+            <div class="is-col-xs2">
+                <% include ./left_side_login.ejs %>
+            </div>
+            <div class="is-col-xs8">
+                <div class="welcome-wrap">
+                    <h3>Welcome ! </h3>
+                    <p>Sign up is complete!</p>
+                </div>
+            </div>
+            <div class="is-col-xs2">
+                <% include ./right_side.ejs %>
+            </div>
+        </div>
+    </div>
+
+
+    <% include ./footer.ejs %>
+</body>
+
+</html>

@@ -1,17 +1,15 @@
 <html>
 
 <head>
-    <title><%= title%></title>
+    <title><%= title %></title>
     <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="../public/vendors/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="../public/vendors/fonts/line-awesome.css">
-    <link rel="stylesheet" href="../public/vendors/fonts/SpoqaHanSans-kr.css">
-    <link rel="stylesheet" type="text/css" href="../public/css/style.css">
-    <link rel="stylesheet" type="text/css" href="../public/css/uc.min.css">
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script> <!-- 2 -->
-
+    <link rel="stylesheet" href="vendors/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/fonts/line-awesome.css">
+    <link rel="stylesheet" href="vendors/fonts/SpoqaHanSans-kr.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/uc.min.css">
 </head>
 
 <body>
@@ -33,7 +31,7 @@
                             </div>                            
                             <div class="is-col-xs6 is-align-top user-info">
                                 <p>슈퍼파월</p>
-                                <h4><%= user.ID%></h4>
+                                <h4>BigLight</h4>
                                 <span>Since 2019.07.31</span>
                             </div>
                         </div>
@@ -51,17 +49,17 @@
                                     <li>
                                         <p class="is-level-icon">GG</p>
                                         <p class="is-level-name">GG SUM</p>
-                                        <p class="is-level-score"><%=(user.ggow + user.ggrt) %></p>
+                                        <p class="is-level-score">42,000</p>
                                     </li>
                                     <li>
                                         <p class="is-level-icon">R</p>
                                         <p class="is-level-name">RGC</p>
-                                        <p class="is-level-score"><%=RGC %></p>                                       
+                                        <p class="is-level-score"><%= RGC %></p>                                       
                                     </li>
                                     <li>
                                         <p class="is-level-icon">G</p>
                                         <p class="is-level-name">GOLD</p>
-                                        <p class="is-level-score"><%=user.gold %></p>   
+                                        <p class="is-level-score">8,000</p>   
                                     </li>
                                 </ul>
                             </div>
@@ -144,7 +142,7 @@
                     </div>
                     <div class="send-paybox">
                         <div class="is-col-xs2 is-align-top">
-                            <h4>RGC 거래내역</h4>
+                            <h4>RGC 송금하기</h4>
                         </div>
                         <div class="is-col-xs4 is-align-top">
                             <label><i>1</i> 송금할 금액을 입력하세요.</label>
@@ -156,6 +154,57 @@
                         </div>
                         <div class="is-col-xs2 is-align-bot">
                             <button type="button">송금하기</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="change-gold-wrap">
+                    <h3>GOLD 환전</h3>
+                    <div data-uc-table>
+                        <h4>커뮤니티 별 보유 GG</h4>
+                        <table class="is-table-hor">
+                            <colgroup>
+                                <col width="20%" />
+                                <col width="30%" />
+                                <col width="20%" />
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>커뮤니티</th>
+                                <th>보유 GG</th>
+                                <th>환전할 GG</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ROOT</td>
+                                    <td>20,000
+                                        <span class="is-arrow-add"></span>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="" value="" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Over Watch - KR</td>
+                                    <td>22,000
+                                        <span class="is-arrow-add"></span>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="" value="" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="change-goldbox">
+                        <div class="is-col-xs6 is-align-top">
+                            <h4>GOLD로 환전하기</h4>
+                            <label><br><i>!</i> 환전한 GOLD는 다시 GG로 환전할 수 없습니다.</label>
+                        </div>
+                        <div class="is-col-xs2 is-align-bot">
+                            <button type="button">환전하기</button>
                         </div>
                     </div>
                 </div>

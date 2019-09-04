@@ -781,16 +781,23 @@ body {
 .independence-widget-wrap dd .like-wrap span {
     display: block;
 }
-.independence-widget-wrap dd .like-wrap span.is-label {
-    font-size: 9px;
+.independence-widget-wrap dd .like-wrap span.is-icon {
+    font-size: 40px;
     font-weight: 700;
-    letter-spacing: -.21px;
+    margin-bottom: -10px;
+    letter-spacing: center;
+    color: #fa9c1e;
+}
+.independence-widget-wrap dd .like-wrap span.is-label {
+    font-size: 5px;
+    font-weight: 700;
+    letter-spacing: center;
     color: #102556;
 }
 .independence-widget-wrap dd .like-wrap span.is-num {
-    font-size: 15px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: -.46px;
+    letter-spacing: center;
     color: #102556;
 }
 .independence-widget-wrap dd .is-title {
@@ -884,10 +891,27 @@ body {
     display: block;
     text-align: center;
 }
-.voting-list-wrap dd .is-stamp>img {
+/* .voting-list-wrap dd .is-stamp>img {
     opacity: .5;
 }
 .voting-list-wrap dd .is-stamp.is-active>img {
+    opacity: 1;
+} */
+
+[type=radio] { 
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+[type=radio] + img {
+    opacity: .5;
+    cursor: pointer;
+}
+
+[type=radio]:checked + img {
+    /* outline: 2px solid #f00; */
     opacity: 1;
 }
 

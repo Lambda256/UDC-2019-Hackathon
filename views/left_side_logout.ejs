@@ -1,57 +1,21 @@
 <div class="left-side-wrapper">
     <div class="login-after-widget">
-        <h3>Hey, BigLight :D</h3>
+        <h3>Hey, <%= ID %> :D</h3>
         <div class="is-avatar-wrap">
-            <a href="badge_purchase"><img src="images/my-medal.png" alt=""></a>
+            <a href="/badge_purchase"><img src="images/my-medal.png" alt=""></a>
         </div>
-        <ul>
-            <li>
-                <span class="is-level-icon"><img src="images/4 icon/icon-gg@2x.png"></span>
-                <div style="margin-left: 25px; border-bottom: 1px solid rgba(16,37,86,0.5); padding: 5px 0;">
-                    <div class="is-col-xs6 is-align-mid">
-                        <span class="is-level-name">GG SUM</span>
-                    </div>
-                    <div class="is-col-xs6 is-align-mid is-txt-right">
-                        <span class="is-level-score">42,000</span>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <span class="is-level-icon"><img src="images/4 icon/icon-rgc@2x.png"></span>
-
-                <div style="margin-left: 25px; border-bottom: 1px solid rgba(16,37,86,0.5); padding: 5px 0;">
-                    <div class="is-col-xs6 is-align-mid">
-                        <span class="is-level-name">RGC</span>
-                    </div>
-                    <div class="is-col-xs6 is-align-mid is-txt-right">
-                        <span class="is-level-score">50,000</span>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <span class="is-level-icon"><img src="images/4 icon/icon-gold@2x.png"></span>
-                <div style="margin-left: 25px; border-bottom: 1px solid rgba(16,37,86,0.5); padding: 5px 0;">
-                    <div class="is-col-xs6 is-align-mid">
-                        <span class="is-level-name">GOLD</span>
-                    </div>
-                    <div class="is-col-xs6 is-align-mid is-txt-right">
-                        <span class="is-level-score">8,000</span>
-                    </div>
-                </div>
-            </li>
-        </ul>
         <div class="is-bot-link">
-            <a href="mypage">Mypage</a>
-            <a href="/">Logout</a>
+            <a href="/mypage/<%= ID %>">Mypage</a>
+            <a href="/logout">Logout</a>
         </div>
     </div>
 
     <div class="side-menu-widget is-align-center">
         <dl class="sidemenu-list">
             <dt>Community</dt>
-            <dd><a href="community_list">커뮤니티 목록</a></dd>
+            <dd><a href="/community_list">커뮤니티 목록</a></dd>
             <dd><a href="#">커뮤니티 순위</a></dd>
-            <dd><a href="root_independence_board">커뮤니티 독립운동</a></dd>
+            <dd><a href="/indep_board">커뮤니티 독립운동</a></dd>
             <dd><a href="#">신규 커뮤니티</a></dd>
         </dl>
     </div>
