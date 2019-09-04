@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
 import AppContext from "contexts/AppContext";
 import { Link } from "react-router-dom";
-import numeral from 'numeral';
+import numeral from "numeral";
 import Chart from "components/Order/Chart";
+import images from "constants/images";
+import _ from "lodash";
 
 const GridItem = props => {
   const { updateState } = useContext(AppContext);
@@ -44,11 +46,18 @@ const GridItem = props => {
           </div>
         </div>
         <div className="red-line-container">
-          <div className="red-text">{numeral(total_donation).format("$0,0.00")} to {charity}</div>
-          <div className="red-line" style={{height: 100}}/>
+          <div className="red-text">
+            {numeral(total_donation).format("$0,0.00")} to {charity}
+          </div>
+          <div className="red-line" style={{ height: 100 }} />
         </div>
         <div className="hover-layer">
-          <div className="text-white">{purchase_count}</div>
+          <img src={images[charity]} alt="" />
+          <div className="red-divider"/>
+          <div className="text-white">Donated</div>
+          <div className="text-white">
+            <b>{numeral(total_donation).format("$0,0.00")}</b> to {_.upperCase(charity)}
+          </div>
         </div>
       </div>
     </Link>

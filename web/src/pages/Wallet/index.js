@@ -17,6 +17,7 @@ const { TextArea } = Input;
 const WalletRow = props => {
   const [collapsed, setCollapsed] = useState(true);
   let {
+    id,
     type,
     balance,
     pending_balance,
@@ -91,7 +92,9 @@ const WalletRow = props => {
           </div>
           <div className="request-container row-align-center">
             <div className="text-grey input-label" />
-            <Button className="request-button">Request</Button>
+            <Button className="request-button" onClick={() => onClick(id, 1)}>
+              Request
+            </Button>
             <div
               className="cancel-text text-grey hover-link"
               onClick={() => {
@@ -149,7 +152,14 @@ const TransactionRow = props => {
 };
 
 const Wallet = props => {
-  const { user, wallet, fetchingWallet, getWallet } = useContext(AuthContext);
+  const {
+    user,
+    wallet,
+    fetchingWallet,
+    getWallet,
+    recharge,
+    redeem
+  } = useContext(AuthContext);
   useEffect(() => {
     getWallet();
   }, []);
@@ -196,7 +206,7 @@ const Wallet = props => {
             balance={hour_balance}
             current_price={1}
             symbol="HOUR"
-            onClick={() => {}}
+            onClick={recharge}
             name="Intime Main Token"
             profile_picture={hourToken}
           />
@@ -206,7 +216,7 @@ const Wallet = props => {
                 type="side"
                 key={index}
                 user={user}
-                onClick={() => {}}
+                onClick={redeem}
                 {...token}
                 {..._.find(private_tokens, ["id", token.private_token_id])}
               />
