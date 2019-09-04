@@ -14,6 +14,8 @@ class TokenProvider extends Component {
     holders: [],
     buying: false,
     selling: false,
+    graphData: [],
+    fetchingHistory: false
   };
 
   createToken = async () => {
@@ -89,9 +91,9 @@ class TokenProvider extends Component {
 
   takeToken = async (private_token_id, take_id) => {
     const { orders, buying } = this.state;
-    if(buying) return;
+    if (buying) return;
     try {
-      await this.setState({buying: true});
+      await this.setState({ buying: true });
       await api.patch(`/orders/${take_id}/take.json`, {}, true);
       notification["success"]({ message: "Buy order successfully taken." });
       const ordersClone = _.clone(orders);
@@ -100,28 +102,48 @@ class TokenProvider extends Component {
     } catch (e) {
       handleErrorMessage(e);
     } finally {
-      await this.setState({buying: false});
+      await this.setState({ buying: false });
     }
   };
 
   sellToken = async (private_token_id, price, amount) => {
     const { orders, selling } = this.state;
-    if(selling) return;
+    if (selling) return;
     try {
-      const form = {order: {private_token_id, price, amount}};
-      await this.setState({selling: true});
+      const form = { order: { private_token_id, price, amount } };
+      await this.setState({ selling: true });
       const result = await api.post(`/orders`, form, true);
       notification["success"]({ message: "Sell order successfully posted." });
       const ordersClone = _.clone(orders);
       ordersClone.push(result);
-      _.sortBy(ordersClone, ['price']);
+      _.sortBy(ordersClone, ["price"]);
       this.setState({ orders: ordersClone });
     } catch (e) {
       handleErrorMessage(e);
     } finally {
-      await this.setState({selling: false});
+      await this.setState({ selling: false });
     }
-  }; 
+  };
+
+  getHistory = async (id, category, limit) => {
+    const { fetchingHistory } = this.state;
+    if (fetchingHistory) return;
+    try {
+      const form = { category, limit };
+      await this.setState({ fetchingHistory: true });
+      const graphData = await api.get(
+        `/private_tokens/${id}/history.json`,
+        { category },
+        true
+      );
+      console.log("graph data", graphData);
+      await this.setState({ graphData });
+    } catch (e) {
+      handleErrorMessage(e);
+    } finally {
+      await this.setState({ fetchingHistory: false });
+    }
+  };
 
   updateState = (key, value) => {
     this.setState({ [key]: value });
@@ -135,7 +157,8 @@ class TokenProvider extends Component {
           getOrders: this.getOrders,
           buyToken: this.buyToken,
           sellToken: this.sellToken,
-          takeToken: this.takeToken
+          takeToken: this.takeToken,
+          getHistory: this.getHistory
         }}
       >
         {this.props.children}

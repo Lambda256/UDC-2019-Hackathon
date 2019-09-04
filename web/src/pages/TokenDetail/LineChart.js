@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import * as d3 from "d3";
 
 const LineChart = props => {
-    const {currentCampaign} = useContext(AppContext);
+    const { currentCampaign } = useContext(AppContext);
     useEffect(() => {
         var w = 380;
         var h = 300;
@@ -26,6 +26,12 @@ const LineChart = props => {
 
         var dataset = d3.range(0, 100);
 
+        var initialarea = d3.line()(
+            dataset.map(function(xi) {
+                return [x(xi), y(0)];
+            })
+        );
+
         var line = d3.line()(
             dataset.map(function(xi) {
                 return [x(xi), y(tokenFunction(xi))];
@@ -39,6 +45,9 @@ const LineChart = props => {
         svg.append("path")
             .datum(dataset) // 10. Binds data to the line
             .attr("class", "line") // Assign a class for styling
+            .attr("d", initialarea) // initial state (line at the bottom)
+            .transition()
+            .duration(1500)
             .attr("d", line); // 11. Calls the line generato
 
         svg.selectAll(".dot")
