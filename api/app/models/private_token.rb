@@ -5,9 +5,9 @@
 
 class PrivateToken < ApplicationRecord
   belongs_to :owner, class_name: 'User'
-  has_many :user_private_tokens
-  has_many :users, through: :user_private_tokens
-  has_many :transactions
+  has_many :user_private_tokens, dependent: :destroy
+  has_many :users, through: :user_private_tokens, dependent: :destroy
+  has_many :transactions, dependent: :destroy
   has_many_attached :images
 
   # Symbol format: 2-6 characters, alphanumeric

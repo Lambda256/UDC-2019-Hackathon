@@ -2,10 +2,10 @@ require 'luniverse'
 
 class User < ApplicationRecord
   has_secure_password
-  has_many :user_private_tokens
-  has_many :private_tokens, through: :user_private_tokens
-  has_many :redeem_requests_received, class_name: :RedeemRequest, foreign_key: :owner_id
-  has_many :redeem_requests_sent, class_name: :RedeemRequest, foreign_key: :sender_id
+  has_many :user_private_tokens, dependent: :destroy
+  has_many :private_tokens, through: :user_private_tokens, dependent: :destroy
+  has_many :redeem_requests_received, class_name: :RedeemRequest, foreign_key: :owner_id, dependent: :destroy
+  has_many :redeem_requests_sent, class_name: :RedeemRequest, foreign_key: :sender_id, dependent: :destroy
   has_one_attached :profile_picture
 
   validates :name, presence: true
