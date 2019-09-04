@@ -6,11 +6,18 @@ module Luniverse
   SIDE_TOKEN = 'HOUR'
   TX_API = 'https://api.luniverse.net/tx/v1.0'
 
+  CHARITY_REOA = {
+    'the_nature_conservancy' => '0x0bd8eb784511a418e708a24f9f5afa5d26d48257',
+    'red_cross' => '0x0bd8eb784511a418e708a24f9f5afa5d26d48257',
+    'alzheimers_association' => '0x0bd8eb784511a418e708a24f9f5afa5d26d48257'
+  }
+
+  # User buys HOUR tokens from Team
   def self.recharge!(to, amount)
     result = self.fetch_json!(:post, "#{TX_API}/transactions/recharge", {
       inputs: {
         receiverAddress: to,
-        valueAmount: (amount * 10**18).to_i
+        valueAmount: (amount * 10**18).to_i.to_s
       }
     })
 
@@ -18,12 +25,28 @@ module Luniverse
     self.wait_till_succeed!(result['txId'])
   end
 
-  def self.transfer!(from, to, amount)
-    result = self.fetch_json!(:post, "#{TX_API}/transactions/transfer", {
+  # User buys a private token and donate HOUR to the charity
+  def self.donate!(from, charity, amount)
+    result = self.fetch_json!(:post, "#{TX_API}/transactions/donate", {
+      from: from,
+      inputs: {
+        receiverAddress: CHARITY_REOA[charity],
+        valueAmount: (amount * 10**18).to_i.to_s
+      }
+    })
+
+    sleep(1)
+    self.wait_till_succeed!(result['txId'])
+  end
+
+  # User trades a private token and send HOUR to the seller
+  # Transaction fee: 1.0%
+  def self.paid_transfer!(from, to, amount)
+    result = self.fetch_json!(:post, "#{TX_API}/transactions/paidTransfer", {
       from: from,
       inputs: {
         receiverAddress: to,
-        valueAmount: (amount * 10**18).to_i
+        valueAmount: (amount * 10**18).to_i.to_s
       }
     })
 

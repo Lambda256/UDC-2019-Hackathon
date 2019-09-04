@@ -19,7 +19,7 @@ class User < ApplicationRecord
 
   # TODO: This should be called once user finished payment for HOUR tokens
   # This will be called manually for test purpose during this Hackathon
-  def recharge!(amount = 100)
+  def recharge!(amount = 1000)
     faucet_balance = Luniverse::get_wallet_balance!(Luniverse::TEAM_WALLET)
 
     raise 'Not enough funds' if amount > faucet_balance
@@ -27,6 +27,26 @@ class User < ApplicationRecord
     res = Luniverse::recharge!(self.reoa, amount)
 
     puts "Team sent #{amount} HOUR (#{res['txHash']}) -> Current user balance: #{time_balance!}"
+  end
+
+  # When a buyer buys a private token from the owner's profile page
+  #  -> fund goes to the charity
+  #  -> user receives 1 private token
+  #  -> price increased
+  def donate_and_buy!(token)
+    raise 'User stopped selling tokens' unless token.mintable
+
+    # buyer send the fund to the charity directly
+    tx = Luniverse::donate!(self.reoa, token.charity, token.current_price)
+
+    ActiveRecord::Base.transaction do
+      ::Transaction.mint!(token.id, self.id, token.current_price, tx['txHash'])
+
+      token.purchase_count += 1
+      token.save!
+    end
+
+    puts "#{self.name} bought 1 #{token.symbol} at #{token.current_price} => #{token.charity} received the fund"
   end
 
   def time_balance!
