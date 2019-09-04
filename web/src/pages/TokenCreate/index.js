@@ -21,13 +21,17 @@ const TokenCreate = props => {
   const [step, setStep] = useState(0);
   const [symbol, setSymbol] = useState("");
   const [charity, setCharity] = useState("");
-  const [offer, setOffer] = useState("");
-  const [description, setDescription] = useState("");
-  const [linked_in, setLinkedin] = useState("");
+  const [offer, setOffer] = useState(
+    "Jay Park can provide tips to build a scalable blockchain business"
+  );
+  const [description, setDescription] = useState(
+    "Jay Park is the CEO of Lambda 256, a subsidiary of Dunamu which services the 'Luniverse' blockchain service platform. After joining Dunamu in May 2018 as the head of its research arm, Park was named the CEO of the newly-formed Lambda 256 subsidiary in March 2019. He majored in computer science at Pohang University of Science and Technology. Park started his career in 1994 as a senior researcher at Hyundai Electronics S/W Lab, where he developed object-oriented DBMS and middleware, and CORBA based data management systems. From 2008 to 2016, he led Samsung Pay’s service development and business as the GM, and also headed the development of the Knox message service and push marketing platform in the Mobile Business Division. Park also previously served as an executive at SK Telecom."
+  );
+  const [linked_in, setLinkedin] = useState("https://www.linkedin.com/in/wisefree/");
   const [instagram, setInstagram] = useState("");
-  const [facebook, setFacebook] = useState("");
+  const [facebook, setFacebook] = useState("https://www.facebook.com/jaehyunpark.kr");
   const [initial_price, setPrice] = useState(0);
-  const [category, setCategory] = useState("politics");
+  const [category, setCategory] = useState("technology");
   const [files, setFiles] = useState([]);
   const slider = useRef(null);
 

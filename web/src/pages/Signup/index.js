@@ -7,12 +7,12 @@ import CircularProgress from "components/CircularProgress";
 import Dropzone from './Dropzone';
 
 const Signup = props => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("jay@desk.com");
   const [image, setImage] = useState(null);
-  const [name, setName] = useState("");
-  const [shortDescription, setShortDescription] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [name, setName] = useState("Jay Park");
+  const [shortDescription, setShortDescription] = useState("CEO of Lambda 256");
+  const [password, setPassword] = useState("12341234");
+  const [passwordConfirm, setPasswordConfirm] = useState("12341234");
   const { authenticating, signup, user } = useContext(AuthContext);
   const handleSubmit = () => {
     if (
