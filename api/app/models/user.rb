@@ -26,7 +26,7 @@ class User < ApplicationRecord
 
     res = Luniverse::recharge!(self.reoa, amount)
 
-    puts "Team sent #{amount} HOUR (#{res['txHash']}) -> Current user balance: #{time_balance!}"
+    puts "Team sent #{amount} HOUR (#{res['txHash']}) -> Current user balance: #{hour_balance!}"
   end
 
   # When a buyer buys a private token from the owner's profile page
@@ -49,7 +49,7 @@ class User < ApplicationRecord
     puts "#{self.name} bought 1 #{token.symbol} at #{token.current_price} => #{token.charity} received the fund"
   end
 
-  def time_balance!
+  def hour_balance!
     Luniverse::get_wallet_balance!(self.reoa)
   end
 

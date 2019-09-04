@@ -25,14 +25,15 @@ class PrivateTokensController < ApplicationController
       @current_user.donate_and_buy!(@private_token)
 
       render json: {
-        time_balance: @current_user.time_balance!,
+        hour_balance: @current_user.hour_balance!,
         private_tokens: @current_user.private_tokens.
           as_json(only: [:id, :symbol, :initial_price, :purchase_count], methods: [:current_price, :supply]),
         private_token_balances: @current_user.user_private_tokens.
           as_json(only: [:user_id, :private_token_id, :balance, :pending_balance])
       }
     rescue => e
-      render_error!(e.message, :service_unavailable)
+      msg = e.message =~ /TX_FAILED/ ? 'Not enough HOUR balance' : e.message
+      render_error!(msg, :service_unavailable)
     end
   end
 
