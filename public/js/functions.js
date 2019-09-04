@@ -297,6 +297,7 @@ function autocomplete(arr) {
   // Update map
   function updateMap() {
 
+    mymap.spin(false);
     // 마커 추가
     for (var i=0;i<targets.length;i++) {
       var marker = L.marker(targets[i].slice(6,8));
@@ -435,7 +436,7 @@ function autocomplete(arr) {
           }).addTo(mymap);
 
           markersLayer.clearLayers();
-
+          mymap.spin(true);
           setTimeout(function () {getResponse(reqTime, callback)}, 3000);
         },
         error: function(code){
