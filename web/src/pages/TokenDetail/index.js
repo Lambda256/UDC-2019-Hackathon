@@ -21,7 +21,7 @@ const TokenDetail = props => {
   const { getTokens } = useContext(HomeContext);
 
   useEffect(() => {
-    if (currentCampaign) {
+    if (currentCampaign && currentCampaign.symbol === symbol) {
       scrollTop();
       updateState("timeSold", currentCampaign.purchase_count);
       setTimeSold(currentCampaign.purchase_count);
