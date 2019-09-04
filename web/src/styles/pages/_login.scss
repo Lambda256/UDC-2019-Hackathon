@@ -1,0 +1,38 @@
+.login-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  .logo {
+    width: 140px;
+    height: auto;
+  }
+
+  .ant-input-password,
+  input {
+    width: 240px;
+    background: #232323;
+    color: #fff;
+    border-radius: 0;
+    svg {
+      fill: #fff;
+    }
+  }
+
+  .ant-input {
+    margin-top: 20px;
+    width: 240px;
+    height: 32px;
+    border: solid 1px #4f4f4f;
+  }
+
+  .ant-input-suffix {
+    margin-top: 10px;
+  }
+
+  button {
+    margin-top: 20px;
+  }
+}

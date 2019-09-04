@@ -1,0 +1,76 @@
+.order-book {
+  max-width: 500px;
+  margin: 20px !important; 
+
+  .order-book-title {
+    padding: 20px;
+    text-align: start;
+    font-weight: bold
+  }
+
+  .ant-card-body {
+    padding: 0;
+  }
+
+  .change-text {
+    text-align: center;
+    padding: 20px;
+    color: #e2323a;
+    span {
+      font-size: 12px;
+    }
+  }
+
+  div {
+    flex: 1;
+    text-align: end;
+  }
+
+  .order-item {
+    position: relative;
+    padding: 10px 25px;
+    cursor: pointer;
+
+    .fill-background {
+      position: absolute;
+      right: 0;
+      height: 100%;
+    }
+
+    .price {
+      font-weight: 500;
+      text-align: start;
+    }
+
+    &.buy {
+      background-color: #fef4f4;
+      .fill-background {
+        background-color: #e2323a;
+        opacity: 0.2;
+      }
+
+      .price {
+        color: #e2323a;
+      }
+
+      &:hover {
+        background-color: rgba(226, 50, 58, 0.5);
+      }
+    }
+
+    &.sell {
+      background-color: #eef3fd;
+      .fill-background {
+        background-color: #3077e8;
+        opacity: 0.2;
+      }
+      .price {
+        color: #3077e8;
+      }
+
+      &:hover {
+        background-color: rgba(48, 119, 232, 0.5);
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+.trade-history {
+  width: 500px;
+  margin: 20px !important;
+
+  .ant-card-body {
+    padding: 0;
+  }
+
+  .title {
+    padding: 20px;
+    text-align: start;
+    font-weight: bold;
+  }
+
+  .content {
+    padding-bottom: 10px;
+  }
+
+  .header {
+    padding: 0 20px;
+    border-bottom: 1px solid #eee;
+    div {
+      flex: 1;
+      text-align: end;
+      &:first-child {
+        text-align: start;
+      }
+    }
+  }
+
+  .history-item {
+    margin: 5px 20px;
+    div {
+      flex: 1;
+      text-align: end;
+
+      &:first-child {
+        text-align: start;
+      }
+    }
+  }
+}

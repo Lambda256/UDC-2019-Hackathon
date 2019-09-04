@@ -1,3 +1,36 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: 'application#status'
+  get '/status', to: 'application#status'
+  get '/charity_stats', to: 'application#charity_stats'
+
+  resources :users, only: [:create] do
+    collection do
+      get :me
+      get :api_key
+      get :my_wallet
+    end
+  end
+  resources :private_tokens, only: [:index, :create] do
+    member do
+      get :holders
+      post :buy
+    end
+  end
+
+  resources :redeem_requests, only: [:create] do
+    member do
+      patch :sign_by_owner
+      patch :sign_by_sender
+    end
+
+    collection do
+      get :history
+    end
+  end
+
+  resources :orders, only: [:index, :create] do
+    member do
+      patch :take
+    end
+  end
 end
