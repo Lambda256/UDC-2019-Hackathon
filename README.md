@@ -69,65 +69,68 @@ UDC와 루니버스는 이런 물음에 답하는 개발자를 만나고자 ‘�
 #### Contract 등록 [POST /be/chains/{chainId}/contracts]
 Chain에 Smart Contract를 배포하기 위한 소스코드/바이트코드를 등록하기 위한 API (`Account Token` 필요, 개발자도구 네트워크 탭 참조)
 
-+ Parameters
-    + chainId: `1234` (string, required) - (고유값) Chain ID
+##### URI Parameters
+- **chainId**: `1234` (string, required) - (고유값) Chain ID
 
-+ Request Example (application/json)
-    + Headers
+##### Request Example (application/json)
+```
++ Headers
 
-            Authorization: Bearer ACCOUNT_TOKEN
+  Authorization: Bearer ACCOUNT_TOKEN
 
-    + Attributes
-        + name: `LuvToken` (string, required) - Contract 이름
-        + description: `Luniverse Token` (string) - 설명
-        + filename: `LuvToken.sol` (string) - Contract 파일명
-        + sourcecode: `pragma solidity ^0.4.18; ...` (string) - Solidity Sourcecode (compiled 필드를 지정할 경우 필요없음)
-        + compiled (object) - Solidity Compiled Payload (sourcode 필드가 지정된 경우 무시됨)
-            + LuvToken (object) - 컴파일된 Contract Payload
-                + abi (array[object]) - ABI
-                + bytecode: `6080604052348015610010576000...` (string) - Bytecode
-            + SolToken (object) - 컴파일된 Contract Payload
-                + abi  (array[object]) - ABI
-                + bytecode: `6080604052348015610010576000...` (string) - Bytecode
-        + constructorName: `LuvToken` (string) - 배포할 Contract의 Constructor 이름 (sourcode 혹은 compiled에 포함된 Contract만 허용)
-        + constructorParams (object) - Constructor Parameter (Key-Value 형태의 Object)
-        + optimizer (object) - (Optional) Optimzier Settings
-            + enabled: `true` (boolean) - Optimizer 활성화 여부
-            + runs: `200` (number) - Optimize 실행 횟수
++ Attributes
+  + name: `LuvToken` (string, required) - Contract 이름
+  + description: `Luniverse Token` (string) - 설명
+  + filename: `LuvToken.sol` (string) - Contract 파일명
+  + sourcecode: `pragma solidity ^0.4.18; ...` (string) - Solidity Sourcecode (compiled 필드를 지정할 경우 필요없음)
+  + compiled (object) - Solidity Compiled Payload (sourcode 필드가 지정된 경우 무시됨)
+      + LuvToken (object) - 컴파일된 Contract Payload
+          + abi (array[object]) - ABI
+          + bytecode: `6080604052348015610010576000...` (string) - Bytecode
+      + SolToken (object) - 컴파일된 Contract Payload
+          + abi  (array[object]) - ABI
+          + bytecode: `6080604052348015610010576000...` (string) - Bytecode
+  + constructorName: `LuvToken` (string) - 배포할 Contract의 Constructor 이름 (sourcode 혹은 compiled에 포함된 Contract만 허용)
+  + constructorParams (object) - Constructor Parameter (Key-Value 형태의 Object)
+  + optimizer (object) - (Optional) Optimzier Settings
+      + enabled: `true` (boolean) - Optimizer 활성화 여부
+      + runs: `200` (number) - Optimize 실행 횟수
+```
 
-+ Response 200 (application/json)
+##### Response 200 (application/json)
+```
++ Attributes (object)
+  + result: true (boolean) - 성공여부
+  + data (object) - 응답결과
+    + contract (object) - 등록된 Contract
+      + contractId: `4321` (string) - (고유값) Contract ID
+      + chainId: `1234` (string) - Chain ID
+      + name: `LuvToken` (string) - Contract 이름
+      + description: `Luniverse Token` (string) - 설명
+      + contractAddress: `0x10f9ce6fac576a5f13ff9..` (string, nullable) - Contract Address
+      + status: `SIGN-REQUIRED` (enum[string]) - Status
+        `REVIEW-REQUIRED`: 리뷰필요 (SA가 등록했을 경우 최초 상태)
+        `REVIEW-REJECT`: 리뷰 Reject (MA에 의해서 SA가 올린 컨트랙 리뷰가 Reject 됐을 경우)
+        `SIGN-REQUIRED`: RawTx 서명필요 (MA가 업로드 했을 경우 최초 상태, SA가 업로드 후 MA가 승인했을 경우)
+        `SIGNED`: 서명완료 (자동으로 Chain으로 배포될 예정인 상태)
+        `DEPLOYING`: 배포중
+        `DEPLOY-FAILED`: 배포실패
+        `DEPLOYED`: 배포완료
 
-    + Attributes (object)
-        + result: true (boolean) - 성공여부
-        + data (object) - 응답결과
-            + contract (object) - 등록된 Contract
-                + contractId: `4321` (string) - (고유값) Contract ID
-                + chainId: `1234` (string) - Chain ID
-                + name: `LuvToken` (string) - Contract 이름
-                + description: `Luniverse Token` (string) - 설명
-                + contractAddress: `0x10f9ce6fac576a5f13ff9..` (string, nullable) - Contract Address
-                + status: `SIGN-REQUIRED` (enum[string]) - Status
-                    `REVIEW-REQUIRED`: 리뷰필요 (SA가 등록했을 경우 최초 상태)
-                    `REVIEW-REJECT`: 리뷰 Reject (MA에 의해서 SA가 올린 컨트랙 리뷰가 Reject 됐을 경우)
-                    `SIGN-REQUIRED`: RawTx 서명필요 (MA가 업로드 했을 경우 최초 상태, SA가 업로드 후 MA가 승인했을 경우)
-                    `SIGNED`: 서명완료 (자동으로 Chain으로 배포될 예정인 상태)
-                    `DEPLOYING`: 배포중
-                    `DEPLOY-FAILED`: 배포실패
-                    `DEPLOYED`: 배포완료
+        + Members
+          + `REVIEW-REQUIRED` - 리뷰필요
+          + `REVIEW-REJECT` - 리뷰 Reject
+          + `SIGN-REQUIRED` - RawTx 서명필요
+          + `SIGNED` - 서명완료
+          + `DEPLOYING` - 배포중
+          + `DEPLOY-FAILED` - 배포실패
+          + `DEPLOYED` - 배포완료
+```
 
-                    + Members
-                        + `REVIEW-REQUIRED` - 리뷰필요
-                        + `REVIEW-REJECT` - 리뷰 Reject
-                        + `SIGN-REQUIRED` - RawTx 서명필요
-                        + `SIGNED` - 서명완료
-                        + `DEPLOYING` - 배포중
-                        + `DEPLOY-FAILED` - 배포실패
-                        + `DEPLOYED` - 배포완료
-                        
 #### Contract 배포(서명) [POST /be/chains/{chainId}/contracts/{contractId}/deploy]
 Chain으로 Contract를 배포(서명)하기 위한 API (`Account Token` 필요, 개발자도구 네트워크 탭 참조)
 
-::: note
+```
 RawTx의 요청과 SignedTx의 전송은 동일한 Endpoint로 이루어집니다.
 파라미터로 입력하는 `ownerAddress`에 따라서 PKMS에 등록된 Wallet Address일 경우 RawTx를 반환하지 않고,
 대리서명 후 바로 SignedTx를 생성하여 Chain에 Contract Deploy 요청을 합니다.
@@ -137,41 +140,45 @@ RawTx의 요청과 SignedTx의 전송은 동일한 Endpoint로 이루어집니�
 `ownerAddress`를 지정하지 않거나, PKMS에 등록되어 있지 않은 Wallet Address로 지정하는 경우
 `signedTx`가 인자로 전송되지 않은 요청에 대해서 서버는 `rawTx`를 반환하고,
 클라이언트에서 해당 Private Key로 직접 서명 후 동일한 Endpoint로 `signedTx`를 함께 전송해야 합니다.
-:::
+```
 
-::: warning
+```
 **202 Error**
 
 Private Key 서명이 필요한 경우 반환됩니다. 반환되는 `rawTx` 필드를 서명 후 `signedTx` 필드에 다시 요청해 주세요.
-:::
+```
 
-+ Parameters
-    + chainId: `1234` (string, required) - Chain ID
-    + contractId: `4321 (string, required) - Contract ID
+##### URI Parameters
+- chainId: `1234` (string, required) - Chain ID
+- contractId: `4321 (string, required) - Contract ID
 
-+ Request Example (application/json)
-    + Headers
+##### Request Example (application/json)
+```
++ Headers
 
-            Authorization: Bearer ACCOUNT_TOKEN
+  Authorization: Bearer ACCOUNT_TOKEN
 
-    + Attributes
-        + ownerAddress: `0x008aeeda4d805471df9b2a5b0f38a0c3bcba786b` (string) - Contract Owner Address (미입력시 배포 요청하는 계정의 Wallet Address로 지정됨)
-        + signedTx: `f8728201c280833d09008080a4a...` (string) - SignedTx
++ Attributes
+  + ownerAddress: `0x008aeeda4d805471df9b2a5b0f38a0c3bcba786b` (string) - Contract Owner Address (미입력시 배포 요청하는 계정의 Wallet Address로 지정됨)
+  + signedTx: `f8728201c280833d09008080a4a...` (string) - SignedTx
+```
 
-+ Response 200 (application/json)
+##### Response 200 (application/json)
+```
++ Attributes (object)
+  + result: true (boolean) - 성공여부
+```
 
-    + Attributes (object)
-        + result: true (boolean) - 성공여부
-
-+ Response 202 (application/json)
-
-    + Attributes (object)
-        + result: true (boolean) - 성공여부
-        + data (object) - 응답결과
-            + from: `0x008aeeda4d805471df9b2a5b0f38a0c3bcba786b` (string, nullable) - 서명이 필요한 Wallet Address
-            + rawTx (object) - 서명이 필요한 Raw Tx
-                + from: `0x6d3780ea80c2bd2999750c1b55a13a1082f` (string) - from
-                + nonce: `0x1c2` (string) - nonce
-                + data: `0xa0712d680000000000000000000000000000000000000000000000000000000000000064` (string) - data
-                + gasLimit: `0x3d0900` (string) - gasLimit
-                + gasPrice: `0x0` (string) - gasPrice
+##### Response 202 (application/json)
+```
++ Attributes (object)
+  + result: true (boolean) - 성공여부
+  + data (object) - 응답결과
+    + from: `0x008aeeda4d805471df9b2a5b0f38a0c3bcba786b` (string, nullable) - 서명이 필요한 Wallet Address
+    + rawTx (object) - 서명이 필요한 Raw Tx
+      + from: `0x6d3780ea80c2bd2999750c1b55a13a1082f` (string) - from
+      + nonce: `0x1c2` (string) - nonce
+      + data: `0xa0712d680000000000000000000000000000000000000000000000000000000000000064` (string) - data
+      + gasLimit: `0x3d0900` (string) - gasLimit
+      + gasPrice: `0x0` (string) - gasPrice
+```
