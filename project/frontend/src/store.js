@@ -25,6 +25,10 @@ export default new Vuex.Store({
         name: 'Forum',
         routerName: 'forum'
       },
+      {
+        name: 'MyPage',
+        routerName: 'mypage'
+      }
     ],
     Teams: [
       'Tigers', 
@@ -47,7 +51,12 @@ export default new Vuex.Store({
     isLogin: false,
     isLoginError: false,
     token: "",
-    
+    beforeLogin: "Home"
+  },
+  getters: {
+    loginRedirect: (state, name) => {
+      state.beforeLogin = name
+    }
   },
   mutations: {
     loginSuccess: (state, payload) => {
@@ -69,12 +78,14 @@ export default new Vuex.Store({
     login: (context, payload) => {
       console.log(payload)
       //alert(`id: ${payload.id}, password: ${payload.password}`)
+      console.log(context.state.beforeLogin)
       axios.post('http://localhost:3000/api/login', payload)
       .then(res => {
         console.log(res)
+        this.$router.push({name: context.state.beforeLogin})
       })
       .catch(() => {
-        console.log('error')
+        alert('아이디와 비밀번호를 확인하세요')
       })
     }
   }
