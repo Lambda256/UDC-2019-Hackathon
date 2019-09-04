@@ -5,6 +5,7 @@
 
 class PrivateToken < ApplicationRecord
   belongs_to :owner, class_name: 'User'
+  has_many :user_private_tokens
   has_many :users, through: :user_private_tokens
   has_many :transactions
   has_many_attached :images
@@ -32,15 +33,26 @@ class PrivateToken < ApplicationRecord
     }
   end
 
+  def holder_count
+    user_private_tokens.where('balance > 0').count
+  end
+
+  def total_donation
+    (0..self.purchase_count - 1).reduce(0) { |sum, count| sum + price_at_count(count) }
+  end
+
   # Must not be updated once deployed
   def current_price
-    (initial_price * (1.01 ** purchase_count)).round(2)
+    (self.initial_price * (1.01 ** purchase_count)).round(2)
   end
 
   # TODO:
   # def last_market_price
 
   private
+    def price_at_count(count)
+      (self.initial_price * (1.01 ** count)).round(2)
+    end
     def upcase_symbol!
       self.symbol.upcase!
     end
