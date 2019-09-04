@@ -11,8 +11,7 @@ class AppProvider extends Component {
     currentCampaign: null
   };
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   updateState = (key, value) => {
     this.setState({ [key]: value });
@@ -22,21 +21,23 @@ class AppProvider extends Component {
     const start = this.state.timeSold;
     const end = timeSold;
     var range = end - start;
-    if(range === 0) return;
+    if (range === 0) return;
     await this.setState({ updatingTime: true, timeSold });
     const meridianLabel = document.querySelector(".meridianLabel");
     var current = start;
     var increment = end > start ? 1 : -1;
-    if(this.interval) clearInterval(this.interval);
+    if (this.interval) clearInterval(this.interval);
     this.interval = setInterval(() => {
       current += increment;
-      meridianLabel.textContent = `${current} HOURS`;
+      if (meridianLabel) {
+        meridianLabel.textContent = `${current} HOURS`;
+      }
 
       if (current === end) {
         this.setState({ updatingTime: false });
         clearInterval(this.interval);
       }
-    }, .5);
+    }, 0.5);
   };
 
   render() {
@@ -45,7 +46,7 @@ class AppProvider extends Component {
         value={{
           ...this.state,
           updateState: this.updateState,
-          setTimeSold: this.setTimeSold,
+          setTimeSold: this.setTimeSold
         }}
       >
         {this.props.children}
