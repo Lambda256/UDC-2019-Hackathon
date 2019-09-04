@@ -4,7 +4,7 @@ class PrivateTokensController < ApplicationController
 
   # GET - /private_tokens.json
   def index
-    render json: PrivateToken.all.order(id: :asc).map { |t| token_json(t) }
+    render json: PrivateToken.all.order(id: :desc).map { |t| token_json(t) }
   end
 
   # POST - /private_tokens.json
