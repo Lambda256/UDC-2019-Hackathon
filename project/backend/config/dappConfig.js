@@ -11,7 +11,14 @@ module.exports = {
         apiKey: 'TbzVAzetPYcSMGmUGYc3ghTfPG3Ty14nwRPkajj9i4gEVWCweFvbWvcmcYoFwHpZ'
       },
       txActionName: {
-        like: '',
+        addTicket: 'addTicket',
+        buyTicket: 'buyTicket',
+        getOwnedTickets: 'getOwnedTickets',
+        getTicketOwner: 'getTicketOwner',
+        addProduct: 'addProduct',
+        buyProduct: 'buyProduct',
+        getOwnedProducts: 'getOwnedProducts',
+        getProductOwner: 'getProductOwner'
       },
       walletType: "LUNIVERSE"
     }

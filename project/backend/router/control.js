@@ -68,20 +68,22 @@ exports.login = (req, res) => {
       else {
         const accessToken = auth.signToken(email);
         console.log("ㅎㅇㅎㅇ");
-        axios.post(`https://api.luniverse.io/tx/v1.0/wallets/bridge`, {
+        axios({
+          method: 'get',
+          url: `https://api.luniverse.net/tx/v1.0/wallets/bridge`,
+          data: {
             'walletType': dappconfig.walletType,
-            'userKey': respond[0].User_ID
+            'userKey': String(respond[0].User_ID)
           },
-          {
-            headers: {
-              'api-key': dappconfig.dapp.apiKey,
-            },
-          })
+          headers: {
+            'Authorization': `Bearer ${dappconfig.dapp.apiKey}`,
+          }
+        })
         .then((respond2) => {
           console.log(respond2)
           res.status(200).json({
             userName: respond[0].User_Name,
-            walletAddress: respond2.data.address,
+            walletAddress: respond2.data.data.address,
             accessToken: accessToken
           })
         })
@@ -155,9 +157,10 @@ exports.signup = (req, res) => {
         }
         else{
           console.log(respond)
-          axios.post(`https://api.luniverse.io/tx/v1.0/wallets`,{
+          console.log(typeof(respond[0].User_ID))
+          axios.post(`https://api.luniverse.net/tx/v1.0/wallets`,{
             'walletType': dappconfig.walletType,
-            'userKey' : respond[0].User_ID
+            'userKey' : String(respond[0].User_ID)
           }, 
           {
             headers: {
@@ -166,6 +169,7 @@ exports.signup = (req, res) => {
           })
           .then((respond2) => {
             console.log('server/signup-response', respond2)
+            res.status(200).json({walletAddress: respond2.data.data.address})
           })
           .catch((err2) => {
             console.log('server/signup-error', err2)
