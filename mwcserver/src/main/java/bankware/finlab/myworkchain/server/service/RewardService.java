@@ -57,6 +57,6 @@ public class RewardService {
 		
 		doubleValue = (doubleValue / (Math.pow(10, 18)));
 		
-		return Double.toString(doubleValue);
+		return temp.substring(0,temp.length()-18);
 	}
 }

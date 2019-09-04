@@ -1,8 +1,8 @@
 <script th:inline="javascript">
 $(function() {
 	/* Variables */
-	var EMPL_ADDRESS = '0xbfb07e725f66b2ac1187a5b134fbcf4a3f3beaf0';
-	var LOGIN_ID = 'Gabriel';
+	//var EMPL_ADDRESS = '0xf99c71b2cd6e4edeb115cefb409375735a5ff118';
+	//var LOGIN_ID = 'Gabriel';
 	var WORK_CODE_START='01';
 	var WORK_CODE_END='02';
 	
@@ -24,7 +24,7 @@ $(function() {
 	    	latitude = pos.coords.latitude;
 	    	longitude = pos.coords.longitude;
 	    	
-	    	// Tooltip
+/* 	    	// Tooltip
 	    	var tooltipTitle;
 	    	if(latitude && longitude){
 	    		tooltipTitle = latitude + ", " + longitude + " (클릭하면 구글 지도를 연결합니다.)";
@@ -34,8 +34,8 @@ $(function() {
 	    	$('#geo-tooltip').tooltip({
 	    		title : tooltipTitle,
 	    	});
-	    	$('#geo').prop('href', "https://www.google.com/maps/search/?api=1&query="+latitude+","+longitude);
-	    	$('#geo').prop('target', '_blank');
+ */	    	//$('#geo').prop('href', "https://www.google.com/maps/search/?api=1&query="+latitude+","+longitude);
+	    	//$('#geo').prop('target', '_blank');
 	    });
 	} else {
 	    alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.")
@@ -59,7 +59,7 @@ function market_click(url){
 	
 	//window.open('http://localhost:8080?userId='+id, '_blank');
 	//window.open('http://172.16.2.160:8080?userId='+id, '_blank');
-	window.open('http://192.168.0.18:8080?userId='+id, '_blank');
+	window.open('http://172.18.100.251:8080/?userId='+id, '_blank');
 	
 }
 </script>
