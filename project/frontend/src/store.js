@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import demoData from './demoData'
 import axios from 'axios'
+import router from './router.js'
 
 Vue.use(Vuex)
 
@@ -50,6 +51,7 @@ export default new Vuex.Store({
     },
     isLogin: false,
     isLoginError: false,
+    //token: localStorage.getItem('token'),
     token: "",
     beforeLogin: "Home"
   },
@@ -60,9 +62,12 @@ export default new Vuex.Store({
   },
   mutations: {
     loginSuccess: (state, payload) => {
-      state.userInfo = payload
+      console.log(payload)
+      state.userInfo.name = payload.userName
+      state.token = payload.accessToken
       state.isLogin = true
       state.isLoginError = false
+      localStorage.setItem('token', payload.accessToken)
     },
     loginFail: (state) => {
       state.isLogin = false
@@ -72,6 +77,7 @@ export default new Vuex.Store({
       state.userInfo = null
       state.isLogin = false
       state.isLoginError = false
+      localStorage.removeItem('token')
     }
   },
   actions: {
@@ -81,12 +87,21 @@ export default new Vuex.Store({
       console.log(context.state.beforeLogin)
       axios.post('http://localhost:3000/api/login', payload)
       .then(res => {
-        console.log(res)
-        this.$router.push({name: context.state.beforeLogin})
+        //console.log(res)
+        context.commit('loginSuccess', res.data)
+        router.push({name: context.state.beforeLogin})
+        //console.log(userInfo)
       })
       .catch(() => {
         alert('아이디와 비밀번호를 확인하세요')
+        /*test
+        context.commit('loginSuccess', {name: "hsw", accessToken: "fadsfa"})
+        router.push({name: context.state.beforeLogin})
+        */
       })
+    },
+    logout: (context) => {
+      context.commit('logout')
     }
   }
 })

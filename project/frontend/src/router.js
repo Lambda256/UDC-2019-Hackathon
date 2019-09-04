@@ -19,7 +19,10 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        auth: 0
+      },
     },
     {
       path: '/forum',
@@ -27,33 +30,52 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "forum" */ './views/Forum.vue')
+      component: () => import(/* webpackChunkName: "forum" */ './views/Forum.vue'),
       //component: About 
+      meta: {
+        auth: 0
+      },
     },
     {
       path: '/dates',
       name: 'dates',
-      component: Dates
+      component: Dates,
+      meta: {
+        auth: 0
+      },
     },
     {
       path: '/merchandises',
       name: 'merchandises',
-      component: Merchandises
+      component: Merchandises,
+      meta: {
+        auth: 0
+      },
     },
     {
       path: '/login',
       name: 'login',
       component: Login,
+      meta: {
+        auth: 0
+      },
     },
     {
       path: '/register',
       name: 'register',
-      component: Register
+      component: Register,
+      meta: {
+        auth: 0
+      },
     },
     {
       path: '/mypage',
       name: 'mypage',
       component: Mypage,
+      meta: {
+        auth: 1
+      },
+
       beforeEnter: (to, from, next) => {
         if(!store.state.isLogin){
           alert('로그인이 필요한 기능입니다.')
