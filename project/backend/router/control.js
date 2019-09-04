@@ -89,4 +89,13 @@ exports.getUserInfo = (req, res) => {
   })
 }
 
+exports.product = (req, res) => {
+  let start = req.body.start;
+  let end = req.body.end;
+  con.query('SELECT * FROM Product LIMIT ' + start + ', ' + end, function(err, respond) {
+    if(err) throw err;
+    res.status(200).send(respond);
+  });
+}
+
 

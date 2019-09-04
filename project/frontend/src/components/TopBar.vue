@@ -1,7 +1,5 @@
 <template>
-    <v-toolbar
-        :elevation = 5
-    >
+    <v-toolbar>
         <v-toolbar-title>Luniverse Hackathon</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
@@ -15,21 +13,6 @@
                 {{link.name}}
             </v-btn>
         </v-toolbar-items>
-        <template v-if="isMerchandise" v-slot:extension>
-        <v-tabs
-          v-model="model"
-          centered
-          background-color="transparent"
-        >
-          <v-tab
-            v-for="team in $store.state.Teams"
-            :key="team"
-            :href="`#tab-${team}`"
-          >
-            {{team}}
-          </v-tab>
-        </v-tabs>
-      </template>
     </v-toolbar>
 
 </template>

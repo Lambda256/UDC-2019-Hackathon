@@ -1,17 +1,20 @@
 <template>
-    <div
-    >
-        <!--
-        <v-row
-            align="center"
-            justify="center"
-        >
-        -->
-        <v-row>
+    <v-row justify="center">
+        <v-col cols = "12">
+            <v-tabs
+            center-active
+            >
+                <v-tab
+                    v-for="team in $store.state.Teams"
+                    :key="team"
+                    v-bind="teamNow"
+                >{{team}}</v-tab>
+            </v-tabs>
+        </v-col>
             <v-col
                 v-for="item in $store.state.demoData"
                 :key="item.id"
-                cols=4
+                cols="auto"
             >
                 <v-card>
                     <v-img
@@ -43,8 +46,7 @@
 
                 </v-card>
             </v-col>
-        </v-row>
-    </div>
+    </v-row>
 </template>
 
 <script>
@@ -54,7 +56,7 @@ export default {
     methods: {
         test: function () {
             axios
-            .get('https://reqres.in/api/users/2')
+            .get('http://localhost:3000/api/product')
             .then(res => {
                 console.log(res)
             })
