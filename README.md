@@ -85,3 +85,110 @@ https://github.com/Lambda256/UDC-2019-Hackathon/tree/mouthoftruth
 
 #### 12. VMO
 https://github.com/Lambda256/UDC-2019-Hackathon/tree/vmo
+
+## contract deploy
+
+## Contracts [/chains/contracts]
+
+### Contract 목록 조회 [GET /chains/{chainId}/contracts]
+등록된 Smart Contract의 목록을 조회하기 위한 API (`Account Token` 필요)
+
++ Parameters
+    + chainId: `1234` (string, required) - (고유값) Chain ID
+
++ Request Example (application/json)
+    + Headers
+
+            Authorization: Bearer ACCOUNT_TOKEN
+
+    + Attributes
+        + page: `1` (number, required) - 조회할 Page
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + result: true (boolean) - 성공여부
+        + data (object) - 응답결과
+            + contracts (array[object], fixed-type) - Contracts
+                + (object) - 등록된 Contract
+                    + contractId: `4321` (string) - (고유값) Contract ID
+                    + chainId: `1234` (string) - Chain ID
+                    + name: `LuvToken` (string) - Contract 이름
+                    + description: `Luniverse Token` (string) - 설명
+                    + contractAddress: `0x10f9ce6fac576a5f13ff9..` (string, nullable) - Contract Address
+                    + status: `SIGN-REQUIRED` (enum[string]) - Status
+                        `REVIEW-REQUIRED`: 리뷰필요 (SA가 등록했을 경우 최초 상태)
+                        `REVIEW-REJECT`: 리뷰 Reject (MA에 의해서 SA가 올린 컨트랙 리뷰가 Reject 됐을 경우)
+                        `SIGN-REQUIRED`: RawTx 서명필요 (MA가 업로드 했을 경우 최초 상태, SA가 업로드 후 MA가 승인했을 경우)
+                        `SIGNED`: 서명완료 (자동으로 Chain으로 배포될 예정인 상태)
+                        `DEPLOYING`: 배포중
+                        `DEPLOY-FAILED`: 배포실패
+                        `DEPLOYED`: 배포완료
+
+                        + Members
+                            + `REVIEW-REQUIRED` - 리뷰필요
+                            + `REVIEW-REJECT` - 리뷰 Reject
+                            + `SIGN-REQUIRED` - RawTx 서명필요
+                            + `SIGNED` - 서명완료
+                            + `DEPLOYING` - 배포중
+                            + `DEPLOY-FAILED` - 배포실패
+                            + `DEPLOYED` - 배포완료
+                    + createdAt: `2018-12-17T19:53:05.000Z` (string) - Contract 등록시각 (Date)
+
+### Contract 등록 [POST /chains/{chainId}/contracts]
+Chain에 Smart Contract를 배포하기 위한 소스코드/바이트코드를 등록하기 위한 API (`Account Token` 필요)
+
++ Parameters
+    + chainId: `1234` (string, required) - (고유값) Chain ID
+
++ Request Example (application/json)
+    + Headers
+
+            Authorization: Bearer ACCOUNT_TOKEN
+
+    + Attributes
+        + name: `LuvToken` (string, required) - Contract 이름
+        + description: `Luniverse Token` (string) - 설명
+        + filename: `LuvToken.sol` (string) - Contract 파일명
+        + sourcecode: `pragma solidity ^0.4.18; ...` (string) - Solidity Sourcecode (compiled 필드를 지정할 경우 필요없음)
+        + compiled (object) - Solidity Compiled Payload (sourcode 필드가 지정된 경우 무시됨)
+            + LuvToken (object) - 컴파일된 Contract Payload
+                + abi (array[object]) - ABI
+                + bytecode: `6080604052348015610010576000...` (string) - Bytecode
+            + SolToken (object) - 컴파일된 Contract Payload
+                + abi  (array[object]) - ABI
+                + bytecode: `6080604052348015610010576000...` (string) - Bytecode
+        + constructorName: `LuvToken` (string) - 배포할 Contract의 Constructor 이름 (sourcode 혹은 compiled에 포함된 Contract만 허용)
+        + constructorParams (object) - Constructor Parameter (Key-Value 형태의 Object)
+        + optimizer (object) - (Optional) Optimzier Settings
+            + enabled: `true` (boolean) - Optimizer 활성화 여부
+            + runs: `200` (number) - Optimize 실행 횟수
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + result: true (boolean) - 성공여부
+        + data (object) - 응답결과
+            + contract (object) - 등록된 Contract
+                + contractId: `4321` (string) - (고유값) Contract ID
+                + chainId: `1234` (string) - Chain ID
+                + name: `LuvToken` (string) - Contract 이름
+                + description: `Luniverse Token` (string) - 설명
+                + contractAddress: `0x10f9ce6fac576a5f13ff9..` (string, nullable) - Contract Address
+                + status: `SIGN-REQUIRED` (enum[string]) - Status
+                    `REVIEW-REQUIRED`: 리뷰필요 (SA가 등록했을 경우 최초 상태)
+                    `REVIEW-REJECT`: 리뷰 Reject (MA에 의해서 SA가 올린 컨트랙 리뷰가 Reject 됐을 경우)
+                    `SIGN-REQUIRED`: RawTx 서명필요 (MA가 업로드 했을 경우 최초 상태, SA가 업로드 후 MA가 승인했을 경우)
+                    `SIGNED`: 서명완료 (자동으로 Chain으로 배포될 예정인 상태)
+                    `DEPLOYING`: 배포중
+                    `DEPLOY-FAILED`: 배포실패
+                    `DEPLOYED`: 배포완료
+
+                    + Members
+                        + `REVIEW-REQUIRED` - 리뷰필요
+                        + `REVIEW-REJECT` - 리뷰 Reject
+                        + `SIGN-REQUIRED` - RawTx 서명필요
+                        + `SIGNED` - 서명완료
+                        + `DEPLOYING` - 배포중
+                        + `DEPLOY-FAILED` - 배포실패
+                        + `DEPLOYED` - 배포완료
