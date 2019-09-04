@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       get :me
       get :api_key
       get :my_wallet
+      patch :recharge
     end
   end
   resources :private_tokens, only: [:index, :create] do

@@ -122,3 +122,10 @@ user1.donate_and_buy!(token3)
 user2.donate_and_buy!(token1)
 user2.donate_and_buy!(token3)
 user3.donate_and_buy!(token2)
+
+RedeemRequest.create!(
+  private_token_id: token3.id,
+  owner_id: token3.owner_id,
+  sender_id: user1.id,
+  amount: 1
+)
