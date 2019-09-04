@@ -51,6 +51,7 @@ export default new Vuex.Store({
     },
     isLogin: false,
     isLoginError: false,
+    //token: localStorage.getItem('token'),
     token: "",
     beforeLogin: "Home"
   },
@@ -66,7 +67,7 @@ export default new Vuex.Store({
       state.token = payload.accessToken
       state.isLogin = true
       state.isLoginError = false
-      localStorage.setItem(token, payload.accessToken)
+      localStorage.setItem('token', payload.accessToken)
     },
     loginFail: (state) => {
       state.isLogin = false
@@ -76,6 +77,7 @@ export default new Vuex.Store({
       state.userInfo = null
       state.isLogin = false
       state.isLoginError = false
+      localStorage.removeItem('token')
     }
   },
   actions: {
