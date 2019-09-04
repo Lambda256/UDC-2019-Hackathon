@@ -234,6 +234,13 @@ function autocomplete(arr) {
      alert("return to 2386");
    });
 
+   // refresh button listener
+   document.getElementById("refresh").addEventListener("click", function(e) {
+     getRecord().done(function(msg){
+       updateHistory(msg.data.res);
+     });
+   });
+
   // < Get departure & arrival & targets >
   var departure, arrival, targets;
 
@@ -349,6 +356,33 @@ function autocomplete(arr) {
     dist = computeDistance(departure,arrival); // km
     time = dist / 10; // hour (10km/h)
     return Math.round(time);
+  }
+
+  // Update mypage history
+  function updateHistory(data) {
+    console.log("History", data);
+    for (var i = 1; i <= 7; i++) {
+      var N = data[0].length;
+      var icon = '';
+      var label = '';
+      var amount = data[1][N-i];
+      var time = data[2][N-i];
+
+      // Check log type and set icon
+      if (data[0][N-i] == 2) {
+        icon = '<span uk-icon="plus-circle" style="margin-right:5px;"></span>';
+        label = '<span class="uk-label" style="background-color:#ffd250;color:#fff;font-size: 0.8rem;">보상 ' + amount +'</span>'
+      } else if (data[0][N-i] == 1) {
+        icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
+        label = '<span class="uk-label" style="background-color:#0c7037;color:#fff;font-size: 0.8rem;">사용료 ' + amount +'</span>'
+      } else {
+        icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
+        label = '<span class="uk-label" style="background-color:#ff1500;color:#fff;font-size: 0.8rem;">대여료 ' + amount +'</span>'
+      }
+
+      // Print icon - amount - time
+      document.getElementById("log"+i).innerHTML= icon + label + " " + timeStampToTime(time);
+    }
   }
 
   /*
@@ -653,42 +687,53 @@ function queryInfos() {
 }
 
 document.getElementById("userProfileButton").style.visibility = "hidden";
-            document.getElementById("signInButton").style.visibility = "visible";
-            var signedInFlag = false;
-            function onSignIn(googleUser) {
-              // Useful data for your client-side scripts:
-              var profile = googleUser.getBasicProfile();
-              var auth2 = gapi.auth2.getAuthInstance();
-              auth2.disconnect();
-              
-              var myUserEntity = {};
-              signedInFlag = true;
-              myUserEntity.Name = profile.getName();
-              myUserEntity.Email = profile.getEmail();
-              sessionStorage.setItem('myUserEntity',JSON.stringify(myUserEntity));
-              
+  document.getElementById("signInButton").style.visibility = "visible";
+  var signedInFlag = false;
+  function onSignIn(googleUser) {
+    // Useful data for your client-side scripts:
+    var profile = googleUser.getBasicProfile();
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.disconnect();
+    
+    var myUserEntity = {};
+    signedInFlag = true;
+    myUserEntity.Name = profile.getName();
+    myUserEntity.Email = profile.getEmail();
+    sessionStorage.setItem('myUserEntity',JSON.stringify(myUserEntity));
+    
 
-              document.getElementById("userProfileButton").src=profile.getImageUrl();
-              document.getElementById("userProfileButton").style.visibility = "visible";
-              document.getElementById("signInButton").style.display = "none";
-              document.getElementById("userName").innerHTML=myUserEntity.Name;
-            };
-            function checkIfSignedIn(){
-              if(sessionStorage.getItem('myUserEntity') == null){
-                alert("로그인이 필요합니다.");
-                return false;
-              } else {
-                return true;
-              }
-            }
-            function signOut() {
-              var auth2 = gapi.auth2.getAuthInstance();
-              auth2.signOut().then(function () {
-                console.log('User signed out.');
-              });
-              sessionStorage.clear();
-              signedInFlag = false;
-              
-              document.getElementById("userProfileButton").style.visibility = "hidden";
-              document.getElementById("signInButton").style.display = "";
-            }
+    document.getElementById("userProfileButton").src=profile.getImageUrl();
+    document.getElementById("userProfileButton").style.visibility = "visible";
+    document.getElementById("signInButton").style.display = "none";
+    document.getElementById("userName").innerHTML=myUserEntity.Name;
+  };
+  function checkIfSignedIn(){
+    if(sessionStorage.getItem('myUserEntity') == null){
+      alert("로그인이 필요합니다.");
+      return false;
+    } else {
+      return true;
+    }
+  }
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+    sessionStorage.clear();
+    signedInFlag = false;
+    
+    document.getElementById("userProfileButton").style.visibility = "hidden";
+    document.getElementById("signInButton").style.display = "";
+  }
+function timeStampToTime(timestamp) {
+  var date = new Date(parseInt(timestamp));
+  var year = date.getFullYear();
+  var month = ("0"+(date.getMonth()+1)).slice(-2);
+  var day = ("0"+date.getDate()).slice(-2);
+  var hours = date.getHours();
+  var minutes = "0" + date.getMinutes();
+  var seconds = "0" + date.getSeconds();
+  result = year + "." + month + "." + day + " " + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  return result;
+}
