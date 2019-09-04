@@ -18,7 +18,8 @@ module.exports = {
         addProduct: 'addProduct',
         buyProduct: 'buyProduct',
         getOwnedProducts: 'getOwnedProducts',
-        getProductOwner: 'getProductOwner'
+        getProductOwner: 'getProductOwner',
+        sendToken: 'sendToken'
       },
       walletType: "LUNIVERSE"
     }
