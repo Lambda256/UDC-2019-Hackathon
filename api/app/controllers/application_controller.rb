@@ -12,7 +12,10 @@ class ApplicationController < ActionController::API
       h[a[0]] = { reoa: a[1], balance: Luniverse::get_wallet_balance!(a[1]) }
       h
     end
-    render json: stats
+    render json: {
+      total_hours: Transaction.where(category: 'mint').count,
+      stats: stats
+    }
   end
 
   protected
