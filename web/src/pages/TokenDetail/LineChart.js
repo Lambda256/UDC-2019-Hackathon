@@ -23,6 +23,10 @@ const LineChart = props => {
             .attr("height", h)
             .attr("width", w);
 
+        while (svg.lastChild) {
+            svg.removeChild(svg.lastChild);
+        }
+
         var dataset = d3.range(0, 100);
 
         var initialarea = d3.line()(
@@ -82,7 +86,7 @@ const LineChart = props => {
             .attr("fill", "#a6a7a8")
             .attr("font-size", 14) //font size
             .text(function(d) {
-                return `20 token holders now`;
+                return `The value of ${currentCampaign.symbol}`;
             });
 
         svg.append("svg:text")
@@ -94,9 +98,9 @@ const LineChart = props => {
             .attr("fill", "#a6a7a8")
             .attr("font-size", 14) //font size
             .text(function(d) {
-                return `Current price = $${currentCampaign.current_price}`;
+                return `increases with purchase`;
             });
-    }, [currentCampaign.current_price]);
+    }, []);
     return <div id="line-chart"></div>;
 };
 

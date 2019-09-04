@@ -92,6 +92,7 @@ class AuthProvider extends Component {
       await this.setState({ fetchingWallet: true });
       await api.post("/redeem_requests.json", form, true);
       notification["success"]({ message: "Redeem request successfully sent." });
+      window.location = "/wallet";
     } catch (e) {
       handleErrorMessage(e);
     } finally {

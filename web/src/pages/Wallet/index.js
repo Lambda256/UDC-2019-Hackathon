@@ -28,28 +28,29 @@ const WalletRow = props => {
     symbol,
     onClick
   } = props;
+  const inProgress = pending_balance > 0;
   return (
     <div className="wallet-row">
       <div className=" row-align-center">
         <div className="flex-token row-align-center">
-          {symbol === 'TUSD' ?
+          {symbol === "TUSD" ? (
             <img className="profile-image" src={profile_picture} alt="" />
-          :
+          ) : (
             <Link to={`/token/${symbol}`}>
               <img className="profile-image" src={profile_picture} alt="" />
             </Link>
-          }
-          {symbol === 'TUSD' ?
+          )}
+          {symbol === "TUSD" ? (
             <div>
               <div className="name-value text-white uppercase">{symbol}</div>
               <div className="subtitle text-grey">{name}</div>
             </div>
-          :
+          ) : (
             <Link to={`/token/${symbol}`}>
               <div className="name-value text-white uppercase">{symbol}</div>
               <div className="subtitle text-grey">{name}</div>
             </Link>
-          }
+          )}
         </div>
         <div className="flex-balance">
           <div className="name-value text-white">
@@ -67,7 +68,7 @@ const WalletRow = props => {
         <div className="flex-action">
           <Button
             onClick={() => {
-              if (loading) return;
+              if (loading || inProgress) return;
               if (type === "main") {
                 onClick();
                 return;
@@ -79,12 +80,23 @@ const WalletRow = props => {
               <Icon type="loading" />
             ) : type === "main" ? (
               "Recharge"
+            ) : inProgress ? (
+              "In Progress"
             ) : (
               "Redeem"
             )}
           </Button>
         </div>
       </div>
+      {inProgress && (
+        <div className="inprogrses-container">
+          <div className="text-grey uppercase">Post-Meeting Confirmation</div>
+          <div className="text-white uppercase">
+            {numeral(pending_balance).format("0,0.00")} {symbol} will be burnt
+            when both parties confirm that they have met and used the token.
+          </div>
+        </div>
+      )}
       <div className={`collapsed-content ${collapsed && "collapsed"}`}>
         <div className="collapsed-body">
           <div className="text-grey uppercase redeem-request">

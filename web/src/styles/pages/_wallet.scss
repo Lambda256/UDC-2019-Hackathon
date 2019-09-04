@@ -162,17 +162,17 @@
       margin-right: 16px;
     }
 
-    .tx-id {
+    a {
       color: #50e3c2;
-      max-width: 32em;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      display: inline-block;
-      vertical-align: middle;
     }
 
     .purchased-text {
       font-size: 18px;
     }
+  }
+
+  .inprogress-container {
+    padding: 40px 0px 40px 140px;
+
   }
 }

@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { Popconfirm, Icon, Button, notification } from "antd";
 import AppContext from "contexts/AppContext";
 import AuthContext from "contexts/AuthContext";
 import TokenContext from "contexts/TokenContext";
 import LineChart from "./LineChart";
 import numeral from "numeral";
-import images from 'constants/images';
+import images from "constants/images";
 
 const TokenInfo = props => {
-  const { currentCampaign } = useContext(AppContext);
+  const { currentCampaign, updateState } = useContext(AppContext);
   const { user } = useContext(AuthContext);
   const { buyToken, buyingToken } = useContext(TokenContext);
   const {
@@ -18,6 +18,8 @@ const TokenInfo = props => {
     supply: { total_sold },
     current_price
   } = currentCampaign;
+
+  const lineChart = useMemo(() => <LineChart />, []);
 
   return (
     <div className="card-container">
@@ -34,15 +36,28 @@ const TokenInfo = props => {
             current_price
           ).format("$0,0.00")}？`}
           icon={<Icon type="question-circle-o" style={{ color: "#ee0804" }} />}
-          onConfirm={() => buyToken(id, symbol)}
+          onConfirm={() =>
+            buyToken(id, symbol, currentPrice =>
+              updateState("currentCampaign", {
+                ...currentCampaign,
+                current_price: currentPrice
+              })
+            )
+          }
         >
-          <Button className="buy-token" onClick={() => {
-            if(!user) notification["error"]({message: "You need to be logged in to complete this action."})
-          }}>
+          <Button
+            className="buy-token"
+            onClick={() => {
+              if (!user)
+                notification["error"]({
+                  message: "You need to be logged in to complete this action."
+                });
+            }}
+          >
             {buyingToken ? <Icon type="loading" /> : `Buy ${symbol} Token`}
           </Button>
         </Popconfirm>
-        <LineChart />
+        {lineChart}
       </div>
       <div className="medium-card">
         <div className="dollar-value text-white">

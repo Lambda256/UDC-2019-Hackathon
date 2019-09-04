@@ -41,7 +41,7 @@ class TokenProvider extends Component {
     }
   };
 
-  buyToken = async (id, symbol) => {
+  buyToken = async (id, symbol, cb) => {
     const { buyingToken } = this.state;
     if (buyingToken) return;
 
@@ -55,6 +55,8 @@ class TokenProvider extends Component {
       notification["success"]({
         message: `1 ${symbol} successfully purchased!`
       });
+      const tok = _.find(privateTokens.private_tokens, ["id", id]);
+      cb && cb(tok ? tok.current_price : 0);
       await this.setState({ privateTokens });
     } catch (e) {
       handleErrorMessage(e);
@@ -175,12 +177,7 @@ class TokenProvider extends Component {
         form.append("private_token[images][]", new Blob([file.image]));
       }
 
-      await api.uploadFormData(
-        "post",
-        "/private_tokens.json",
-        form,
-        true
-      );
+      await api.uploadFormData("post", "/private_tokens.json", form, true);
       window.location = "/";
     } catch (e) {
       handleErrorMessage(e);
