@@ -55,7 +55,7 @@ const TradeHistory = props => {
         <b className="text-grey">Price</b>
         <b className="text-grey percent">Order filled at</b>
       </div>
-      {_.sortBy(graphData, ["updated_at"]).map((item, index) => {
+      {_.takeRight(_.sortBy(graphData, ["updated_at"]), 6).map((item, index) => {
         return <RowItem key={index} {...item} />;
       })}
 

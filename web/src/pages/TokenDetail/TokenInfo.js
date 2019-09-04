@@ -6,6 +6,7 @@ import TokenContext from "contexts/TokenContext";
 import LineChart from "./LineChart";
 import wwf from "assets/images/wwf.svg";
 import numeral from "numeral";
+import images from 'constants/images';
 
 const TokenInfo = props => {
   const { currentCampaign } = useContext(AppContext);
@@ -14,6 +15,7 @@ const TokenInfo = props => {
   const {
     id,
     symbol,
+    charity,
     supply: { total_sold },
     current_price
   } = currentCampaign;
@@ -48,7 +50,7 @@ const TokenInfo = props => {
           {numeral(total_sold).format("$0,0.00")}
         </div>
         <div className="card-subheader text-grey">funded to</div>
-        <img className="donation-logo" src={wwf} alt="" />
+        <img className="donation-logo" src={images[charity]} alt="" />
       </div>
     </div>
   );

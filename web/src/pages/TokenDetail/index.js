@@ -26,9 +26,14 @@ const TokenDetail = props => {
       updateState("timeSold", currentCampaign.purchase_count);
       setTimeSold(currentCampaign.purchase_count);
     } else {
-      getTokens(tokens =>
-        updateState("currentCampaign", _.find(tokens, ["symbol", symbol]))
-      );
+      getTokens(tokens => {
+        const tok = _.find(tokens, ["symbol", symbol]);
+        if (tok) {
+          updateState("currentCampaign", tok);
+        } else {
+          window.location = "/";
+        }
+      });
     }
     return () => {
       scrollTop();
@@ -36,7 +41,7 @@ const TokenDetail = props => {
       setTimeSold(timeSold);
       // updateState("currentCampaign", null);
     };
-  }, [currentCampaign, symbol, getTokens, setTimeSold, timeSold, updateState]);
+  }, [currentCampaign, symbol]); //eslint-disable-line
 
   if (!currentCampaign) return <CircularProgress />;
 

@@ -16,7 +16,10 @@ const Clock = props => {
   const { tokens } = useContext(HomeContext);
   const fadeIn = props.history.location.pathname.indexOf("/token") > -1;
 
-  let totalDonation = tokens.reduce((total, token) => total + numeral(token.total_donation).value(), 0);
+  let totalDonation = tokens.reduce(
+    (total, token) => total + numeral(token.total_donation).value(),
+    0
+  );
 
   useEffect(() => {
     var xmlns = "http://www.w3.org/2000/svg",
@@ -44,8 +47,8 @@ const Clock = props => {
       alarmBellOffsetX = 151,
       clockTime = `${moment().hours()}.${parseInt(
         (moment().minutes() / 60) * 100
-      )}`,
-      interval: null;
+      )}`;
+    window.tickInterval = null;
 
     TweenMax.set("svg", {
       visibility: "visible"
@@ -87,8 +90,8 @@ const Clock = props => {
         makeTimeScale();
       }
       return () => {
-        if (interval) {
-          clearInterval(interval);
+        if (window.tickInterval) {
+          clearInterval(window.tickInterval);
         }
       };
     } else {
@@ -113,8 +116,8 @@ const Clock = props => {
       }
 
       return () => {
-        if (interval) {
-          clearInterval(interval);
+        if (window.tickInterval) {
+          clearInterval(window.tickInterval);
         }
       };
     }
@@ -208,8 +211,8 @@ const Clock = props => {
         rotation: totalRotation,
         // ease: Elastic.easeOut.config(0.3, 0.1),
         onComplete: () => {
-          if (!interval) {
-            interval = setInterval(() => {
+          if (!window.tickInterval) {
+            window.tickInterval = setInterval(() => {
               const rotation =
                 ((moment().seconds() * 6) % 360) + secondHandRotation;
               TweenMax.to(secondHand, 0.1, {
@@ -388,7 +391,7 @@ const Clock = props => {
           {timeSold} HOURS
         </text>
         <text className="meridianSublabel" x="50%" y="270">
-          have generated a donation fund of {" "}
+          have generated a donation fund of{" "}
           {currentCampaign
             ? numeral(currentCampaign.total_donation).format("$0,0.00")
             : numeral(totalDonation).format("$0,0.00")}

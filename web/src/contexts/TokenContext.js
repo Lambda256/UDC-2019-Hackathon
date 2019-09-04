@@ -148,12 +148,54 @@ class TokenProvider extends Component {
     this.setState({ [key]: value });
   };
 
+  createPrivateToken = async (
+    symbol,
+    initial_price,
+    charity,
+    offers,
+    description,
+    category,
+    social_links,
+    images
+  ) => {
+    try {
+      await this.setState({ creating: true });
+      const form = new FormData();
+      form.append("private_token[symbol]", symbol);
+      form.append("private_token[initial_price]", initial_price);
+      form.append("private_token[charity]", charity);
+      form.append("private_token[offers]", offers);
+      form.append("private_token[description]", description);
+      form.append("private_token[category]", category);
+      Object.keys(social_links).forEach(link => {
+        form.append(`private_token[social_links][${link}]`, social_links[link]);
+      });
+
+      for (const file of images) {
+        form.append("private_token[images][]", new Blob([file.image]));
+      }
+
+      await api.uploadFormData(
+        "post",
+        "/private_tokens.json",
+        form,
+        true
+      );
+      window.location = "/";
+    } catch (e) {
+      handleErrorMessage(e);
+    } finally {
+      await this.setState({ creating: false });
+    }
+  };
+
   render() {
     return (
       <Provider
         value={{
           ...this.state,
           getOrders: this.getOrders,
+          createPrivateToken: this.createPrivateToken,
           buyToken: this.buyToken,
           sellToken: this.sellToken,
           takeToken: this.takeToken,

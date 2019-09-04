@@ -1,0 +1,124 @@
+.token-create-page {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+
+  .ant-select-selection__rendered,
+  .ant-select-selection-selected-value,
+  .ant-select-selection,
+  .ant-select-selection--single,
+  .ant-select,
+  input {
+    height: 80px;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #4f4f4f;
+    border-radius: 0;
+    text-align: center;
+    font-size: 40px;
+    height: 80px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .pagenum {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    top: 20px;
+    left: 50%;
+    letter-spacing: 2px;
+    color: #a6a7a8;
+    line-height: 1.2;
+
+    .carousel-header {
+      position: relative;
+      left: -50%;
+      color: #a6a7a8;
+      text-transform: uppercase;
+      // font-weight: 400 ;
+      letter-spacing: 1px;
+      font-size: 20px;
+    }
+    .num {
+      position: relative;
+      left: -50%;
+    }
+  }
+
+  .dollar {
+    font-size: 24px;
+  }
+
+  .create-carousel,
+  .carousel-page {
+    width: 100%;
+    height: 100vh;
+  }
+
+  .carousel-content {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .next-button {
+    margin-top: 40px;
+  }
+  .ant-select-selection__rendered,
+  .ant-select-selection-selected-value,
+  .ant-select-selection,
+  .ant-select-selection--single{
+    width: 100vw;
+    font-size: 18px;
+    text-transform: none;
+    border: none;
+  }
+  .small-text {
+    font-size: 18px;
+    text-transform: none;
+  }
+
+  .ant-select-selection-selected-value {
+    margin-top: 24px;
+  }
+
+  .input-dollar,
+  .slider-dollar {
+    width: 80vw!important;
+  }
+
+  .charity-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #4f4f4f;
+    padding: 40px;
+    margin: 0 16px;
+    cursor: pointer;
+
+    &.selected,
+    &:hover {
+      transition: background-color 0.5s;
+      background-color: #000;
+    }
+
+    .name {
+      color: #a6a7a8;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
