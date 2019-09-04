@@ -47,7 +47,7 @@ class UsersController < ApplicationController
         ]
       ),
       private_tokens: @current_user.private_tokens.includes(:owner).map { |t|
-        t.as_json(only: [:id, :symbol]).merge(
+        t.as_json(only: [:id, :symbol], methods: [:current_price]).merge(
           name: t.owner.name,
           profile_picture: url_for(t.owner.profile_picture)
         )
