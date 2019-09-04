@@ -63,6 +63,9 @@ export default {
     apiKey() {
       return Config.apiKey;
     },
+    userName() {
+      return Config.userName;
+    },
     txActionName() {
       return Config.txActionName;
     },
