@@ -9,16 +9,6 @@
  * 3. Style
  */
 
-@font-face {
-    font-family: 'Noto Sans KR';
-    src: url("../src/font/NotoSansKR-Light.otf") format("opentype");
-}
-
-@font-face {
-    font-family: 'Black Han Sans';
-    src: url("../src/font/BlackHanSans-Regular.ttf") format("truetype");
-}
-
 html {
   /* 1 */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
