@@ -40,9 +40,18 @@ class PrivateTokensController < ApplicationController
   # GET - /private_tokens/:id/history.json
   def history
     transactions = Transaction.where(private_token_id: @private_token.id)
-    transactions = transactions.where(category: params[:category]) if params[:category]
+    transactions = transactions.where(category: params[:category]) if params[:category].present?
+    transactions = transactions.includes(:sender).order(id: :desc).limit(params[:limit] || 6)
 
-    render json: transactions.order(id: :desc).limit(params[:limit] || 6)
+    out = transactions.map do |t|
+      if t.category == 'burn'
+        t.as_json.merge(sender_profile_picture: url_for(t.sender.profile_picture))
+      else
+        t.as_json
+      end
+    end
+
+    render json: out
   end
 
   private
