@@ -61,7 +61,7 @@ const TokenInfo = props => {
       </div>
       <div className="medium-card">
         <div className="dollar-value text-white">
-          {numeral(total_sold).format("$0,0.00")}
+          {numeral(currentCampaign.total_donation).format("$0,0.00")}
         </div>
         <div className="card-subheader text-grey">funded to</div>
         <img className="donation-logo" src={images[charity]} alt="" />
