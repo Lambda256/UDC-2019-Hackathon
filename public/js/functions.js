@@ -291,36 +291,23 @@ function autocomplete(arr) {
     callback();
   }
 
+  var firstMarker;
+  var markersLayer = new L.LayerGroup();
+
   // Update map
   function updateMap() {
-    // 지도 중심 계산
-    let lat_mean = 0;
-    let long_mean = 0;
-    for (var i=0;i<targets.length;i++){
-      lat_mean += parseFloat(targets[i][6]);
-      long_mean += parseFloat(targets[i][7]);
-    }
-    lat_mean /= 10;
-    long_mean /= 10;
-
-    // 지도 중심 이동
-    mymap.setView([lat_mean,long_mean], 14);
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      maxZoom: 18,
-      id: 'mapbox.streets',
-      // 용환 mapbox public accesToken (이대로 두면 됨)
-      accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
-    }).addTo(mymap);
 
     // 마커 추가
     for (var i=0;i<targets.length;i++) {
       var marker = L.marker(targets[i].slice(6,8));
-      marker.addTo(mymap);
       marker.bindPopup(targets[i][2] + '. ' + targets[i][3] + '\n'
                         + '<span class\="uk-label\" style=\"background-color:#ffd250;color:#000;\"><span uk-icon=\"bolt\"></span>'+targets[i][8]+'</span>');
-      if (i==0) marker.openPopup();
+      if (i==0) firstMarker = marker;
+      markersLayer.addLayer(marker);
     }
+    markersLayer.addTo(mymap);
+    firstMarker.openPopup();
+
     console.log("7. update map");
     // 여기에서 Targets 정류장을 지도에 표시
     // targets[0]~targets[9] 까지 있음 (목적지 + 목적지와 가까운 정류장 9개)
@@ -430,6 +417,25 @@ function autocomplete(arr) {
         success: function (data) {
           //console.log(JSON.stringify(data));
           // get Response
+          
+          // 지도 초기화
+          
+          // 지도 중심 계산
+          let lat_center = parseFloat(targets[0][6]);
+          let long_center = parseFloat(targets[0][7]);
+          
+          // 지도 중심 이동
+          mymap.setView([lat_center,long_center], 14);
+          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            // 용환 mapbox public accesToken (이대로 두면 됨)
+            accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
+          }).addTo(mymap);
+
+          markersLayer.clearLayers();
+
           setTimeout(function () {getResponse(reqTime, callback)}, 3000);
         },
         error: function(code){
