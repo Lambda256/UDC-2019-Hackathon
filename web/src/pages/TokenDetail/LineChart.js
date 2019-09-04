@@ -78,7 +78,7 @@ const LineChart = props => {
             .attr("y", 100)
             .append("svg:tspan")
             .attr("x", 220)
-            .attr("dy", 166)
+            .attr("dy", 170)
             .attr("fill", "#a6a7a8")
             .attr("font-size", 14) //font size
             .text(function(d) {
@@ -90,7 +90,7 @@ const LineChart = props => {
             .attr("y", 100)
             .append("svg:tspan")
             .attr("x", 220)
-            .attr("dy", 182)
+            .attr("dy", 189)
             .attr("fill", "#a6a7a8")
             .attr("font-size", 14) //font size
             .text(function(d) {
