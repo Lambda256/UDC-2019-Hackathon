@@ -40,9 +40,45 @@ user3.profile_picture.attach(
   filename: 'LaurieBream-480px.jpg'
 )
 
+user4 = User.create!(
+  email: 'test4@hunt.town',
+  password: '12341234',
+  name: 'Emilee Jennings',
+  short_description: 'Radio Presenter at KBS'
+)
+user4.profile_picture.attach(
+  io: File.open("#{Rails.root}/db/images/EmileeJennings-480px.jpg"),
+  filename: 'EmileeJennings-480px.jpg'
+)
+
+user5 = User.create!(
+  email: 'test5@hunt.town',
+  password: '12341234',
+  name: 'Sung Woo Park',
+  short_description: 'Co-founder, CMO and Developer at Sketchware'
+)
+user5.profile_picture.attach(
+  io: File.open("#{Rails.root}/db/images/SungWooPark-480px.jpg"),
+  filename: 'SungWooPark-480px.jpg'
+)
+
+user6 = User.create!(
+  email: 'test6@hunt.town',
+  password: '12341234',
+  name: 'Mathew Jimerstok',
+  short_description: 'Partner & Director at KGSI Ventures'
+)
+user6.profile_picture.attach(
+  io: File.open("#{Rails.root}/db/images/MathewJimerstok-480px.jpg"),
+  filename: 'MathewJimerstok-480px.jpg'
+)
+
 user1.recharge!(10000)
 user2.recharge!(50000)
 user3.recharge!(10000)
+user4.recharge!(5000)
+user5.recharge!(5000)
+user6.recharge!(5000)
 
 token1 = PrivateToken.create!(
   owner_id: user1.id,
@@ -114,6 +150,72 @@ token3.images.attach([{
 }, {
   io: File.open("#{Rails.root}/db/images/LaurieBream-1600px-3.jpg"),
   filename: 'LaurieBream-1600px-3.jpg'
+}])
+
+token4 = PrivateToken.create!(
+  owner_id: user3.id,
+  symbol: 'EMILEE',
+  initial_price: 100.0,
+  charity: 'wwf',
+  offers: 'Emilee Jennings offers guidance on building a career as a radio announcer',
+  description: 'Emilee Jennings is a journalist from Sligo, Ireland. She returned home after 5 years working in the print and broadcasting industry in Seoul, Korea. She now works full-time with StoryLab, a Content and PR Agency in Ireland. Emilee has also been broadcasting on the KBS (Korean Broadcasting System, the biggest national broadcasting company in South Korea) for over 40 years and has been recognised as one of the most favorite presenters voted from the listeners.',
+  category: 'journalism',
+  social_links: {
+    linked_in: 'https://www.linkedin.com/in/sungwoopark95',
+    instagram: 'https://www.instagram.com/s.ggoma'
+  }
+)
+token4.images.attach([{
+  io: File.open("#{Rails.root}/db/images/EmileeJennings-1600px-1.jpg"),
+  filename: 'EmileeJennings-1600px-1.jpg'
+}, {
+  io: File.open("#{Rails.root}/db/images/EmileeJennings-1600px-2.jpg"),
+  filename: 'EmileeJennings-1600px-2.jpg'
+}, {
+  io: File.open("#{Rails.root}/db/images/EmileeJennings-1600px-3.jpg"),
+  filename: 'EmileeJennings-1600px-3.jpg'
+}])
+
+token5 = PrivateToken.create!(
+  owner_id: user3.id,
+  symbol: 'SWP',
+  initial_price: 30.0,
+  charity: 'unhcr',
+  offers: 'Sung Woo Park can help you to design top notch front-end user experience',
+  description: 'Sung Woo Park is a renowned front-end maniac who loves to prototype eye-catching mobile app User Interfaces. He co-founded Sketchware, like Wordpress for mobile apps, acquired over 2,000,000 installs over the year analyzing user behavior flow and respectively remodeling UI/UX. His state-of-the-art front-end technic has brought 24,900% install growth (from 4,000 to 1,000,000) over the year.',
+  category: 'technology',
+  social_links: {
+    linked_in: 'https://www.linkedin.com/in/sungwoopark95',
+    instagram: 'https://www.instagram.com/s.ggoma'
+  }
+)
+token5.images.attach([{
+  io: File.open("#{Rails.root}/db/images/SungWooPark-1600px-1.jpg"),
+  filename: 'SungWooPark-1600px-1.jpg'
+}, {
+  io: File.open("#{Rails.root}/db/images/SungWooPark-1600px-2.jpg"),
+  filename: 'SungWooPark-1600px-2.jpg'
+}])
+
+token6 = PrivateToken.create!(
+  owner_id: user3.id,
+  symbol: 'MATHEW',
+  initial_price: 10.0,
+  charity: 'national_trust',
+  offers: 'Mathew Jumerstok can introduce the top startup founders that he mentored',
+  description: 'Mathew Jimerstok is Partner & Director at KGSI Ventures, the venture incubation unit of the Huston Consulting Group. He is based in Singapore and part of the leadership team of HCGDV’s new South East Asia Incubation Center. At HCGDV he is dedicated to inventing, building, investing in and launching category-changing businesses at start-up speed for the world’s most influential corporates. His portfolio includes ventures such as OVO, Boost, HeyCar, Coup, QantasAssure, Formation, MachineMax or AutoGravity.',
+  category: 'business',
+  social_links: {
+    linked_in: 'https://www.linkedin.com/in/sungwoopark95',
+    instagram: 'https://www.instagram.com/s.ggoma'
+  }
+)
+token6.images.attach([{
+  io: File.open("#{Rails.root}/db/images/MathewJimerstok-1600px-1.jpg"),
+  filename: 'MathewJimerstok-1600px-1.jpg'
+}, {
+  io: File.open("#{Rails.root}/db/images/MathewJimerstok-1600px-2.jpg"),
+  filename: 'MathewJimerstok-1600px-2.jpg'
 }])
 
 10.times {
