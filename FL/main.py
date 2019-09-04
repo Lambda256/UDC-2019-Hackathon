@@ -15,7 +15,7 @@ import preprocessing
 
 
 # hardcoding factors
-AvgBlockInterval = 0.1
+AvgBlockInterval = 0.01
 
 
 def create_model(features):

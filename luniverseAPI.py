@@ -2,6 +2,11 @@ import requests
 import json
 
 
+# hardcoding factors
+Authorization = "Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr"
+Version = "3"
+
+
 def curlPost(url, data, headers):
     r = requests.post(url, data=data, headers=headers)
     return r.json()
@@ -18,10 +23,10 @@ def allowance(REAOowner, contractAddr, from_):
     data['inputs'] = data_inputs
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/allowance"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/allowance"
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 
@@ -29,16 +34,20 @@ def allowance(REAOowner, contractAddr, from_):
     return r
 
 
-def balanceOf(addr):
+def balanceOf(addr, from_):
     # data
+    data_inputs = dict()
+    data_inputs['owner'] = addr
+
     data = dict()
-    data['from'] = addr
+    data['from'] = from_
+    data['inputs'] = data_inputs
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/balanceOf10"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/balanceOf"
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 
@@ -57,10 +66,10 @@ def approve(contractAddr, amount, from_):
     data['inputs'] = data_inputs
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/approve"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/approve"
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 
@@ -78,10 +87,10 @@ def getReturnInfo(addr, from_):
     data['inputs'] = data_inputs
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/getReturnInfo12"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/getReturnInfo" + Version
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 
@@ -101,10 +110,10 @@ def giveIncentive(receiver, amount, timestamp, from_):
     data['inputs'] = data_inputs
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/giveIncentive12"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/giveIncentive" + Version
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 
@@ -118,10 +127,10 @@ def popRequest(from_):
     data['from'] = from_
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/popRequest12"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/popRequest" + Version
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 
@@ -135,10 +144,10 @@ def getRequestLength(from_):
     data['from'] = from_
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/getRequestLength12"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/getRequestLength" + Version
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 
@@ -152,10 +161,10 @@ def getRequest(from_):
     data['from'] = from_
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/getRequest12"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/getRequest" + Version
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 
@@ -178,12 +187,14 @@ def insertResponse(requestId, stations: list, bikeNums: list, from_):
     data['inputs'] = data_inputs
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/insertResponse12"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/insertResponse" + Version
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
+
+    print(data)
 
     r = curlPost(url, data, headers)
     return r
@@ -204,10 +215,10 @@ def insertBlock(flblock, from_):
     data['inputs'] = data_inputs
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/insertBlock12"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/insertBlock" + Version
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 
@@ -242,10 +253,10 @@ def getBlocksLength(from_):
     data['from'] = from_
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/getBlocksLength12"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/getBlocksLength" + Version
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 
@@ -280,10 +291,10 @@ def getResponse(requestId, from_):
     data['inputs'] = data_inputs
 
     # curl
-    url = "https://api.luniverse.io/tx/v1.0/transactions/getResponse12"
+    url = "https://api.luniverse.net/tx/v1.0/transactions/getResponse" + Version
     headers = {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD'
+        'Authorization': Authorization
     }
     data = json.dumps(data)
 

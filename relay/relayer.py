@@ -11,7 +11,7 @@ import luniverseAPI as API
 
 
 # hardcoding factors
-REOA = "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78"
+REOA = "0x128a8b8c9507aec53d949c53d5be57c4d98f9256"
 AvgBlockInterval = 3.0
 
 
