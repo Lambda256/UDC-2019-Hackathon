@@ -132,8 +132,8 @@ def sendTransaction(from_, flmodel, flblock, min_max_scaler):
         _, bikeNumAfterReturn, _ = r['data']['res']
         bikeNumAfterReturn = int(bikeNumAfterReturn)
 
-        incentive = (bikeNums[0] - bikeNumAfterReturn) * \
-            10 if (bikeNums[0] - bikeNumAfterReturn) > 0 else 0
+        incentive =\
+            (bikeNums[0] - bikeNumAfterReturn + 1) * 10 if (bikeNums[0] - bikeNumAfterReturn + 1) > 0 else 0
 
         # allowance
         r = API.approve(contractAddr, incentive, from_)
