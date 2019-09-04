@@ -33,9 +33,20 @@ let getTransaction = async (txHash) => { return await web3.eth.getTransaction(tx
 let getBlock 	   = async (blockNumber) => { return await web3.eth.getBlock(blockNumber) }
 
 // 컨트랙트 호출정보를 불러옴.
-let getFuncDetail = async (contractName, txHash) => {
+let getFuncDetail = async (txHash) => {
 
+	let contractName = null;
 	let txData = await getTransaction(txHash)
+
+	for (let key in config.contracts) {
+		if (config.contracts[key].address == txData.to) {
+			contractName = key
+			break
+		}			
+	}
+
+	if (!contractName) return null;
+
 	let deData = Contracts[contractName].decoder.decodeMethod(txData.input)
 	let block  = await web3.eth.getBlock(txData.blockNumber)
 
@@ -74,6 +85,7 @@ return example.
 module.exports = {
 	web3,
 	Contracts,
+	getBlock,
 	getTransaction,
 	getFuncDetail
 }
