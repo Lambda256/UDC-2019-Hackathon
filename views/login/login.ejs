@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/nav %>
+    <div class="container-fluid text-center">    
+      <div class="row content">
+        <div class="col-sm-2 sidenav">
+          <p><a href="#">Go to graves</a></p>
+          <p><a href="#">Buy Batge</a></p>
+        </div>
+
+        <div class="container user user-login"> 
+            <form class="user-form form-horizontal" action="/login" method="post">
+                <div class="contentBox">
+                    <h3 class="contentBoxTop">Login</h3>
+                    <fieldset>
+                        <div class="form-group <%= (errors.ID)?'has-error':'' %>">
+                            <label for="ID" class="col-sm-3 control-label">UserID</label>
+                            <div class="col-sm-7">
+                                    <input class="form-control" type="text" id="ID" name="ID" value="<%= ID %>">
+                                    <% if(errors.ID){ %>
+                                     <span class="help-block"><%= errors.ID %></span>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <div class="form-group <%= (errors.password)?'has-error':'' %>">
+                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-7">
+                                <input class="form-control" type="password" id="password" name="password" value="">
+                                <% if(errors.password){ %>
+                                <span class="help-block"><%= errors.password %></span>
+                                <% } %>
+                            </div>
+                            </div>
+                            <% if(errors.login){ %>
+                            <div class="has-error">
+                                <span class="help-block"><%= errors.login %></span>
+                            </div>
+                            <% } %>
+                    </fieldset>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="btn btn-default">Login</button>
+                </div>
+            </form>
+            <br>
+            <a type="submit" href="/join" class="btn btn-default">Sign up</a>
+        </div>
+
+        <div class="col-sm-2 sidenav">
+          <div class="well">
+            <p>ADS</p>
+          </div>
+          <div class="well">
+            <p>ADS</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

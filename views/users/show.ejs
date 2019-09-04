@@ -1,0 +1,33 @@
+<!-- views/users/show.ejs -->
+
+<!DOCTYPE html>
+<html>
+ <head>
+  <% include ../partials/head %>
+ </head>
+ <body>
+  <% include ../partials/nav %>
+
+  <div class="container user user-show">
+
+   <div class="buttons">
+    <a class="btn btn-default" href="/users">Back</a>
+   </div>
+
+   <form class="user-form form-horizontal" action="/users" method="post">
+    <div class="contentBox">
+     <h3 class="contentBoxTop"><%= user.ID %></h3>
+     <fieldset disabled>
+      <div class="form-group">
+       <label for="ID" class="col-sm-3">ID</label>
+       <div class="col-sm-9">
+        <input class="form-control" type="text" id="ID" name="ID" value="<%= user.ID %>">
+       </div>
+      </div>
+     </fieldset>
+    </div>
+   </form>
+
+  </div> <!-- container end -->
+ </body>
+</html>

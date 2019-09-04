@@ -1,0 +1,173 @@
+<html>
+
+<head>
+    <title><%= title%></title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../public/vendors/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../public/vendors/fonts/line-awesome.css">
+    <link rel="stylesheet" href="../public/vendors/fonts/SpoqaHanSans-kr.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/uc.min.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script> <!-- 2 -->
+
+</head>
+
+<body>
+    <% include ./header.ejs %>
+
+
+    <div class="container-frame is-pd-y_60">
+        <div data-uc-colgroup="row-md">
+            <div class="is-col-xs2">
+                <% include ./left_side_logout.ejs %>
+            </div>
+            <div class="is-col-xs8">
+                <div class="mypage-wrap">
+                    <h3>My Page</h3>
+                    <div data-uc-colgroup>
+                        <div class="is-col-xs4">
+                            <div class="is-col-xs6 is-align-mid">
+                                <div class="is-avatar-wrap"></div>
+                            </div>                            
+                            <div class="is-col-xs6 is-align-top user-info">
+                                <p>슈퍼파월</p>
+                                <h4><%= user.ID%></h4>
+                                <span>Since 2019.07.31</span>
+                            </div>
+                        </div>
+                        <div class="is-col-xs8">
+                            <div class="is-col-xs4 is-align-bot">
+                                <div class="my-history">
+                                    <h4>My 활동이력</h4>
+                                    <p>Starcraft-KR Community Manager<br> ( 2019.08.20 ~ 2019.09.19 )</p>
+                                    <p>Starcraft-KR Community Manager<br> ( 2019.08.20 ~ 2019.09.19 )</p>
+                                    <p>Regam User<br> ( 2019.07.31 ~ )</p>
+                                </div>
+                            </div>
+                            <div class="is-col-xs8 is-align-mid">
+                                <ul>
+                                    <li>
+                                        <p class="is-level-icon">GG</p>
+                                        <p class="is-level-name">GG SUM</p>
+                                        <p class="is-level-score"><%=(user.ggow + user.ggrt) %></p>
+                                    </li>
+                                    <li>
+                                        <p class="is-level-icon">R</p>
+                                        <p class="is-level-name">RGC</p>
+                                        <p class="is-level-score"><%=RGC %></p>                                       
+                                    </li>
+                                    <li>
+                                        <p class="is-level-icon">G</p>
+                                        <p class="is-level-name">GOLD</p>
+                                        <p class="is-level-score"><%=user.gold %></p>   
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rgc-wallet-wrap">
+                    <h3>RGC Wallet</h3>
+                    <div data-uc-table>
+                        <h4>RGC 거래내역</h4>
+                        <table class="is-table-hor">
+                            <colgroup>
+                                <col width="10%" />
+                                <col width="12%" />
+                                <col width="19%" />
+                                <col width="19%" />
+                                <col width="15%" />
+                                <col width="15%" />
+                                <col width="10%" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>STATE</th>
+                                    <th>AMOUNT</th>
+                                    <th>FROM</th>
+                                    <th>TO</th>
+                                    <th>RGC BALANCE</th>
+                                    <th>NOTE</th>
+                                    <th>DATE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>IN</td>
+                                    <td>+ 5,000</td>
+                                    <td>BAAAM
+                                        <span class="is-arrow-add"></span>
+                                    </td>
+                                    <td>ME / BigLight</td>
+                                    <td>50,000</td>
+                                    <td>PRIVACY</td>
+                                    <td>2019.08.20</td>
+                                </tr>
+                                <tr>
+                                    <td>OUT</td>
+                                    <td>- 3,000</td>
+                                    <td>ME / BigLight
+                                        <span class="is-arrow-add"></span>
+                                    </td>
+                                    <td>Henry.lee</td>
+                                    <td>50,000</td>
+                                    <td>PRIVACY</td>
+                                    <td>2019.08.20</td>
+                                </tr>
+                                <tr>
+                                    <td>OUT</td>
+                                    <td>- 4,000</td>
+                                    <td>ME / BigLight
+                                        <span class="is-arrow-add"></span>
+                                    </td>
+                                    <td>Henry.lee</td>
+                                    <td>50,000</td>
+                                    <td>PRIVACY</td>
+                                    <td>2019.08.20</td>
+                                </tr>
+                                <tr>
+                                    <td>OUT</td>
+                                    <td>- 4,000</td>
+                                    <td>ME / BigLight
+                                        <span class="is-arrow-add"></span>
+                                    </td>
+                                    <td>Henry.lee</td>
+                                    <td>50,000</td>
+                                    <td>PRIVACY</td>
+                                    <td>2019.08.20</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="send-paybox">
+                        <div class="is-col-xs2 is-align-top">
+                            <h4>RGC 거래내역</h4>
+                        </div>
+                        <div class="is-col-xs4 is-align-top">
+                            <label><i>1</i> 송금할 금액을 입력하세요.</label>
+                            <input type="text" name="" value="" />
+                        </div>
+                        <div class="is-col-xs4 is-align-top">
+                            <label><i>2</i> 받는 분의 회원ID를 입력하세요.</label>
+                            <input type="text" name="" value="" />
+                        </div>
+                        <div class="is-col-xs2 is-align-bot">
+                            <button type="button">송금하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="is-col-xs2">
+                <% include ./right_side.ejs %>
+            </div>
+        </div>
+    </div>
+
+
+    <% include ./footer.ejs %>
+</body>
+
+</html>

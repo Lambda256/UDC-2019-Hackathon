@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ../partials/head %>
+  </head>
+  <body>
+    <% include ../partials/nav %>
+    <div class="container-fluid text-center">    
+      <div class="row content">
+        <div class="col-sm-2 sidenav">
+          <p><a href="#">Go to graves</a></p>
+          <p><a href="#">Buy Batge</a></p>
+        </div>
+
+        <div class="container user RGC"> 
+            <form class="user-form form-horizontal" action="/donate/<%=currentUser.ID%>" method="post">
+                <div class="contentBox">
+                    <h3 class="contentBoxTop">오버워치 커뮤니티에 donate</h3>
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="ID" class="col-sm-3 control-label">RGC 잔액</label>
+                            <div class="col-sm-8 text-left"> 
+                                    <h2><%=RGC %></h2>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            </div>
+                            <div class="has-error">
+                                <span class="help-block"></span>
+                            </div>
+                    </fieldset>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="btn btn-default">Login</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-2 sidenav">
+          <div class="well">
+            <p>ADS</p>
+          </div>
+          <div class="well">
+            <p>ADS</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
