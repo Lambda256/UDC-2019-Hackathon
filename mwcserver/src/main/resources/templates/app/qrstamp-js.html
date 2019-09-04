@@ -1,0 +1,252 @@
+<script th:inline="javascript">
+$(function() {
+	/* Variables */
+	var EMPL_ADDRESS = '0xbfb07e725f66b2ac1187a5b134fbcf4a3f3beaf0';
+	var LOGIN_ID = 'Gabriel';
+	var WORK_CODE_START='01';
+	var WORK_CODE_END='02';
+	
+	console.log(sessionStorage.getItem("id"));
+	id = sessionStorage.getItem("id");
+	if(id == null || id == "") {
+		window.location.href = "/login";
+	}
+	
+	/* Get Working List*/
+	/*<![CDATA[*/
+	var workHistoryEntityList = /*[[${workHistoryEntityList}]]*/;
+	/*]]>*/
+	console.log(workHistoryEntityList);
+	var startWorkHistoryEntityList = workHistoryEntityList.filter(function(item){
+		return item.workCode == WORK_CODE_START;
+	});
+	var endWorkHistoryEntityList = workHistoryEntityList.filter(function(item){
+		return item.workCode == WORK_CODE_END;
+	});
+	console.log(startWorkHistoryEntityList);
+	console.log(endWorkHistoryEntityList);
+	// Calendar Model
+	var calendarModel = [];
+	
+	// 업무 시작 목록
+	$.each(startWorkHistoryEntityList, function(index, startWorkHistoryEntity){
+		var startWorkStartYmd=moment(startWorkHistoryEntity.time).format('YYYYMMDD');
+		var startMilliSeconds = moment(startWorkHistoryEntity.time).valueOf();
+		var workHistory = {
+				title : '업무 종료를 하지 않으셨습니다.',
+				start : startMilliSeconds,
+				end : null,
+				backgroundColor : null,
+				borderColor : null,
+		};
+		// 업무 종료 목록
+		var isExistsEndWorking = false;
+		$.each(endWorkHistoryEntityList, function(index, endWorkHistoryEntity){
+			var endWorkStartYmd=moment(endWorkHistoryEntity.time).format('YYYYMMDD');
+			if(startWorkStartYmd == endWorkStartYmd){
+				// 근무시간
+				var endMilliSeconds = moment(endWorkHistoryEntity.time).valueOf();
+				var workingSeconds = moment.duration(endMilliSeconds - startMilliSeconds).asSeconds();
+				var rgbCode = '#1DDB16';
+				// 근무시간 10시간 초과 빨간색
+				if(workingSeconds > 36000) rgbCode = '#FF0000';
+				// 근무시간 9시간 초과 ~ 10시간 이하 주황색
+				else if(workingSeconds > 32400 && workingSeconds <= 36000) rgbCode = '#FFBB00';
+				// 근무시간 9시간 이하 초록색
+				else rgbCode = '#1DDB16';
+				
+				// Calendar Model
+				workHistory.title = 'Working';
+				workHistory.end = endMilliSeconds;
+				workHistory.backgroundColor = rgbCode;
+				workHistory.borderColor = rgbCode;
+				
+				isExistsEndWorking = true;
+				return false;
+			}
+		});
+		calendarModel.push(workHistory);
+	});
+	
+	console.log(calendarModel);
+	
+	/* fullcalendar*/
+	var calendarEl = document.getElementById('calendar');
+	 
+	var calendar = new FullCalendar.Calendar(calendarEl, {
+		plugins : [ 'interaction', 'dayGrid', 'timeGrid', 'interaction' ],
+		defaultView : 'dayGridMonth',
+		//defaultDate : '2019-08-07',
+		selectable : true,
+		header : {
+			left : 'prev,next today',
+			center : 'title',
+			right : 'dayGridMonth,timeGridWeek,timeGridDay'
+		},
+		events : calendarModel,
+		dateClick : function(info) {
+			var clickedCalendarTodayYmd = moment(info.dateStr).format('YYYYMMDD');
+			// Get Work History
+			$.ajax({
+				type : "GET", //요청 메소드 타입
+				url : BASE_CONTEXT_PATH + "work/history/"+LOGIN_ID+"/"+moment(clickedCalendarTodayYmd).format(),
+				contentType : "application/json",
+				success : function(data, status, xhr) {
+					console.log(data);
+					var todayYmd = moment().format('YYYYMMDD');
+					if(clickedCalendarTodayYmd != todayYmd){
+						var startTime;
+						var endTime;
+						var startLatitude;
+						var startLongitude;
+						var endLatitude;
+						var endLongitude;
+						$.each(data, function(index, item){
+							var time = item.time;
+							var momentTime = moment(time.year+"-"+time.monthValue+"-"+time.dayOfMonth+" "+time.hour+":"+time.minute+":"+time.second);
+							if(item.workCode == WORK_CODE_START){
+								startTime = momentTime;
+								startLatitude = item.latitude;
+								startLongitude = item.longitude;
+							}else if(item.workCode == WORK_CODE_END){
+								endTime = momentTime;
+								endLatitude = item.latitude;
+								endLongitude = item.longitude;
+							}
+						});
+						
+						if(!startTime || !endTime){
+							alert("근무 상세를 표시할 수 없습니다.");
+							return;
+						}
+						
+						console.log('startTime : ' + startTime);
+						console.log('endTime : ' + endTime);
+						var workingMinutes = endTime.diff(startTime, "minutes");
+						console.log('workingMinutes : ' + workingMinutes);
+					
+						// Show modal
+						$('#modal-commute-detail').modal('show');
+						
+						// Data binding to Modal
+						// Title
+						$('#commute_date').html(clickedCalendarTodayYmd);
+						var hours = parseInt(workingMinutes / 60);
+						var minute = workingMinutes % 60;
+						$('#commute_time').html(hours + " hours " + minute + " minutes");
+						// 근무 시작
+						$('#modal_working_start_time').html(moment(startTime).format('YYYY-MM-DD hh:mm:ss a'));
+						$('#modal_working_start_location_latitude').html(startLatitude);
+						$('#modal_working_start_location_longitude').html(startLongitude);
+						// 근무 종료
+						$('#modal_working_end_time').html(moment(endTime).format('YYYY-MM-DD hh:mm:ss a'));
+						$('#modal_working_end_location_latitude').html(endLatitude);
+						$('#modal_working_end_location_longitude').html(endLongitude);
+					}else{
+						// Show modal
+						$('#modal-commute').modal('show');
+						$('#modal-commute-date').html(info.dateStr);
+						
+						console.log(data);
+						if(!data ||data == ''){
+							console.log('업무 시작 필요 !!');
+							$('#start_work').prop('disabled', false);
+							$('#end_work').prop('disabled', true);
+						}else{
+							if(!data.workEndYmd || !data.workEndTime){
+								console.log('업무 시작 중 !!');
+								$('#start_work').prop('disabled', true);
+								$('#end_work').prop('disabled', false);
+							}else{
+								console.log('업무 종료 완료 !!');
+								$('#start_work').prop('disabled', true);
+								$('#end_work').prop('disabled', true);
+							}
+						}
+					}
+				},
+				error : function(xhr, status, error) {
+					alert(error);
+				}
+			});
+		}
+	});
+
+	calendar.render();
+	
+	/* geolocation */
+	var BWG_LATITUDE = 37.563115;
+   	var BWG_LONGITUDE = 126.969534;
+	var latitude;
+	var longitude;
+	// Geolocation API에 액세스할 수 있는지를 확인
+	if (navigator.geolocation) {
+	    //위치 정보를 얻기
+	    navigator.geolocation.getCurrentPosition (function(pos) {
+	    	latitude = pos.coords.latitude;
+	    	longitude = pos.coords.longitude;
+	    	
+	    	// Tooltip
+	    	var tooltipTitle;
+	    	if(latitude && longitude){
+	    		tooltipTitle = latitude + ", " + longitude + " (클릭하면 구글 지도를 연결합니다.)";
+	    	}else{
+	    		tooltipTitle = "위치를 표시할 수 없습니다.";
+	    	}
+	    	$('#geo-tooltip').tooltip({
+	    		title : tooltipTitle,
+	    	});
+	    	$('#geo').prop('href', "https://www.google.com/maps/search/?api=1&query="+latitude+","+longitude);
+	    	$('#geo').prop('target', '_blank');
+	    });
+	} else {
+	    alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.")
+	}
+	
+	/* Work History*/
+	// 업무 시작
+	$('#start_work').on('click', function(e){
+		console.log("start_work");
+		$('#modal-commute').modal('hide');
+		$('#qrcode').html("");
+		$('#qrmodal-commute').modal('show');
+
+		var qrcode = new QRCode(document.getElementById("qrcode"), {
+	        text: "Work Start!!!",
+	        width: 256,
+	        height: 256,
+	        colorDark : "#000000",
+	        colorLight : "#ffffff",
+	        correctLevel : QRCode.CorrectLevel.H
+	    });
+	 
+	    $("#qrcode > img").css({"margin":"auto"});
+		
+	});
+	// 업무 종료
+	$('#end_work').on('click', function(e){
+		console.log("end_work");
+	});
+});
+
+function memu_click(url){
+	//id = document.getElementById("id");
+	//sessionStorage.setItem("id", id.value);
+	//alert("id:"+sessionStorage.getItem("id"));
+	id = sessionStorage.getItem("id");
+	
+	window.location.href = "/" + url + "/"+id;
+	
+}
+function market_click(url){
+	//id = document.getElementById("id");
+	//sessionStorage.setItem("id", id.value);
+	//alert("id:"+sessionStorage.getItem("id"));
+	id = sessionStorage.getItem("id");
+	
+	//window.open('http://localhost:8080?userId='+id, '_blank');
+	//window.open('http://172.16.2.160:8080?userId='+id, '_blank');
+	window.open('http://192.168.0.18:8080?userId='+id, '_blank');
+	
+}
+</script>

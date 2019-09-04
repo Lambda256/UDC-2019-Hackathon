@@ -1,0 +1,68 @@
+<div class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+  <div class="mdc-dialog__container">
+    <div class="mdc-dialog__surface">
+      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+      <h2 class="mdc-dialog__title" id="my-dialog-title">근무 상세</h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+       	<img id="content-img" src="/imgs/bwg.png">
+      </div>
+      <footer class="mdc-dialog__actions">
+        <button onclick="dialogClose();" type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+          <span class="mdc-button__label">Close</span>
+        </button>
+      </footer>
+    </div>
+  </div>
+  <div class="mdc-dialog__scrim"></div>
+</div>
+
+<div id="workplace-list">
+	<h3>직원 근태 관리</h3>
+	<div class="list">
+		<div class="mdc-data-table">
+		  <table class="mdc-data-table__table" aria-label="근무지 목록">
+		    <thead>
+		      <tr class="mdc-data-table__header-row">
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">ID</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">이름</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">부서</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">직책</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">입사일</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">이메일</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">휴대전화</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">근무지</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Wallet Address</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">주52시간 게이지</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col"></th>
+		      </tr>
+		    </thead>
+		    <tbody class="mdc-data-table__content">
+		    {{#employeeList}}
+		    <tr class="mdc-data-table__row">
+		        <td class="mdc-data-table__cell">{{userId}}</td>
+		        <td class="mdc-data-table__cell">{{name}}</td>
+		        <td class="mdc-data-table__cell">{{department}}</td>
+		        <td class="mdc-data-table__cell">{{position}}</td>
+		        <td class="mdc-data-table__cell">{{joinDate}}</td>
+		        <td class="mdc-data-table__cell">{{email}}</td>
+		        <td class="mdc-data-table__cell">{{phoneNumber}}</td>
+		        <td class="mdc-data-table__cell">{{workPlaceName}}</td>
+		        <td class="mdc-data-table__cell">{{emplAddress}}</td>
+		        <td class="mdc-data-table__cell"><progress class="progress-{{progressColor}}" value="{{workValue}}" max="100"></progress></td>
+		        <td class="mdc-data-table__cell"><a onclick="dialogOpen('{{userId}}', '{{imgName}}')">상세보기</a></td>
+		     </tr>
+		    {{/employeeList}}
+		    {{^employeeList}}
+		    <tr>
+		    No Employee
+		    </tr>
+		    {{/employeeList}}
+		    </tbody>
+		  </table>
+		</div>
+	</div>
+</div>
