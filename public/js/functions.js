@@ -222,12 +222,15 @@ function autocomplete(arr) {
 
    // rent button listener
    document.getElementById("rent").addEventListener("click", function(e) {
+     rentbutton = this;
+     rentbutton.innerHTML = '<div id="spinner" uk-spinner></div>';
      approve(userAddr, 100000000000000, contractAddr).done(function(msg){
        console.log(msg);
        setTimeout(function() {
          allowance(userAddr, userAddr, contractAddr).done(function(msg){
            console.log(msg);
            rentBike(userAddr, departure[2], (new Date()).getTime());
+           rentbutton.innerHTML = "결제";
          });
        }, 3000);
      });
@@ -497,7 +500,6 @@ function autocomplete(arr) {
           callback(data, updateMap);
         },
         error: function(code) {
-          console.log("ERROR! RETRY!");
           setTimeout(function () {getResponse(from, reqTime, callback)}, 1000);
         }
     });
