@@ -8,12 +8,14 @@ import TradeHistory from "./TradeHistory";
 
 const Trade = props => {
   const { currentCampaign } = useContext(AppContext);
-  const { getHistory, fetchingHistory, graphData } = useContext(TokenContext);
+  const { getHistory, fetchingHistory, graphData, orders } = useContext(
+    TokenContext
+  );
   const { symbol } = currentCampaign;
 
   useEffect(() => {
     getHistory(currentCampaign.id, "sell");
-  }, [])
+  }, [orders]);
 
   return (
     <div className="graph-container">
@@ -21,7 +23,11 @@ const Trade = props => {
         Trade {symbol} Token
       </div>
       <div className="graph">
-        {fetchingHistory ? <SimpleProgress/> : <Chart graphData={graphData} width={720}/>}
+        {fetchingHistory ? (
+          <SimpleProgress />
+        ) : (
+          <Chart graphData={graphData} width={720} />
+        )}
       </div>
       <div className="card-container">
         <BuySell />
