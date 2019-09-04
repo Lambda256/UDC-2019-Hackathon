@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import PropTypes from "prop-types";
 import AppContext from "contexts/AppContext";
 import HomeContext from "contexts/HomeContext";
 import { scrollTop } from "utils/scroller";
@@ -37,7 +36,7 @@ const TokenDetail = props => {
       setTimeSold(timeSold);
       // updateState("currentCampaign", null);
     };
-  }, [currentCampaign, symbol]);
+  }, [currentCampaign, symbol, getTokens, setTimeSold, timeSold, updateState]);
 
   if (!currentCampaign) return <CircularProgress />;
 

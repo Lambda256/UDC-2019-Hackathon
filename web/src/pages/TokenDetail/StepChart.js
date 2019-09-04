@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import * as d3 from "d3";
 
 const StepChart = props => {
@@ -55,11 +54,11 @@ const StepChart = props => {
       .tickSize(-height, 0, 0)
       .tickFormat(d => formatDate(d));
 
-    const yAxis = d3
-      .axisLeft(y)
-      .ticks(6)
-      .tickSize(-width, 0, 0)
-      .tickFormat(d => d);
+    // const yAxis = d3
+    //   .axisLeft(y)
+    //   .ticks(6)
+    //   .tickSize(-width, 0, 0)
+    //   .tickFormat(d => d);
 
     data.forEach((d, i) => {
       d.start_date = parseDate(d.start_date);

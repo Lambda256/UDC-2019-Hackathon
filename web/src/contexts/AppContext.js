@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import api from "utils/api";
 
 const AppContext = React.createContext();
 const { Provider, Consumer } = AppContext;

@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from "react";
 import AppContext from "contexts/AppContext";
-import PropTypes from "prop-types";
 import * as d3 from "d3";
 
 const LineChart = props => {
@@ -97,7 +96,7 @@ const LineChart = props => {
             .text(function(d) {
                 return `Current price = $${currentCampaign.current_price}`;
             });
-    }, []);
+    }, [currentCampaign.current_price]);
     return <div id="line-chart"></div>;
 };
 

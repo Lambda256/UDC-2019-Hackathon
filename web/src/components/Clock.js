@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { Affix } from "antd";
 import { withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
 import AppContext from "contexts/AppContext";
 import HomeContext from "contexts/HomeContext";
 import { Power3, TweenMax, Elastic } from "gsap/all";
@@ -241,7 +240,7 @@ const Clock = props => {
         }
       });
     }
-  }, [timeSold, currentCampaign, setTimeSold]);
+  }, [timeSold, currentCampaign, setTimeSold, props.history.location.pathname]);
 
   return (
     <div className="clock">

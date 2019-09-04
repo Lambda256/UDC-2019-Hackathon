@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import PropTypes from "prop-types";
 import AuthContext from "contexts/AuthContext";
 import AnimatedLogo from "components/AnimatedLogo";
 import CircularProgress from "components/CircularProgress";

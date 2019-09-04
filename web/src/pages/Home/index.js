@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import PropTypes from "prop-types";
-import TokenDetail from "pages/TokenDetail";
 import GridItem from "./GridItem";
 import GridLoading from "./GridLoading";
 import HomeTab from "./HomeTab";
@@ -21,7 +19,7 @@ const Home = props => {
       const totalHours = tokens.reduce((total, token) => total + numeral(token.purchase_count).value(), 0);
       setTimeSold(totalHours);
     });
-  }, []);
+  }, [getTokens, setTimeSold]);
   return (
     <div className="home">
       <HomeTab tabIndex={tabIndex} setTabIndex={setTabIndex} />

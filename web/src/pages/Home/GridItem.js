@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import AppContext from "contexts/AppContext";
 import { Link } from "react-router-dom";
 import numeral from "numeral";
-import Chart from "components/Order/Chart";
 import images from "constants/images";
 import _ from "lodash";
 

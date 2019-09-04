@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 export const TAB_ALL = "all";
 export const TAB_POLITICS = "politics";

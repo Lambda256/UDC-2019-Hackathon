@@ -15,7 +15,7 @@ const Trade = props => {
 
   useEffect(() => {
     getHistory(currentCampaign.id, "sell", 100);
-  }, [orders]);
+  }, [orders, currentCampaign.id, getHistory]);
 
   return (
     <div className="graph-container">

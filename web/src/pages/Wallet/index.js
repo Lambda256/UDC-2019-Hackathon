@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Icon, Button, Input } from "antd";
 import AuthContext from "contexts/AuthContext";
-import PropTypes from "prop-types";
 import CircularProgress from "components/CircularProgress";
 import hourToken from "assets/images/main-token@3x.png";
 import purchaseImg from "assets/images/purchased.svg";
@@ -162,7 +161,7 @@ const TransactionRow = props => {
           {action} <span className="text-white">{description}</span>
         </div>
         <div className="text-grey">
-          Status: success | TxHash: <a href="#">{tx_hash}</a>
+          Status: success | TxHash: <span className="tx-id">{tx_hash}</span>
         </div>
         <div className="time-ago text-dark-grey">
           {moment(updated_at).fromNow()}
@@ -184,7 +183,7 @@ const Wallet = props => {
   } = useContext(AuthContext);
   useEffect(() => {
     getWallet();
-  }, []);
+  }, [getWallet]);
 
   if (!user) return <Redirect to="/login" />;
 

@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Button } from "antd";
-import PropTypes from "prop-types";
 import AuthContext from "contexts/AuthContext";
 import logoGrey from "assets/images/logo-grey.svg";
 import userFace from "assets/images/user-face.svg";

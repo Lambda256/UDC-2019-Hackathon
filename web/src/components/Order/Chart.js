@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import moment from "moment";
 import numeral from "numeral";
 import * as d3 from "d3";
@@ -198,7 +197,7 @@ const Chart = props => {
 
       generateGraph();
     }
-  }, [graphData]);
+  }, [graphData, height, showAxis, width]);
   return (
     <div style={{ overflow: "scroll" }}>
       <div id="graph" />

@@ -162,8 +162,13 @@
       margin-right: 16px;
     }
 
-    a {
+    .tx-id {
       color: #50e3c2;
+      max-width: 32em;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
     }
 
     .purchased-text {

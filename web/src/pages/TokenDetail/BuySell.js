@@ -3,7 +3,6 @@ import AppContext from "contexts/AppContext";
 import TokenContext from "contexts/TokenContext";
 import AuthContext from "contexts/AuthContext";
 import { Icon, Input, Button, Popconfirm } from "antd";
-import PropTypes from "prop-types";
 import SimpleProgress from "components/SimpleProgress";
 import numeral from "numeral";
 import _ from "lodash";
@@ -129,7 +128,7 @@ const BuySell = props => {
   const { id, symbol, current_price } = currentCampaign;
   useEffect(() => {
     getOrders(id);
-  }, []);
+  }, [getOrders, id]);
 
   if (fetchingOrders) {
     return (
