@@ -48,7 +48,7 @@ class Transaction < ApplicationRecord
 
   def self.sell!(private_token_id, sender_id, receiver_id, price, amount)
     sender_token = UserPrivateToken.find_by(user_id: sender_id, private_token_id: private_token_id)
-    raise 'Not enough balance' if sender_token.nil? || sender_token.balance < amount
+    raise 'Invalid token' if sender_token.nil?
 
     sender = User.find_by(id: sender_id)
     raise 'Sender not found' if sender.nil?

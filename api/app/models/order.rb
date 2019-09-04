@@ -43,7 +43,7 @@ class Order < ApplicationRecord
   end
 
   def self.best_bids(private_token_id, limit = 10)
-    where(private_token: private_token_id, taker_id: nil).order(price: :asc, created_at: :asc)
+    where(private_token: private_token_id, taker_id: nil).order(price: :asc, created_at: :asc).limit(limit)
   end
 
   def takeable?
@@ -52,7 +52,9 @@ class Order < ApplicationRecord
   end
 
   def take!(taker_id)
-    raise 'You cannot take your own order' if taker_id == self.maker_id
+    # NOTE: Should be commented out when production
+    # raise 'You cannot take your own order' if taker_id == self.maker_id
+
     self.taker_id = taker_id
     ActiveRecord::Base.transaction do
       Transaction.sell!(self.private_token_id, self.maker_id, self.taker_id, self.price, self.amount)

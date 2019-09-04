@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Icon, Button, Input } from "antd";
 import AuthContext from "contexts/AuthContext";
 import PropTypes from "prop-types";
@@ -33,11 +33,24 @@ const WalletRow = props => {
     <div className="wallet-row">
       <div className=" row-align-center">
         <div className="flex-token row-align-center">
-          <img className="profile-image" src={profile_picture} alt="" />
-          <div>
-            <div className="name-value text-white uppercase">{symbol}</div>
-            <div className="subtitle text-grey">{name}</div>
-          </div>
+          {symbol == 'TUSD' ?
+            <img className="profile-image" src={profile_picture} alt="" />
+          :
+            <Link to={`/token/${symbol}`}>
+              <img className="profile-image" src={profile_picture} alt="" />
+            </Link>
+          }
+          {symbol == 'TUSD' ?
+            <div>
+              <div className="name-value text-white uppercase">{symbol}</div>
+              <div className="subtitle text-grey">{name}</div>
+            </div>
+          :
+            <Link to={`/token/${symbol}`}>
+              <div className="name-value text-white uppercase">{symbol}</div>
+              <div className="subtitle text-grey">{name}</div>
+            </Link>
+          }
         </div>
         <div className="flex-balance">
           <div className="name-value text-white">
@@ -128,7 +141,7 @@ const TransactionRow = props => {
     img = purchaseImg;
     description = `${numeral(amount).format("0,0.00")} ${symbol} at ${numeral(
       price
-    ).format("0,0.00")} HOUR`;
+    ).format("0,0.00")} TUSD`;
   } else if (category === "burn") {
     action = "Redeemed";
     img = redeemImg;
@@ -138,7 +151,7 @@ const TransactionRow = props => {
     img = tradeImg;
     description = `${numeral(amount).format("0,0.00")} ${symbol} at ${numeral(
       price
-    ).format("0,0.00")} HOUR`;
+    ).format("0,0.00")} TUSD`;
   }
 
   return (
@@ -214,7 +227,7 @@ const Wallet = props => {
             user={{}}
             balance={hour_balance}
             current_price={1}
-            symbol="HOUR"
+            symbol="TUSD"
             onClick={recharge}
             loading={recharging}
             name="Intime Main Token"
