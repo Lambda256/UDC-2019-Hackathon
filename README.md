@@ -86,11 +86,11 @@ https://github.com/Lambda256/UDC-2019-Hackathon/tree/mouthoftruth
 #### 12. VMO
 https://github.com/Lambda256/UDC-2019-Hackathon/tree/vmo
 
-## contract deploy
+## Contract deploy API
 
-## Contracts [/chains/contracts]
+### Contracts [/chains/contracts]
 
-### Contract 목록 조회 [GET /chains/{chainId}/contracts]
+#### Contract 목록 조회 [GET /chains/{chainId}/contracts]
 등록된 Smart Contract의 목록을 조회하기 위한 API (`Account Token` 필요)
 
 + Parameters
