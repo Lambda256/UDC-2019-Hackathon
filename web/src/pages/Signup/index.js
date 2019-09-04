@@ -1,42 +1,35 @@
 import React, { useContext } from "react";
-import AuthContext from "contexts/AuthContext";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Input, Button } from "antd";
+import logo from "assets/images/logo.svg";
+import AuthContext from "contexts/AuthContext";
+import { Button, Input } from "antd";
 
-function Signup(props) {
-  const {
-    email,
-    password,
-    name,
-    signup,
-    updateState
-  } = useContext(AuthContext);
-
+const Login = props => {
+  const { login } = useContext(AuthContext);
   return (
-    <div>
-      Signup
-      <Input
-        value={email}
-        placeholder="email"
-        onChange={e => updateState("email", e.target.value)}
-      />
-      <Input.Password
-        value={password}
-        placeholder="password"
-        onChange={e => updateState("password", e.target.value)}
-      />
-      <Input
-        value={name}
-        placeholder="name"
-        onChange={e => updateState("name", e.target.value)}
-      />
-      <Button onClick={signup}>Sign up</Button>
-    </div>
+    <form
+      className="login-page"
+      onSubmit={e => {
+        e.preventDefault();
+        login();
+      }}
+    >
+      <Link to="/">
+        <img className="logo" src={logo} alt="" />
+      </Link>
+
+      <Input placeholder="Email"/>
+      <Input placeholder="Name"/>
+      <Input.Password />
+      <Input.Password />
+      <Button type="primary">Login</Button>
+    </form>
   );
-}
+};
 
-Signup.propTypes = {};
+Login.propTypes = {};
 
-Signup.defaultProps = {};
+Login.defaultProps = {};
 
-export default Signup;
+export default Login;
