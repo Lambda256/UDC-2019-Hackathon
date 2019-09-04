@@ -6,15 +6,10 @@
 
 ### Prerequisites
 
-------
-
 서버를 구동하기 위해 [nodeJS](https://nodejs.org/en/download/) 및 [python3](https://www.python.org/downloads/)가, 클라이언트로는 Chrome 브라우저가 필요합니다.
 
-#### 
 
 ### Installation
-
-------
 
 npm 패키지 매니저를 이용해 nodJS 라이브러리를 설치합니다.
 
@@ -32,7 +27,6 @@ pip3 install -r requirements.txt
 
 ### How it works
 
-------
 
 #### FL (federated learning)
 
@@ -91,8 +85,6 @@ FL을 위한 블록체인과 루니버스 사이드체인 간 relay를 위한 �
 
 
 ### Usage
-
-------
 
 최상위 디렉토리의 server.js를 통해 서버를 구동해 8089 포트에서 웹 서버를 실행합니다.
 
