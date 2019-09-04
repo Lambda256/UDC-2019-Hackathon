@@ -246,15 +246,14 @@ function autocomplete(arr) {
            requestIncentive(userAddr, returnTime, 2386, 0, infos);
          });
          alert("2386번 정거장에 반납합니다.");
+         refresh();
        }
      })
    });
 
    // refresh button listener
    document.getElementById("refresh").addEventListener("click", function(e) {
-     getRecord(userAddr, userAddr).done(function(msg){
-       updateHistory(msg.data.res);
-     });
+     refresh();
    });
 
   // < Get departure & arrival & targets >
@@ -372,47 +371,6 @@ function autocomplete(arr) {
     dist = computeDistance(departure,arrival); // km
     time = dist / 10; // hour (10km/h)
     return Math.round(time);
-  }
-
-  // Update mypage history
-  function updateHistory(data) {
-    var historyDiv = document.getElementById("history");
-    // Remove previous child
-    while (historyDiv.firstChild) {
-      historyDiv.removeChild(historyDiv.firstChild);
-    }
-
-    var N = data[0].length;
-    var listnum = N;
-    if (N > 7) {
-      listnum = 7;
-    }
-
-    // Create & update new child
-    for (var i = 1; i <= listnum; i++) {
-      var createList = document.createElement('li');
-      historyDiv.appendChild(createList);
-
-      var icon = '';
-      var label = '';
-      var amount = data[1][N-i];
-      var time = data[2][N-i];
-
-      // Check log type and set icon
-      if (data[0][N-i] == 2) {
-        icon = '<span uk-icon="plus-circle" style="margin-right:5px;"></span>';
-        label = '<span class="uk-label" style="background-color:#ffd250;color:#fff;font-size: 0.8rem;">보상 ' + amount +'</span>'
-      } else if (data[0][N-i] == 1) {
-        icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
-        label = '<span class="uk-label" style="background-color:#0c7037;color:#fff;font-size: 0.8rem;">사용료 ' + amount +'</span>'
-      } else {
-        icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
-        label = '<span class="uk-label" style="background-color:#ff1500;color:#fff;font-size: 0.8rem;">대여료 ' + amount +'</span>'
-      }
-
-      // Print icon - amount - time
-      createList.innerHTML= icon + label + " " + timeStampToTime(time);
-    }
   }
 
   /*
@@ -698,6 +656,55 @@ function updateBalance() {
       console.log(msg);
       document.getElementById("balance").textContent = msg.data.res[0];
     });
+}
+
+// Refresh
+function refresh() {
+  getRecord(userAddr, userAddr).done(function(msg){
+    updateHistory(msg.data.res);
+  });
+  updateBalance();
+}
+
+// Update mypage history
+function updateHistory(data) {
+  var historyDiv = document.getElementById("history");
+  // Remove previous child
+  while (historyDiv.firstChild) {
+    historyDiv.removeChild(historyDiv.firstChild);
+  }
+
+  var N = data[0].length;
+  var listnum = N;
+  if (N > 7) {
+    listnum = 7;
+  }
+
+  // Create & update new child
+  for (var i = 1; i <= listnum; i++) {
+    var createList = document.createElement('li');
+    historyDiv.appendChild(createList);
+
+    var icon = '';
+    var label = '';
+    var amount = data[1][N-i];
+    var time = data[2][N-i];
+
+    // Check log type and set icon
+    if (data[0][N-i] == 2) {
+      icon = '<span uk-icon="plus-circle" style="margin-right:5px;"></span>';
+      label = '<span class="uk-label" style="background-color:#ffd250;color:#fff;font-size: 0.8rem;">보상 ' + amount +'</span>'
+    } else if (data[0][N-i] == 1) {
+      icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
+      label = '<span class="uk-label" style="background-color:#0c7037;color:#fff;font-size: 0.8rem;">사용료 ' + amount +'</span>'
+    } else {
+      icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
+      label = '<span class="uk-label" style="background-color:#ff1500;color:#fff;font-size: 0.8rem;">대여료 ' + amount +'</span>'
+    }
+
+    // Print icon - amount - time
+    createList.innerHTML= icon + label + " " + timeStampToTime(time);
+  }
 }
 
 function queryInfos() {
