@@ -1,13 +1,14 @@
 import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
 import AuthContext from "contexts/AuthContext";
 import AnimatedLogo from "components/AnimatedLogo";
 import CircularProgress from "components/CircularProgress";
 import { Button, Input } from "antd";
 
 const Login = props => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("jay@desk.com");
+  const [password, setPassword] = useState("12341234");
   const { login, authenticating, user } = useContext(AuthContext);
   if (authenticating) {
     return <CircularProgress />;
