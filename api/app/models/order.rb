@@ -11,11 +11,13 @@ class Order < ApplicationRecord
 
   validates :amount, presence: true, numericality: { greater_than: 0 }
   validates :price, presence: true, numericality: { greater_than: 0 }
-  validate :price_smaller_than_sell_price
+  validate :price_should_greater_than_sale_price
+
+  after_create :set_balance_pending!
 
   scope :opened, -> { where(taker_id: nil) }
 
-  def price_smaller_than_sell_price
+  def price_should_greater_than_sale_price
     if self.private_token.nil?
       errors.add(:private_token, "is invalid")
       throw :abort
@@ -24,6 +26,20 @@ class Order < ApplicationRecord
       errors.add(:price, "must be smaller than sale price")
       throw :abort
     end
+  end
+
+  def set_balance_pending!
+    user_token = UserPrivateToken.find_by(private_token: self.private_token_id, user_id: self.maker_id)
+    if user_token.nil? || user_token.balance < amount
+      errors.add(:amount, 'cannot be bigger than your balance')
+      throw :abort
+    end
+
+    # Inside the Order.create transaction
+    user_token.lock!
+    user_token.balance -= amount
+    user_token.pending_balance += amount
+    user_token.save!
   end
 
   def self.best_bids(private_token_id, limit = 10)
@@ -36,6 +52,7 @@ class Order < ApplicationRecord
   end
 
   def take!(taker_id)
+    raise 'You cannot take your own order' if taker_id == self.maker_id
     self.taker_id = taker_id
     ActiveRecord::Base.transaction do
       Transaction.sell!(self.private_token_id, self.maker_id, self.taker_id, self.price, self.amount)
