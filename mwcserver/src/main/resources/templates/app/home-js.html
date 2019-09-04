@@ -228,19 +228,6 @@ $(function() {
 	/* Work History*/
 	// 업무 시작
 	$('#start_work').on('click', function(e){
-		// Check validations
-		//var date = calendar.getDate();
-		//alert("The current date of the calendar is " + date.toISOString());
-		
-/* 		$('#modal-commute').modal('hide');
-		msg = "<h3>"+id+" 님, 업무시작이 정상 처리 되었습니다.<br> "
-				+ "Reward 100 포인트가 지급되었습니다.</h3>"
-				+ "- 근무지 " + $('#geo-tooltip').text() + "<br>"
-				+ "- 위도 : " + latitude + "<br>"
-				+ "- 경도 : " + longitude + "<br>";
-		$('#wkmodal').html(msg);
-		$('#wkmodal-commute').modal('show'); */
-		
 		// New Work History
 		
   		$.ajax({
@@ -385,7 +372,7 @@ function market_click(url){
 	//alert("id:"+sessionStorage.getItem("id"));
 	id = sessionStorage.getItem("id");
 	
-	window.open('http://localhost:8080?userId='+id, '_blank');
+	url.href = 'http://localhost:8080?userId='+id;
 
 }
 </script>
