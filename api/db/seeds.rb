@@ -40,9 +40,9 @@ user3.profile_picture.attach(
   filename: 'LaurieBream-480px.jpg'
 )
 
-user1.recharge!
+user1.recharge!(10000)
 user2.recharge!(50000)
-user3.recharge!
+user3.recharge!(10000)
 
 token1 = PrivateToken.create!(
   owner_id: user1.id,
@@ -116,12 +116,16 @@ token3.images.attach([{
   filename: 'LaurieBream-1600px-3.jpg'
 }])
 
-user1.donate_and_buy!(token1)
-user1.donate_and_buy!(token2)
-user1.donate_and_buy!(token3)
-20.times { user2.donate_and_buy!(token1) }
-user2.donate_and_buy!(token3)
-user3.donate_and_buy!(token1)
+10.times {
+  user1.donate_and_buy!(token1)
+  user1.donate_and_buy!(token2)
+  user1.donate_and_buy!(token3)
+}
+30.times { user2.donate_and_buy!(token1) }
+10.times {
+  user2.donate_and_buy!(token3)
+  user3.donate_and_buy!(token1)
+}
 
 token1 = PrivateToken.find(1)
 token2 = PrivateToken.find(2)
