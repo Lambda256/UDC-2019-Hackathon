@@ -11,7 +11,7 @@
             </v-row>
             <v-row justify="center">
                 <v-col  
-                    v-for="(game, i) in $store.state.games" 
+                    v-for="(game, i) in $store.state.gameToday" 
                     :key = "i" 
                     cols="auto" 
                     md="6" 
@@ -20,12 +20,10 @@
                     <v-card  class="mx-3">
                         <v-card-text>
                         <div class="headline mb-2">{{game.Place}}</div>
-                        {{game.Time}}
-                        {{typeof game.Time}}
                         </v-card-text>
 
                         <v-card-actions>
-                        <v-btn text>Listen Now</v-btn>
+                        <v-btn text> 예매하기 </v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
@@ -41,7 +39,10 @@ import axios from 'axios'
 export default {
     data: () => ({
         picker: new Date().toISOString().substr(0, 10),
-        gameToday: []
+        pickerMonth: picker.substr(5,2),
+        pickerDay: picker.substr(8,2),
+        month: new Date().toISOString().substr(5, 2),
+        day: new Date().toISOString().substr(8, 2),
     }),
     
     created() {
@@ -50,19 +51,32 @@ export default {
         .then(res => {
             console.log('dates/get')
             this.$store.state.games = res.data.slice()
+            let month = new Date().toISOString().substr(5, 2)
+            let day = new Date().toISOString().substr(8, 2)
+            let m = this.$store.state.games.filter(function(g) {
+                var monthS = g.Time.substr(5,2)
+                var dayS = g.Time.substr(8,2)
+                return (day==dayS && month==monthS)
+            })
+            this.$store.state.gameToday = m.slice()
         })
         .catch(err => {
             console.log(err)
             console.log('dates/error')
         })
     }, 
-    watch: {
-        picker: function(val, oldVal) {
-            gameToday
-        }
-    }, 
     methods:{
-        //datetimeToArray: function(str) 
+        change () {
+            let month = this.picker.substr(5,2)
+            let day = this.picker.substr(8,2)
+            let m = this.$store.state.games.filter(function(g) {
+                var monthS = g.Time.substr(5,2)
+                var dayS = g.Time.substr(8,2)
+                return (day==dayS && month==monthS)
+            })
+            console.log(m[0])
+            this.$store.state.gameToday = m.slice()
+        }
     }
     /*
     methods:{

@@ -56,7 +56,12 @@ export default {
     methods: {
         test: function () {
             axios
-            .get('http://localhost:3000/api/product')
+            .get('http://localhost:3000/api/product', {
+                params: {
+                    'start': 0,
+                    'end': 10
+                }
+            })
             .then(res => {
                 console.log(res)
             })
