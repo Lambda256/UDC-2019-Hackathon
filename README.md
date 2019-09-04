@@ -90,7 +90,7 @@ https://github.com/Lambda256/UDC-2019-Hackathon/tree/vmo
 
 ### Contracts [/chains/contracts]
 #### Contract 등록 [POST /chains/{chainId}/contracts]
-Chain에 Smart Contract를 배포하기 위한 소스코드/바이트코드를 등록하기 위한 API (`Account Token` 필요)
+Chain에 Smart Contract를 배포하기 위한 소스코드/바이트코드를 등록하기 위한 API (`Account Token` 필요, 개발자도구 네트워크 탭 참조)
 
 + Parameters
     + chainId: `1234` (string, required) - (고유값) Chain ID
@@ -148,7 +148,7 @@ Chain에 Smart Contract를 배포하기 위한 소스코드/바이트코드를 �
                         + `DEPLOYED` - 배포완료
                         
 #### Contract 배포(서명) [POST /chains/{chainId}/contracts/{contractId}/deploy]
-Chain으로 Contract를 배포(서명)하기 위한 API (`Account Token` 필요)
+Chain으로 Contract를 배포(서명)하기 위한 API (`Account Token` 필요, 개발자도구 네트워크 탭 참조)
 
 ::: note
 RawTx의 요청과 SignedTx의 전송은 동일한 Endpoint로 이루어집니다.
