@@ -153,8 +153,8 @@ Private Key 서명이 필요한 경우 반환됩니다. 반환되는 `rawTx` 필
 ```
 
 ##### URI Parameters
-- chainId: `1234` (string, required) - Chain ID
-- contractId: `4321 (string, required) - Contract ID
+- **chainId**: `1234` (string, required) - Chain ID
+- **contractId**: `4321 (string, required) - Contract ID
 
 ##### Request Example (application/json)
 ```
