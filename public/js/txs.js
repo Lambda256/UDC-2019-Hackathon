@@ -1,6 +1,7 @@
 /*
  * Transactions
  */
+ var version = '2';
 
 /*
  * 유저가 자전거를 하나 빌린다
@@ -10,9 +11,9 @@ function rentBike(from, stationID, time) {
   var querydata = '{"from": "' + from + '", "inputs": {"stationID": "' + stationID + '", "rentTime": "' + time + '"}}'
   console.log("Rent Bike", querydata);
   return $.ajax({
-      url: "https://api.luniverse.io/tx/v1.0/transactions/rentBike10",
+      url: "https://api.luniverse.net/tx/v1.0/transactions/rentBike" + version,
       beforeSend: function (xhr) {
-        xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
       },
       type: 'POST',
       contentType: 'application/json',
@@ -40,9 +41,9 @@ function returnBike(from, stationID, time) {
   var querydata = '{"from": "' + from + '", "inputs": {"stationID": "' + stationID + '", "returnTime": "' + time + '"}}'
   console.log("Return Bike", querydata);
   return $.ajax({
-      url: "https://api.luniverse.io/tx/v1.0/transactions/returnBike10",
+      url: "https://api.luniverse.net/tx/v1.0/transactions/returnBike" + version,
       beforeSend: function (xhr) {
-        xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
       },
       type: 'POST',
       contentType: 'application/json',
@@ -66,9 +67,9 @@ function approve(from, amount, spender) {
   var querydata = '{"from": "' + from + '", "inputs": {"valueAmount": "' + amount + '", "spender": "' + spender + '"}}'
   console.log("Approve", querydata);
   return $.ajax({
-      url: "https://api.luniverse.io/tx/v1.0/transactions/approve",
+      url: "https://api.luniverse.net/tx/v1.0/transactions/approve",
       beforeSend: function (xhr) {
-        xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
       },
       type: 'POST',
       contentType: 'application/json',
@@ -92,9 +93,9 @@ function allowance(from, owner, spender) {
   var querydata = '{"from": "' + from + '", "inputs": {"owner": "' + owner + '", "spender": "' + spender + '"}}'
   console.log("Allowance", querydata);
   return $.ajax({
-      url: "https://api.luniverse.io/tx/v1.0/transactions/allowance",
+      url: "https://api.luniverse.net/tx/v1.0/transactions/allowance",
       beforeSend: function (xhr) {
-        xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
       },
       type: 'POST',
       contentType: 'application/json',
@@ -114,13 +115,13 @@ function allowance(from, owner, spender) {
 /*
  * 잔고 확인
  */
-function balanceOf(from) {
-  var querydata = '{"from": "' + from + '"}'
+function balanceOf(from, owner) {
+  var querydata = '{"from": "' + from + '", "inputs": {"owner": "' + owner + '"}}';
   console.log("balanceOf", querydata);
   return $.ajax({
-      url: "https://api.luniverse.io/tx/v1.0/transactions/balanceOf10",
+      url: "https://api.luniverse.net/tx/v1.0/transactions/balanceOf",
       beforeSend: function (xhr) {
-        xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
       },
       type: 'POST',
       contentType: 'application/json',
@@ -148,9 +149,9 @@ function getRecord(from, addr) {
   var querydata = '{"from": "' + from + '", "inputs": {"addr": "' + addr + '"}}'
   console.log("getRecord", querydata);
   return $.ajax({
-      url: "https://api.luniverse.io/tx/v1.0/transactions/getRecord10",
+      url: "https://api.luniverse.net/tx/v1.0/transactions/getRecord" + version,
       beforeSend: function (xhr) {
-        xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+        xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
       },
       type: 'POST',
       contentType: 'application/json',

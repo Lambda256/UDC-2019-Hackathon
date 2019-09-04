@@ -4,6 +4,7 @@
 var userAddr = '0x408306bca6f0b15da485d8009cb0e12dfe0ef28c';
 var ownerAddr = '0x128a8b8c9507aec53d949c53d5be57c4d98f9256';
 var contractAddr = '0x2e3bA822FaEd2f7E77D74f6B79620195cAB3cc8a';
+var version = '2';
 
 /*
  * Query weather & date infos
@@ -400,9 +401,9 @@ function autocomplete(arr) {
           + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
 
     return $.ajax({
-        url: "https://api.luniverse.io/tx/v1.0/transactions/requestInference10",
+        url: "https://api.luniverse.net/tx/v1.0/transactions/requestInference" + version,
         beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+          xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
         },
         type: 'POST',
         contentType: 'application/json',
@@ -422,9 +423,9 @@ function autocomplete(arr) {
           + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
 
     return $.ajax({
-        url: "https://api.luniverse.io/tx/v1.0/transactions/requestInference10",
+        url: "https://api.luniverse.net/tx/v1.0/transactions/requestInference" + version,
         beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+          xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
         },
         type: 'POST',
         contentType: 'application/json',
@@ -447,9 +448,9 @@ function autocomplete(arr) {
                       + reqTime + '","_stations": [' + targetIDs + '],"_bikeNums": [' + bikeNums + ']}}'
 
     return $.ajax({
-        url: "https://api.luniverse.io/tx/v1.0/transactions/insertResponse10",
+        url: "https://api.luniverse.net/tx/v1.0/transactions/insertResponse" + version,
         beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+          xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
         },
         type: 'POST',
         contentType: 'application/json',
@@ -489,9 +490,9 @@ function autocomplete(arr) {
     var querydata = '{"from": "' + from + '", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b' + reqTime + '"}}'
 
     return $.ajax({
-        url: "https://api.luniverse.io/tx/v1.0/transactions/getResponse10",
+        url: "https://api.luniverse.net/tx/v1.0/transactions/getResponse" + version,
         beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+          xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
         },
         type: 'POST',
         contentType: 'application/json',
@@ -656,7 +657,7 @@ function showbody2() {
 }
 
 function updateBalance() {
-  balanceOf(userAddr).done(function(msg){
+  balanceOf(userAddr, userAddr).done(function(msg){
       console.log(msg);
       document.getElementById("balance").textContent = msg.data.res[0];
     });
