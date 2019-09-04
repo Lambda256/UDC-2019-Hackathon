@@ -94,7 +94,10 @@ exports.login = (req, res) => {
 }
 
 exports.ticket = (req, res) => {
-  con.query('SELECT * FROM Ticket', function (err, respond) {
+  let place = req.query.place
+  let time = req.query.time
+
+  con.query('SELECT * FROM Ticket WHERE Place = "' + place + '" AND Time = "' + time + '"', function (err, respond) {
     if (err) throw err;
     res.status(200).send(respond);
   });
@@ -133,10 +136,8 @@ exports.getUserInfo = (req, res) => {
 }
 
 exports.product = (req, res) => {
-  //let start = req.query.start;
-  //let end = req.query.end;
-  let start = 9
-  let end = 10
+  let start = req.query.start;
+  let end = req.query.end;
   console.log('start', start)
   console.log('end', end)
   con.query('SELECT * FROM Ticket LIMIT ' + start + ', ' + end, function (err, respond) {
