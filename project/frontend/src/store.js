@@ -54,11 +54,16 @@ export default new Vuex.Store({
     isLoginError: false,
     //token: localStorage.getItem('token'),
     token: "",
-    beforeLogin: "Home"
+    beforeLogin: "Home", 
+    games: [],
+    gameToday: []
   },
   getters: {
     loginRedirect: (state, name) => {
       state.beforeLogin = name
+    },
+    todaysGame: (state, date) => {
+      
     }
   },
   mutations: {
