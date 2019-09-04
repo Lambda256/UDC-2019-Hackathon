@@ -695,7 +695,7 @@ function updateHistory(data) {
     // Check log type and set icon
     if (data[0][N-i] == 2) {
       icon = '<span uk-icon="plus-circle" style="margin-right:5px;"></span>';
-      label = '<span class="uk-label" style="background-color:#ffd250;color:#fff;font-size: 0.8rem;">보상 ' + amount +'</span>'
+      label = '<span class="uk-label" style="background-color:#ffd250;color:#000;font-size: 0.8rem;">보상 ' + amount +'</span>'
     } else if (data[0][N-i] == 1) {
       icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
       label = '<span class="uk-label" style="background-color:#0c7037;color:#fff;font-size: 0.8rem;">사용료 ' + amount +'</span>'
