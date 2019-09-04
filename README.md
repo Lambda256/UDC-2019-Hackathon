@@ -1,6 +1,6 @@
 [![license](https://img.shields.io/badge/license-MIT-black)](https://opensource.org/licenses/MIT)
 ![version](https://img.shields.io/badge/version-v0.3.1-orange.svg)
-[![node](https://img.shields.io/badge/node-%3E%3D8.9.4-yellow.svg)](https://nodejs.org/en/)   
+[![node](https://img.shields.io/badge/node-%3E%3D8.9.4-yellow.svg)](https://nodejs.org/en/)
 [![python](https://img.shields.io/badge/python-3.6.8-blue)](https://www.python.org)
 
 # 스마트 공유 모빌리티 서비스, 타고벌자
