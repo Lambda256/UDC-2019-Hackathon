@@ -778,6 +778,7 @@ document.getElementById("userProfileButton").style.visibility = "hidden";
 
     document.getElementById("userProfileButton").style.visibility = "hidden";
     document.getElementById("signInButton").style.display = "";
+    document.getElementById("offcanvas-flip").style.display = "none";
   }
 function timeStampToTime(timestamp) {
   var date = new Date(parseInt(timestamp));
