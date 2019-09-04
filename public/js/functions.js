@@ -1,4 +1,12 @@
 /*
+ * REOA Addresses for test
+ */
+var userAddr = '0x408306bca6f0b15da485d8009cb0e12dfe0ef28c';
+var ownerAddr = '0x128a8b8c9507aec53d949c53d5be57c4d98f9256';
+var contractAddr = '0xaa7De5581188449339058e5908fC0B06e61db3f9';
+var version = '3';
+
+/*
  * Query weather & date infos
  */
 var infos = [];
@@ -214,12 +222,15 @@ function autocomplete(arr) {
 
    // rent button listener
    document.getElementById("rent").addEventListener("click", function(e) {
-     approve(100000000000000).done(function(msg){
+     rentbutton = this;
+     rentbutton.innerHTML = '<div id="spinner" uk-spinner></div>';
+     approve(userAddr, 100000000000000, contractAddr).done(function(msg){
        console.log(msg);
        setTimeout(function() {
-         allowance().done(function(msg){
+         allowance(userAddr, userAddr, contractAddr).done(function(msg){
            console.log(msg);
-           rentBike(departure[2], (new Date()).getTime());
+           rentBike(userAddr, departure[2], (new Date()).getTime());
+           rentbutton.innerHTML = "결제";
          });
        }, 3000);
      });
@@ -227,18 +238,25 @@ function autocomplete(arr) {
 
    // return button listener
    document.getElementById("return").addEventListener("click", function(e) {
-     var returnTime = (new Date()).getTime();
-     returnBike(2386, returnTime).done(function(msg){
-       requestIncentive(returnTime, 2386, 0, infos);
-     });
-     alert("return to 2386");
+     rentTime(userAddr, userAddr).done(function(msg){
+       // No rent
+       if (msg.data.res[0] == 0) {
+         alert("대여한 이력이 없습니다!")
+       } else {
+         // rent => return
+         var returnTime = (new Date()).getTime();
+         returnBike(userAddr, 2386, returnTime).done(function(msg){
+           requestIncentive(userAddr, returnTime, 2386, 0, infos);
+         });
+         alert("2386번 정거장에 반납합니다.");
+         refresh();
+       }
+     })
    });
 
    // refresh button listener
    document.getElementById("refresh").addEventListener("click", function(e) {
-     getRecord().done(function(msg){
-       updateHistory(msg.data.res);
-     });
+     refresh();
    });
 
   // < Get departure & arrival & targets >
@@ -284,7 +302,7 @@ function autocomplete(arr) {
   function sendPredictTx(targetIDs, travelTimes, callback) {
     console.log("5. Send predict tx with timestamp [todo]");
     var reqTime = (new Date()).getTime();
-    requestPredict(reqTime, targetIDs, travelTimes, infos, callback);
+    requestPredict(userAddr, reqTime, targetIDs, travelTimes, infos, callback);
     //callback(departure, targets, updateMap);
   }
 
@@ -358,44 +376,17 @@ function autocomplete(arr) {
     return Math.round(time);
   }
 
-  // Update mypage history
-  function updateHistory(data) {
-    console.log("History", data);
-    for (var i = 1; i <= 7; i++) {
-      var N = data[0].length;
-      var icon = '';
-      var label = '';
-      var amount = data[1][N-i];
-      var time = data[2][N-i];
-
-      // Check log type and set icon
-      if (data[0][N-i] == 2) {
-        icon = '<span uk-icon="plus-circle" style="margin-right:5px;"></span>';
-        label = '<span class="uk-label" style="background-color:#ffd250;color:#fff;font-size: 0.8rem;">보상 ' + amount +'</span>'
-      } else if (data[0][N-i] == 1) {
-        icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
-        label = '<span class="uk-label" style="background-color:#0c7037;color:#fff;font-size: 0.8rem;">사용료 ' + amount +'</span>'
-      } else {
-        icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
-        label = '<span class="uk-label" style="background-color:#ff1500;color:#fff;font-size: 0.8rem;">대여료 ' + amount +'</span>'
-      }
-
-      // Print icon - amount - time
-      document.getElementById("log"+i).innerHTML= icon + label + " " + timeStampToTime(time);
-    }
-  }
-
   /*
    * Send transactions
    */
-  function requestIncentive(reqTime, targetIDs, travelTimes, infos) {
-    var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"_reqTime": "'
+  function requestIncentive(from, reqTime, targetIDs, travelTimes, infos) {
+    var querydata = '{"from": "' + from + '","inputs": {"_reqTime": "'
           + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
 
     return $.ajax({
-        url: "https://api.luniverse.io/tx/v1.0/transactions/requestInference10",
+        url: "https://api.luniverse.net/tx/v1.0/transactions/requestInference" + version,
         beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+          xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
         },
         type: 'POST',
         contentType: 'application/json',
@@ -410,15 +401,14 @@ function autocomplete(arr) {
     });
   }
 
-  function requestPredict(reqTime, targetIDs, travelTimes, infos, callback) {
-    var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b","inputs": {"_reqTime": "'
+  function requestPredict(from, reqTime, targetIDs, travelTimes, infos, callback) {
+    var querydata = '{"from": "' + from + '","inputs": {"_reqTime": "'
           + reqTime + '","_stations": [' + targetIDs + '],"_arriveTimes": [' + travelTimes + '],"_infos": [' + infos + ']}}';
-    //console.log("Send Tx 1 : requestPredict", querydata);
 
     return $.ajax({
-        url: "https://api.luniverse.io/tx/v1.0/transactions/requestInference10",
+        url: "https://api.luniverse.net/tx/v1.0/transactions/requestInference" + version,
         beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+          xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
         },
         type: 'POST',
         contentType: 'application/json',
@@ -427,38 +417,12 @@ function autocomplete(arr) {
         success: function (data) {
           //console.log(JSON.stringify(data));
           // [for test] insert response
-          insertResponse(reqTime, targetIDs, callback);
-        },
-        error: function(){
-          console.log("Cannot get data");
-        }
-    });
-  }
-
-  function insertResponse(reqTime, targetIDs, callback) {
-    var bikeNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    var querydata = '{"from": "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b'
-                      + reqTime + '","_stations": [' + targetIDs + '],"_bikeNums": [' + bikeNums + ']}}'
-    //console.log("Send Tx 2 : insertResponse", querydata);
-    return $.ajax({
-        url: "https://api.luniverse.io/tx/v1.0/transactions/insertResponse10",
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
-        },
-        type: 'POST',
-        contentType: 'application/json',
-        processData: false,
-        data: querydata,
-        success: function (data) {
-          //console.log(JSON.stringify(data));
+          // insertResponse(ownerAddr, reqTime, targetIDs, callback);
           // get Response
-          
           // 지도 초기화
-          
           // 지도 중심 계산
           let lat_center = parseFloat(targets[0][6]);
           let long_center = parseFloat(targets[0][7]);
-          
           // 지도 중심 이동
           mymap.setView([lat_center,long_center], 14);
           L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -468,24 +432,64 @@ function autocomplete(arr) {
             // 용환 mapbox public accesToken (이대로 두면 됨)
             accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
           }).addTo(mymap);
-
           markersLayer.clearLayers();
           mymap.spin(true);
-          setTimeout(function () {getResponse(reqTime, callback)}, 3000);
+
+          setTimeout(function () {getResponse(userAddr, reqTime, callback)}, 3000);
+        },
+        error: function(){
+          console.log("Cannot get data");
+        }
+    });
+  }
+/*
+  function insertResponse(from, reqTime, targetIDs, callback) {
+    var bikeNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    var querydata = '{"from": "' + from + '", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b'
+                      + reqTime + '","_stations": [' + targetIDs + '],"_bikeNums": [' + bikeNums + ']}}'
+
+    return $.ajax({
+        url: "https://api.luniverse.net/tx/v1.0/transactions/insertResponse" + version,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
+        },
+        type: 'POST',
+        contentType: 'application/json',
+        processData: false,
+        data: querydata,
+        success: function (data) {
+          //console.log(JSON.stringify(data));
+          // get Response
+          // 지도 초기화
+          // 지도 중심 계산
+          let lat_center = parseFloat(targets[0][6]);
+          let long_center = parseFloat(targets[0][7]);
+          // 지도 중심 이동
+          mymap.setView([lat_center,long_center], 14);
+          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            // 용환 mapbox public accesToken (이대로 두면 됨)
+            accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
+          }).addTo(mymap);
+          markersLayer.clearLayers();
+          mymap.spin(true);
+          setTimeout(function () {getResponse(userAddr, reqTime, callback)}, 3000);
         },
         error: function(code){
           console.log("Cannot get data", JSON.stringify(code));
         }
     });
   }
-
-  function getResponse(reqTime, callback) {
-    var querydata = '{"from": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b", "inputs": {"requestID": "0xaf55306cbd1dc71b73a9545f6fe760373fb5687b' + reqTime + '"}}'
-    //console.log("Send Tx 3 : getResponse", querydata);
+*/
+  function getResponse(from, reqTime, callback) {
+    var querydata = '{"from": "' + from + '", "inputs": {"requestID": "' + from + reqTime + '"}}'
+    console.log("getresponse",querydata);
     return $.ajax({
-        url: "https://api.luniverse.io/tx/v1.0/transactions/getResponse10",
+        url: "https://api.luniverse.net/tx/v1.0/transactions/getResponse" + version,
         beforeSend: function (xhr) {
-          xhr.setRequestHeader('Authorization', 'Bearer svYmBRtMt1W2mVYwdkKR9KPuxA65sdqqzg2rcduy2Yerg2wX7jzxX6NP8ceUbpVD');
+          xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
         },
         type: 'POST',
         contentType: 'application/json',
@@ -496,7 +500,7 @@ function autocomplete(arr) {
           callback(data, updateMap);
         },
         error: function(code) {
-          console.log(code);
+          setTimeout(function () {getResponse(from, reqTime, callback)}, 1000);
         }
     });
   }
@@ -650,10 +654,59 @@ function showbody2() {
 }
 
 function updateBalance() {
-  balanceOf().done(function(msg){
+  balanceOf(userAddr, userAddr).done(function(msg){
       console.log(msg);
       document.getElementById("balance").textContent = msg.data.res[0];
     });
+}
+
+// Refresh
+function refresh() {
+  getRecord(userAddr, userAddr).done(function(msg){
+    updateHistory(msg.data.res);
+  });
+  updateBalance();
+}
+
+// Update mypage history
+function updateHistory(data) {
+  var historyDiv = document.getElementById("history");
+  // Remove previous child
+  while (historyDiv.firstChild) {
+    historyDiv.removeChild(historyDiv.firstChild);
+  }
+
+  var N = data[0].length;
+  var listnum = N;
+  if (N > 7) {
+    listnum = 7;
+  }
+
+  // Create & update new child
+  for (var i = 1; i <= listnum; i++) {
+    var createList = document.createElement('li');
+    historyDiv.appendChild(createList);
+
+    var icon = '';
+    var label = '';
+    var amount = data[1][N-i];
+    var time = data[2][N-i];
+
+    // Check log type and set icon
+    if (data[0][N-i] == 2) {
+      icon = '<span uk-icon="plus-circle" style="margin-right:5px;"></span>';
+      label = '<span class="uk-label" style="background-color:#ffd250;color:#000;font-size: 0.8rem;">보상 ' + amount +'</span>'
+    } else if (data[0][N-i] == 1) {
+      icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
+      label = '<span class="uk-label" style="background-color:#0c7037;color:#fff;font-size: 0.8rem;">사용료 ' + amount +'</span>'
+    } else {
+      icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
+      label = '<span class="uk-label" style="background-color:#ff1500;color:#fff;font-size: 0.8rem;">대여료 ' + amount +'</span>'
+    }
+
+    // Print icon - amount - time
+    createList.innerHTML= icon + label + " " + timeStampToTime(time);
+  }
 }
 
 function queryInfos() {
@@ -694,13 +747,13 @@ document.getElementById("userProfileButton").style.visibility = "hidden";
     var profile = googleUser.getBasicProfile();
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.disconnect();
-    
+
     var myUserEntity = {};
     signedInFlag = true;
     myUserEntity.Name = profile.getName();
     myUserEntity.Email = profile.getEmail();
     sessionStorage.setItem('myUserEntity',JSON.stringify(myUserEntity));
-    
+
 
     document.getElementById("userProfileButton").src=profile.getImageUrl();
     document.getElementById("userProfileButton").style.visibility = "visible";
@@ -722,9 +775,10 @@ document.getElementById("userProfileButton").style.visibility = "hidden";
     });
     sessionStorage.clear();
     signedInFlag = false;
-    
+
     document.getElementById("userProfileButton").style.visibility = "hidden";
     document.getElementById("signInButton").style.display = "";
+    document.getElementById("offcanvas-flip").style.display = "none";
   }
 function timeStampToTime(timestamp) {
   var date = new Date(parseInt(timestamp));
