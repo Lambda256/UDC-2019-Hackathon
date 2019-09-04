@@ -1,7 +1,7 @@
 const { BN, balance, ether, expectRevert, time, constants, expectEvent } = require('openzeppelin-test-helpers')
 const { ZERO_ADDRESS } = constants
 const { expect } = require('chai')
-const lxUtil = require('../luniverse-util.js')
+const lxUtil = require('../util/util_for_test.js')
 const balanceTracker = lxUtil.balanceTracker;
 //-----------------------------------------------------------
 const GiveToken = artifacts.require('GiveToken')
