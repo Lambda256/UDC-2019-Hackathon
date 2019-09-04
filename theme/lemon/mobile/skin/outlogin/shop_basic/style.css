@@ -1,0 +1,23 @@
+@charset "utf-8";
+.ol {position:relative;margin:0 0 10px;background:#fff;border-bottom: 1px solid #eaeaea;}
+.ol h2 {width:0;height:0;overflow:hidden}
+
+#ol_before{text-align:left;padding: 10px}
+
+#ol_after_hd{padding-top:16px;padding-left:20px;padding-right:20px;text-align:right;position:relative;height:165px}
+#ol_after_hd strong {font-size:25px;display:block;color:#000;}
+#ol_after_hd .profile_img{display:inline-block;position:absolute;top:10px;left:10px;margin:0 0 10px}
+#ol_after_hd .profile_img img{border-radius:50%;}
+#ol_after_info{position:absolute;bottom:-5px;right:-5px;text-align:center;background:#fff;width:30px;height:30px;line-height:30px;font-size:15px;border-radius:50%}
+
+#ol_after_private {border-top:1px solid #eaeaea;margin:0;padding:0;list-style:none;}
+#ol_after_private:after {display:block;visibility:hidden;clear:both;content:""}
+#ol_after_private li {border-left:1px solid #eaeaea;position:relative;float:left;width:33.333%;}
+#ol_after_private a {font-size:15px;color:#333;line-height:20px;display:block;text-align:center;padding:10px}
+#ol_after_private i{font-size:18px;}
+
+#ol_after_btn {margin:5px 0}
+#ol_after_btn a{display:inline-block;padding:0 10px;line-height:25px;font-weight:bold;border:1px solid #ddd;vertical-align:top}
+#ol_after_btn .btn_admin {display:inline-block;padding:0 10px;border:0;text-align:center;margin:0;line-height:27px}
+
+#ol_after_logout{background:#fff;color:#555} 
