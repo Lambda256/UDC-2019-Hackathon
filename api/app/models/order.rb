@@ -43,7 +43,7 @@ class Order < ApplicationRecord
   end
 
   def self.best_bids(private_token_id, limit = 10)
-    where(private_token: private_token_id).order(price: :asc, created_at: :asc)
+    where(private_token: private_token_id, taker_id: nil).order(price: :asc, created_at: :asc)
   end
 
   def takeable?

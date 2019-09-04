@@ -18,7 +18,7 @@ class RedeemRequestsController < ApplicationController
       redeem_request = RedeemRequest.create!(
         private_token_id: token.id,
         owner_id: token.owner_id,
-        sender_id: user_token.id,
+        sender_id: user_token.user_id,
         amount: @p[:amount]
       )
 
