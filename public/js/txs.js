@@ -21,7 +21,8 @@ function rentBike(from, stationID, time) {
       data: querydata,
       success: function (data) {
         console.log(JSON.stringify(data));
-        alert("SUCCESS");
+        alert("결제가 완료되었습니다.");
+        document.getElementById("modal-example").style.display = "none";
       },
       error: function(code) {
         console.log(code);
@@ -51,7 +52,7 @@ function returnBike(from, stationID, time) {
       data: querydata,
       success: function (data) {
         console.log(JSON.stringify(data));
-        alert("SUCCESS");
+        alert("반납에 성공했습니다.");
       },
       error: function(code) {
         console.log(code);
