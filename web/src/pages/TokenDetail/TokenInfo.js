@@ -4,7 +4,6 @@ import AppContext from "contexts/AppContext";
 import AuthContext from "contexts/AuthContext";
 import TokenContext from "contexts/TokenContext";
 import LineChart from "./LineChart";
-import wwf from "assets/images/wwf.svg";
 import numeral from "numeral";
 import images from 'constants/images';
 

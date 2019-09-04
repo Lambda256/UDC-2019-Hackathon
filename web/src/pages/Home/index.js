@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { withRouter } from "react-router-dom";
 import GridItem from "./GridItem";
 import GridLoading from "./GridLoading";
 import HomeTab from "./HomeTab";
@@ -8,7 +9,6 @@ import { scrollTop } from "utils/scroller";
 import { TAB_ALL } from "./HomeTab";
 import numeral from "numeral";
 
-
 const Home = props => {
   const [tabIndex, setTabIndex] = useState(TAB_ALL);
   const { setTimeSold } = useContext(AppContext);
@@ -16,7 +16,10 @@ const Home = props => {
   useEffect(() => {
     scrollTop();
     getTokens(tokens => {
-      const totalHours = tokens.reduce((total, token) => total + numeral(token.purchase_count).value(), 0);
+      const totalHours = tokens.reduce(
+        (total, token) => total + numeral(token.purchase_count).value(),
+        0
+      );
       setTimeSold(totalHours);
     });
   }, [getTokens, setTimeSold]);
@@ -55,4 +58,4 @@ Home.propTypes = {};
 
 Home.defaultProps = {};
 
-export default Home;
+export default withRouter(Home);

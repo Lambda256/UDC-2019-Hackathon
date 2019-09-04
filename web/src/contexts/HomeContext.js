@@ -15,7 +15,7 @@ class HomeProvider extends Component {
 
   getTokens = async cb => {
     const { tokens } = this.state;
-    if (tokens.length > 0) return;
+    if (tokens.length > 0) cb(tokens);
     try {
       await this.setState({ fetchingTokens: true });
       const tokens = await api.get("/private_tokens.json", {});

@@ -415,7 +415,7 @@ const Clock = props => {
           src={
             currentCampaign
               ? currentCampaign.images[0]
-              : "http://placekitten.com/g/1000/600"
+              : null
           }
           alt=""
         />
