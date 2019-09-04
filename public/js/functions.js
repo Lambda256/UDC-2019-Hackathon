@@ -245,10 +245,12 @@ function autocomplete(arr) {
        } else {
          // rent => return
          var returnTime = (new Date()).getTime();
-         returnBike(userAddr, 2386, returnTime).done(function(msg){
-           requestIncentive(userAddr, returnTime, 2386, 0, infos);
+         var returnStation = prompt("반납 대여소 번호를 입력해주세요", "");
+         console.log(returnStation);
+         returnBike(userAddr, returnStation, returnTime).done(function(msg){
+           requestIncentive(userAddr, returnTime, returnStation, 0, infos);
          });
-         alert("2386번 정거장에 반납합니다.");
+         alert(returnStation + "번 정거장에 반납합니다.");
          refresh();
        }
      })
