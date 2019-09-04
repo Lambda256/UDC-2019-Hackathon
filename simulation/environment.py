@@ -61,7 +61,9 @@ def get_model_and_scaler():
 class Env:
     def __init__(self, num_stations, num_bikes_per_station):
         self.flmodel, self.scaler = get_model_and_scaler()
-        self.stations = list(range(num_stations))
+        self.bikes = [num_bikes_per_station for _ in range(num_stations)]
+
+    def reset(self, num_stations, num_bikes_per_station):
         self.bikes = [num_bikes_per_station for _ in range(num_stations)]
 
     # TODO: def weather(self):
