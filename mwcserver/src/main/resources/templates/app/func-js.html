@@ -17,29 +17,7 @@ $(function() {
    	var BWG_LONGITUDE = 126.969534;
 	var latitude;
 	var longitude;
-	// Geolocation API에 액세스할 수 있는지를 확인
-	if (navigator.geolocation) {
-	    //위치 정보를 얻기
-	    navigator.geolocation.getCurrentPosition (function(pos) {
-	    	latitude = pos.coords.latitude;
-	    	longitude = pos.coords.longitude;
-	    	
-/* 	    	// Tooltip
-	    	var tooltipTitle;
-	    	if(latitude && longitude){
-	    		tooltipTitle = latitude + ", " + longitude + " (클릭하면 구글 지도를 연결합니다.)";
-	    	}else{
-	    		tooltipTitle = "위치를 표시할 수 없습니다.";
-	    	}
-	    	$('#geo-tooltip').tooltip({
-	    		title : tooltipTitle,
-	    	});
- */	    	//$('#geo').prop('href', "https://www.google.com/maps/search/?api=1&query="+latitude+","+longitude);
-	    	//$('#geo').prop('target', '_blank');
-	    });
-	} else {
-	    alert("이 브라우저에서는 Geolocation이 지원되지 않습니다.")
-	}
+
 });
 
 function memu_click(url){
@@ -57,9 +35,7 @@ function market_click(url){
 	//alert("id:"+sessionStorage.getItem("id"));
 	id = sessionStorage.getItem("id");
 	
-	//window.open('http://localhost:8080?userId='+id, '_blank');
-	//window.open('http://172.16.2.160:8080?userId='+id, '_blank');
-	window.open('http://172.18.100.251:8080/?userId='+id, '_blank');
+	window.open('http://localhost:8080?userId='+id, '_blank');
 	
 }
 </script>

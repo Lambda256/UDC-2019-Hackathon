@@ -55,10 +55,10 @@ $(function() {
 				else if(workingSeconds > 32400 && workingSeconds <= 36000) rgbCode = '#FFBB00';
 				// 근무시간 9시간 이하 초록색
 				else rgbCode = '#1DDB16';
-				
+				console.log("endMilliSeconds:"+endMilliSeconds);
 				// Calendar Model
 				workHistory.title = '업무종료';
-				workHistory.end = endMilliSeconds;
+				workHistory.start = endMilliSeconds;
 				workHistory.backgroundColor = rgbCode;
 				workHistory.borderColor = rgbCode;
 				
@@ -78,6 +78,7 @@ $(function() {
 		plugins : [ 'interaction', 'dayGrid', 'timeGrid', 'interaction' ],
 		defaultView : 'dayGridMonth',
 		//defaultDate : '2019-08-07',
+		locale : "ko-kr",
 		selectable : true,
 		header : {
 			left : 'prev,next today',
@@ -384,8 +385,7 @@ function market_click(url){
 	//alert("id:"+sessionStorage.getItem("id"));
 	id = sessionStorage.getItem("id");
 	
-	//window.open('http://localhost:8080?userId='+id, '_blank');
-	//window.open('http://172.16.2.160:8080?userId='+id, '_blank');
-	window.open('http://172.18.100.251:8080/?userId='+id, '_blank');
+	window.open('http://localhost:8080?userId='+id, '_blank');
+
 }
 </script>
