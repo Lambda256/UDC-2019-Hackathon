@@ -9,6 +9,7 @@ import purchaseImg from "assets/images/purchased.svg";
 import tradeImg from "assets/images/trade.svg";
 import redeemImg from "assets/images/redeem.svg";
 import numeral from "numeral";
+import moment from "moment";
 import _ from "lodash";
 
 const { TextArea } = Input;
@@ -20,9 +21,11 @@ const WalletRow = props => {
     balance,
     pending_balance,
     name,
+    user,
     current_price,
     profile_picture,
-    symbol
+    symbol,
+    onClick
   } = props;
   return (
     <div className="wallet-row">
@@ -48,7 +51,15 @@ const WalletRow = props => {
           </div>
         </div>
         <div className="flex-action">
-          <Button onClick={() => setCollapsed(false)}>
+          <Button
+            onClick={() => {
+              if (type === "main") {
+                onClick();
+                return;
+              }
+              setCollapsed(false);
+            }}
+          >
             {type === "main" ? "Recharge" : "Redeem"}
           </Button>
         </div>
@@ -67,9 +78,7 @@ const WalletRow = props => {
           <div className="row-align-center input-container">
             <div className="text-grey input-label">Description:</div>
             <TextArea
-              value={
-                "Dear Mr. Belson,\n\nMy name is YoungHwi Cho, co-founder at HUNT. We’d like to expand our 3rd Party alliance in our HUNT platform. We think that your previous experience about Hooli x Koogle alliance can give a great insight for us. Please let me know if you are available for giving some advices for us.\n\nBest regards,\n\nYoungHwi"
-              }
+              value={`Dear ${name},\n\nMy name is ${user.name}, co-founder at HUNT. We’d like to expand our 3rd Party alliance in our HUNT platform. We think that your previous experience about Hooli x Koogle alliance can give a great insight for us. Please let me know if you are available for giving some advices for us.\n\nBest regards,\n\n${user.name}`}
             />
           </div>
           <div className="row-align-center input-container">
@@ -85,7 +94,9 @@ const WalletRow = props => {
             <Button className="request-button">Request</Button>
             <div
               className="cancel-text text-grey hover-link"
-              onClick={() => setCollapsed(true)}
+              onClick={() => {
+                setCollapsed(true);
+              }}
             >
               Cancel
             </div>
@@ -97,18 +108,41 @@ const WalletRow = props => {
 };
 
 const TransactionRow = props => {
+  const { category, amount, updated_at, symbol, price, tx_hash } = props;
+  let action = "",
+    description = "",
+    img = null;
+  if (category === "mint") {
+    action = "Purchased";
+    img = purchaseImg;
+    description = `${numeral(amount).format("0,0.00")} ${symbol} at ${numeral(
+      price
+    ).format("0,0.00")} HOUR`;
+  } else if (category === "burn") {
+    action = "Redeemed";
+    img = redeemImg;
+    description = `${numeral(amount).format("0,0.00")} ${symbol}`;
+  } else if (category === "sell") {
+    action = "Traded";
+    img = tradeImg;
+    description = `${numeral(amount).format("0,0.00")} ${symbol} at ${numeral(
+      price
+    ).format("0,0.00")} HOUR`;
+  }
+
   return (
     <div className="transaction-row row-align-center">
       <img src={purchaseImg} alt="" />
       <div>
         <div className="text-grey purchased-text">
-          Purchased <span className="text-white">1 SEB at 2,356.36 HOUR</span>
+          {action} <span className="text-white">{description}</span>
         </div>
         <div className="text-grey">
-          Status: success | TxHash:{" "}
-          <a href="#">0x1354239f7a5bd237829c75182f71043f0be1f845a2549…</a>
+          Status: success | TxHash: <a href="#">{tx_hash}</a>
         </div>
-        <div className="time-ago text-dark-grey">3 mins ago</div>
+        <div className="time-ago text-dark-grey">
+          {moment(updated_at).fromNow()}
+        </div>
       </div>
     </div>
   );
@@ -158,9 +192,11 @@ const Wallet = props => {
           </div>
           <WalletRow
             type="main"
+            user={{}}
             balance={hour_balance}
             current_price={1}
             symbol="HOUR"
+            onClick={() => {}}
             name="Intime Main Token"
             profile_picture={hourToken}
           />
@@ -169,6 +205,8 @@ const Wallet = props => {
               <WalletRow
                 type="side"
                 key={index}
+                user={user}
+                onClick={() => {}}
                 {...token}
                 {..._.find(private_tokens, ["id", token.private_token_id])}
               />
@@ -178,9 +216,15 @@ const Wallet = props => {
 
         <div className="transaction-text text-grey uppercase">Transactions</div>
         <div className="border-container">
-          <TransactionRow />
-          <TransactionRow />
-          <TransactionRow />
+          {private_transactions.map((t, index) => {
+            return (
+              <TransactionRow
+                key={index}
+                {...t}
+                {..._.find(private_tokens, ["id", t.private_token_id])}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
