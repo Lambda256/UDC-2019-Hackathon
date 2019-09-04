@@ -14,7 +14,7 @@ class PrivateToken < ApplicationRecord
   validates_presence_of :offers, :description
   validates :category, inclusion: { in: %w(politics economics technology journalism entertainment business sports) }
   validates :symbol, format: { with: /\A[A-Za-z0-9]{2,6}\Z/, message: 'Token symbol must be 2-6 alphanumeric characters' }
-  validates :charity, inclusion: { in: %w(the_nature_conservancy red_cross alzheimers_association) }
+  validates :charity, inclusion: { in: %w(national_trust unhcr wwf) }
   validates :initial_price, numericality: { greater_than_or_equal_to: 0 }
   validates_uniqueness_of :symbol, :owner_id
 

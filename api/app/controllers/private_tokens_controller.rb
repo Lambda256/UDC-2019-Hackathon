@@ -1,6 +1,6 @@
 class PrivateTokensController < ApplicationController
   before_action :ensure_user!, only: [:create, :buy]
-  before_action :set_private_token!, only: [:buy, :trade_history]
+  before_action :set_private_token!, only: [:buy, :history]
 
   # GET - /private_tokens.json
   def index
@@ -37,9 +37,12 @@ class PrivateTokensController < ApplicationController
     end
   end
 
-  # GET - /private_tokens/:id/trade_history.json
-  def trade_history
-    render json: Transaction.where(private_token_id: @private_token.id, category: 'sell').order(id: :desc).limit(6)
+  # GET - /private_tokens/:id/history.json
+  def history
+    transactions = Transaction.where(private_token_id: @private_token.id)
+    transactions = transactions.where(category: params[:category]) if params[:category]
+
+    render json: transactions.order(id: :desc).limit(params[:limit] || 6)
   end
 
   private

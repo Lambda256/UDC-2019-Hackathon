@@ -7,9 +7,9 @@ module Luniverse
   TX_API = 'https://api.luniverse.net/tx/v1.0'
 
   CHARITY_REOA = {
-    'the_nature_conservancy' => '0x0bd8eb784511a418e708a24f9f5afa5d26d48257',
-    'red_cross' => '0x0bd8eb784511a418e708a24f9f5afa5d26d48257',
-    'alzheimers_association' => '0x0bd8eb784511a418e708a24f9f5afa5d26d48257'
+    'national_trust' => '0x617afd2cb283195c7b8394a660f5239d17ec2419',
+    'unhcr' => '0x9142651556f63b8481bf6c73f0754c1f3acae0a0',
+    'wwf' => '0x0bd8eb784511a418e708a24f9f5afa5d26d48257'
   }
 
   # User buys HOUR tokens from Team

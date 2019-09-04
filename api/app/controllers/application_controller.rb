@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
   end
 
   def charity_stats
-    stats = PrivateToken::CHARITY_REOA.inject({}) do |h, a|
+    stats = Luniverse::CHARITY_REOA.inject({}) do |h, a|
       h[a[0]] = { reoa: a[1], balance: Luniverse::get_wallet_balance!(a[1]) }
       h
     end
