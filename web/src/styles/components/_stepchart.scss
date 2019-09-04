@@ -1,0 +1,58 @@
+.step-chart-container {
+    width: 100%;
+    bottom: 0;
+    overflow: visible;
+}
+
+#step-chart {
+    height: 200px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    svg text {
+        font-family: Helvetica, Arial, Verdana, sans-serif;
+        fill: #666;
+        font-size: 12px;
+    }
+
+    .line {
+        fill: none;
+        stroke: #ee0804;
+        stroke-width: 1px;
+    }
+
+    .path-fill {
+        fill: none;
+        opacity: 0.3;
+        stroke: none;
+    }
+
+    .axis .domain {
+        fill: none;
+        stroke: none;
+    }
+    .axis .tick line {
+        // stroke: #eee;
+        stroke: none;
+        stroke-width: 1px;
+    }
+
+    .tooltip .tooltip-line {
+        fill: none;
+        stroke: #ee0804;
+        stroke-width: 1px;
+        stroke-dasharray: 3px;
+    }
+    .tooltip .tooltip-point {
+        fill: #ee0804;
+        stroke: #ee0804;
+        stroke-width: 1px;
+    }
+
+    .avg-line {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 1px;
+        stroke-dasharray: 5px;
+    }
+}

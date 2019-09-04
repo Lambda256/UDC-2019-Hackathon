@@ -1,0 +1,61 @@
+#line-chart {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+
+  .mouse_area {
+    opacity: 0;
+  }
+  .guides {
+    stroke-width: 1px;
+  }
+  .guides line {
+    stroke: #ee0804;
+    shape-rendering: crispEdges;
+  }
+  .guides circle {
+    fill: #ee0804;
+    stroke: #348;
+    opacity: 0.2;
+  }
+
+  .rules line,
+  .rules path {
+    shape-rendering: crispEdges;
+    stroke: #000;
+  }
+
+  .rules .tick {
+  }
+  .rules .minor {
+    stroke: #bbb;
+  }
+  .rules .domain {
+    fill: none;
+  }
+
+  .grid .tick {
+    stroke: #ccc;
+  }
+
+  .series path {
+    fill: none;
+    stroke: #ee0804;
+    stroke-width: 3px;
+  }
+
+  .line {
+    fill: none;
+    stroke: #ee0804;
+    stroke-width: 3;
+  }
+
+  .dot {
+    &:nth-child(25) {
+      fill: #232323;
+      stroke: #ee0804;
+      r: 10;
+    }
+  }
+}

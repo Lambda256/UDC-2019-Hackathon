@@ -1,0 +1,74 @@
+.buy-sell {
+  width: 500px;
+  margin: 20px !important;
+
+  .ant-card-body {
+    padding: 0;
+  }
+
+  .tabs {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .tab-item {
+    padding: 20px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &.buy {
+      color: #e2323a;
+      border-bottom: 2px solid #e2323a;
+    }
+
+    &.sell {
+      color: #3077e8;
+      border-bottom: 2px solid #3077e8;
+    }
+
+    &.history {
+      color: history000;
+      border-bottom: 2px solid #000;
+    }
+  }
+
+  .content {
+    padding: 20px;
+
+    input {
+      border-radius: 0;
+      text-align: end;
+    }
+
+    .input-item {
+      margin: 10px 0;
+
+      .ant-input-number {
+        width: 100%;
+      }
+
+      .row-select {
+        width: 100%;
+
+        .ant-radio-button-wrapper {
+          width: 25%;
+          border-radius: 0;
+          text-align: center;
+        }
+      }
+
+      .total-text {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        font-weight: bold;
+        margin-top: 6px;
+      }
+    }
+
+    .row-category {
+      min-width: 50px;
+      margin-right: 16px;
+      margin-top: 6px;
+    }
+  }
+}
