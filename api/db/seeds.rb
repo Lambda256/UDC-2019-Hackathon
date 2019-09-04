@@ -41,7 +41,7 @@ user3.profile_picture.attach(
 )
 
 user1.recharge!
-user2.recharge!
+user2.recharge!(10000)
 user3.recharge!
 
 token1 = PrivateToken.create!(
@@ -120,12 +120,112 @@ user1.donate_and_buy!(token1)
 user1.donate_and_buy!(token2)
 user1.donate_and_buy!(token3)
 user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
+user2.donate_and_buy!(token1)
 user2.donate_and_buy!(token3)
-user3.donate_and_buy!(token2)
+user3.donate_and_buy!(token1)
 
 RedeemRequest.create!(
-  private_token_id: token3.id,
-  owner_id: token3.owner_id,
+  private_token_id: token2.id,
+  owner_id: token2.owner_id,
   sender_id: user1.id,
   amount: 1
 )
+
+# token1 = PrivateToken.find(1)
+# user1 = User.find(1)
+# user2 = User.find(2)
+# user3 = User.find(3)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.99,
+  amount: 3
+)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.95,
+  amount: 2
+)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.82,
+  amount: 1.4
+)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.89,
+  amount: 1.5
+)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.87,
+  amount: 1.2
+)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.85,
+  amount: 0.5
+)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.79,
+  amount: 0.1
+).take!(user3.id)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.83,
+  amount: 0.2
+).take!(user3.id)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.80,
+  amount: 0.1
+).take!(user3.id)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.82,
+  amount: 0.4
+).take!(user3.id)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.81,
+  amount: 0.1
+).take!(user3.id)
+
+Order.create!(
+  private_token_id: token1.id,
+  maker_id: user2.id,
+  price: token1.current_price * 0.84,
+  amount: 0.1
+).take!(user3.id)
