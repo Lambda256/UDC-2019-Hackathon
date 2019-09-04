@@ -33,14 +33,14 @@ const WalletRow = props => {
     <div className="wallet-row">
       <div className=" row-align-center">
         <div className="flex-token row-align-center">
-          {symbol == 'TUSD' ?
+          {symbol === 'TUSD' ?
             <img className="profile-image" src={profile_picture} alt="" />
           :
             <Link to={`/token/${symbol}`}>
               <img className="profile-image" src={profile_picture} alt="" />
             </Link>
           }
-          {symbol == 'TUSD' ?
+          {symbol === 'TUSD' ?
             <div>
               <div className="name-value text-white uppercase">{symbol}</div>
               <div className="subtitle text-grey">{name}</div>

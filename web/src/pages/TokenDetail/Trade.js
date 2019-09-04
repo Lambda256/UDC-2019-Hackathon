@@ -14,7 +14,7 @@ const Trade = props => {
   const { symbol } = currentCampaign;
 
   useEffect(() => {
-    getHistory(currentCampaign.id, "sell");
+    getHistory(currentCampaign.id, "sell", 100);
   }, [orders]);
 
   return (

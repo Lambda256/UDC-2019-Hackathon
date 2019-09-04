@@ -129,11 +129,10 @@ class TokenProvider extends Component {
     const { fetchingHistory } = this.state;
     if (fetchingHistory) return;
     try {
-      const form = { category, limit };
       await this.setState({ fetchingHistory: true });
       const graphData = await api.get(
         `/private_tokens/${id}/history.json`,
-        { category },
+        { category, limit },
         true
       );
       console.log("graph data", graphData);

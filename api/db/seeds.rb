@@ -148,9 +148,11 @@ Order.create!(private_token_id: token1.id, maker_id: user2.id, price: token1.cur
 Order.create!(private_token_id: token1.id, maker_id: user2.id, price: token1.current_price * 0.87, amount: 1.2)
 Order.create!(private_token_id: token1.id, maker_id: user2.id, price: token1.current_price * 0.85, amount: 0.5)
 
-Order.create!(private_token_id: token1.id, maker_id: user2.id, price: token1.current_price * 0.79, amount: 0.1).take!(user3.id)
-Order.create!(private_token_id: token1.id, maker_id: user2.id, price: token1.current_price * 0.83, amount: 0.2).take!(user3.id)
-Order.create!(private_token_id: token1.id, maker_id: user2.id, price: token1.current_price * 0.80, amount: 0.1).take!(user3.id)
-Order.create!(private_token_id: token1.id, maker_id: user2.id, price: token1.current_price * 0.82, amount: 0.4).take!(user3.id)
-Order.create!(private_token_id: token1.id, maker_id: user2.id, price: token1.current_price * 0.81, amount: 0.1).take!(user3.id)
-Order.create!(private_token_id: token1.id, maker_id: user2.id, price: token1.current_price * 0.84, amount: 0.1).take!(user3.id)
+last_price = token1.current_price * 0.8
+time = 1000.minutes.ago
+50.times {
+  last_price += last_price * [-1, 1].sample * (rand / 10.0) # +/- 10%
+  last_price = token1.current_price * 0.9 if last_price >= token1.current_price
+  time += (1000 / 50).minutes
+  Order.create!(private_token_id: token1.id, maker_id: user1.id, price: last_price, amount: 1.0, created_at: time, updated_at: time).take!(user1.id)
+}
