@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   end
   resources :private_tokens, only: [:index, :create] do
     member do
-      get :holders
+      get :trade_history
       post :buy
     end
   end
