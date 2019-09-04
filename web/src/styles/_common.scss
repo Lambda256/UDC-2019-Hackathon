@@ -1,0 +1,198 @@
+html,
+body,
+.ant-list {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  background: #232323;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+h3,
+h5,
+h6 {
+  font-size: 16px;
+}
+
+p {
+  font-size: 14px;
+}
+
+button {
+  width: 140px;
+  height: 28px;
+  border: solid 1px #ffffff;
+  background-color: transparent;
+  color: #ffffff;
+  border-radius: 0;
+}
+
+html,
+body,
+.root,
+.app-container {
+  overscroll-behavior-y: none;
+}
+
+hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: #3fcaff;
+}
+
+.col-justify-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.col-justify-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.row-align-between {
+  display: flex;
+  align-items: space-between;
+}
+
+.row-align-start {
+  display: flex;
+  align-items: flex-start;
+}
+
+.row-align-center {
+  display: flex;
+  align-items: center;
+}
+
+.row-align-end {
+  display: flex;
+  align-items: flex-end;
+}
+
+.row-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row-space-around {
+  display: flex;
+  justify-content: space-around;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.text-black {
+  color: $text_black;
+}
+
+.text-grey {
+  color: $text_grey;
+}
+
+.text-light-grey {
+  color: #e5e5e5;
+}
+
+.text-off-white {
+  color: #f4f4f4;
+}
+
+.text-white {
+  color: #fff;
+}
+
+.text-blue {
+  color: #3fcaff;
+}
+
+.text-green {
+  color: #0ab06a;
+}
+
+.text-warning {
+  color: #ff597a;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.hover-link {
+  &:hover {
+    cursor: pointer;
+    color: #ee0804;
+    transition: color 0.5s;
+  }
+}
+
+.circular-loading {
+  position: absolute;
+  z-index: 99999;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #242424;
+  color: #fff;
+}
+
+.intime-letter{
+  font-family: 'Roboto Mono', monospace;
+  color: #fff;
+  font-size: 32px;
+  width: 32px;
+  text-align: center;
+  font-weight: 400;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border-radius: 0;
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: 0 0 0px 1000px #232323 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}

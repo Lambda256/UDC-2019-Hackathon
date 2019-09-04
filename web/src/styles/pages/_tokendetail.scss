@@ -1,0 +1,239 @@
+.token-page {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  font-size: 18px;
+
+  button {
+    width: 140px;
+    height: 28px;
+    border: solid 1px #ffffff;
+    background-color: transparent;
+    color: #ffffff;
+    border-radius: 0;
+  }
+
+  .content {
+    width: 800px;
+    padding: 60px 0;
+    border: 0px solid #4f4f4f;
+    border-left-width: 1px;
+    border-right-width: 1px;
+  }
+
+  .card-container {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    border: 0px solid #4f4f4f;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+  }
+
+  .token-info {
+    position: relative;
+  }
+
+  .medium-card {
+    width: 380px;
+    min-height: 300px;
+    text-align: center;
+    border: 0px solid #4f4f4f;
+    &:first-child {
+      border-right-width: 1px;
+    }
+    &:last-child {
+      border-left-width: 1px;
+    }
+  }
+
+  .dollar-value {
+    margin-top: 40px;
+    font-size: 34px;
+    font-weight: bold;
+    line-height: 1;
+  }
+
+  .card-header {
+    margin-top: 40px;
+  }
+
+  .card-subheader {
+    font-size: 14px;
+  }
+
+  .buy-token {
+    position: relative;
+    z-index: 100;
+    margin-top: 40px;
+  }
+
+  .donation-logo {
+    width: 72px;
+    height: auto;
+    object-fit: contain;
+    margin-top: 35px;
+  }
+
+  .hour-of-container {
+    text-align: center;
+    border-bottom: 1px solid #4f4f4f;
+
+    .hour-description {
+      // max-width: 50%;
+      padding: 0 20%;
+      font-size: 24px;
+      margin: 20px 0;
+    }
+
+    .carousel {
+    }
+
+    .carousel-item {
+      width: 100%;
+      height: 474px;
+      background-color: #ddd;
+      object-fit: cover;
+    }
+
+    .description {
+      text-align: left;
+      margin: 40px 60px 20px;
+    }
+
+    .social-icons {
+      text-align: left;
+      margin-left: 60px;
+      margin-bottom: 40px;
+
+      .social-icon {
+        margin-right: 15px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .graph-container {
+    text-align: center;
+    .graph {
+      padding: 20px;
+    }
+  }
+
+  .buy-sell-container {
+    .buy-sell-header {
+      margin-bottom: 20px;
+    }
+
+    .buy-sell-row {
+      font-size: 14px;
+      border-bottom: 1px solid #4f4f4f;
+      padding: 0 20px;
+    }
+    .row-item {
+      font-size: 14px;
+      border-bottom: 1px solid #4f4f4f;
+      padding: 0 20px;
+      cursor: pointer;
+
+      &:hover {
+        transition: background-color 0.2s;
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+
+      div {
+        flex: 1;
+        text-align: left;
+      }
+
+      .percent {
+        text-align: right;
+        &.positive {
+          color: #3077e8;
+        }
+
+        &.negative {
+          color: #e2323a;
+        }
+      }
+    }
+
+    .buy-button {
+      margin: 40px 0;
+    }
+
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: none;
+      border-top: 1px solid #4f4f4f;
+
+      .sell-input-container {
+        height: 32px;
+        margin: 20px;
+        margin-top: 40px;
+
+        input {
+          color: #fff;
+          background-color: transparent;
+          border-radius: 0;
+          border: solid 1px #4f4f4f;
+        }
+
+        .quantity-input {
+          border-right-width: 0 !important;
+          border-left-width: 0 !important;
+        }
+
+        .up-down-container {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .up-down-button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 10px;
+          height: 16px;
+          width: 16px;
+          color: #4f4f4f;
+          border: solid 1px #4f4f4f;
+          border-right-width: 0;
+          cursor: pointer;
+        }
+
+        .sell-button {
+          height: 100%;
+          background-color: #000;
+          border: solid 1px #4f4f4f;
+        }
+      }
+    }
+
+    .current-token {
+      font-size: 32px;
+      font-weight: bold;
+      span {
+        font-size: 16px;
+        font-weight: 300;
+      }
+    }
+  }
+
+
+  .circulating-history {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    border: none;
+    margin-top: 30px;
+
+    .token-burnt {
+      font-size: 14px;
+    }
+
+  }
+}
