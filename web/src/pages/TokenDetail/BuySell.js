@@ -8,13 +8,14 @@ import numeral from "numeral";
 import _ from "lodash";
 
 const RowItem = props => {
-  const { price, percent, amount, current_price, lastChild } = props;
+  const { price, percent, amount, maxAmount, currentPrice, lastChild } = props;
 
-  const temp = numeral(current_price).value();
+  const temp = numeral(currentPrice).value();
   const diff = (numeral(price).value() - temp) / temp;
 
   return (
     <div className={`row-space-between row-item ${lastChild && "last"}`}>
+      <div className="bar" style={{ width: `${parseInt(100 * amount / maxAmount)}%` }}></div>
       <div className="text-grey">
         {lastChild && (
           <Icon
@@ -138,6 +139,8 @@ const BuySell = props => {
     );
   }
 
+  const maxAmount = _.max(orders.map((o) => {return parseFloat(o.amount)}))
+
   const lastItem = orders[orders.length - 1];
   return (
     <div className="medium-card buy-sell-container">
@@ -153,7 +156,8 @@ const BuySell = props => {
           <RowItem
             key={index}
             lastChild={index === orders.length - 1}
-            current_price={current_price}
+            maxAmount={maxAmount}
+            currentPrice={current_price}
             {...item}
           />
         );
