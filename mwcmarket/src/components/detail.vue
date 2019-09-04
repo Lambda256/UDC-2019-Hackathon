@@ -215,12 +215,13 @@ export default {
           `https://api.luniverse.net/tx/v1.0/transactions/${this.txActionName.transfer2MWCA}`,
           {
             from: {
-              userKey: "Gabriel",
+              // userKey: "Gabriel",
+              userKey: this.userName,
               walletType: "LUNIVERSE"
             },
             inputs: {
               receiverAddress: this.walletAddress.market,
-              valueAmount: this.products[productId].price * 1000000000000000000
+              valueAmount: this.products[productId].price + '000000000000000000'
             }
           },
           {
@@ -240,11 +241,12 @@ export default {
                 },
                 inputs: {
                   _userId: {
-                    userKey: "Gabriel",
+                    // userKey: "Gabriel",
+                    userKey: this.userName,
                     walletType: "LUNIVERSE"
                   },
                   _itemId: 1,
-                  _price: this.products[productId].price * 1000000000000000000
+                  _price: this.products[productId].price + '000000000000000000'
                 }
               },
               {

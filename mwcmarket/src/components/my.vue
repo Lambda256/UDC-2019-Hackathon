@@ -97,12 +97,14 @@ export default {
           `https://api.luniverse.net/tx/v1.0/transactions/${this.txActionName.purchaseList}`,
           {
             from: {
-              userKey: "Gabriel",
+              // userKey: "Gabriel",
+              userKey: this.userName,
               walletType: "LUNIVERSE"
             },
             inputs: {
               _userId: {
-                userKey: "Gabriel",
+                // userKey: "Gabriel",
+                userKey: this.userName,
                 walletType: "LUNIVERSE"
               }
             }
