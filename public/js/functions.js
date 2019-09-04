@@ -234,6 +234,13 @@ function autocomplete(arr) {
      alert("return to 2386");
    });
 
+   // refresh button listener
+   document.getElementById("refresh").addEventListener("click", function(e) {
+     getRecord().done(function(msg){
+       updateHistory(msg.data.res);
+     });
+   });
+
   // < Get departure & arrival & targets >
   var departure, arrival, targets;
 
@@ -291,36 +298,24 @@ function autocomplete(arr) {
     callback();
   }
 
+  var firstMarker;
+  var markersLayer = new L.LayerGroup();
+
   // Update map
   function updateMap() {
-    // 지도 중심 계산
-    let lat_mean = 0;
-    let long_mean = 0;
-    for (var i=0;i<targets.length;i++){
-      lat_mean += parseFloat(targets[i][6]);
-      long_mean += parseFloat(targets[i][7]);
-    }
-    lat_mean /= 10;
-    long_mean /= 10;
 
-    // 지도 중심 이동
-    mymap.setView([lat_mean,long_mean], 14);
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      maxZoom: 18,
-      id: 'mapbox.streets',
-      // 용환 mapbox public accesToken (이대로 두면 됨)
-      accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
-    }).addTo(mymap);
-
+    mymap.spin(false);
     // 마커 추가
     for (var i=0;i<targets.length;i++) {
       var marker = L.marker(targets[i].slice(6,8));
-      marker.addTo(mymap);
       marker.bindPopup(targets[i][2] + '. ' + targets[i][3] + '\n'
                         + '<span class\="uk-label\" style=\"background-color:#ffd250;color:#000;\"><span uk-icon=\"bolt\"></span>'+targets[i][8]+'</span>');
-      if (i==0) marker.openPopup();
+      if (i==0) firstMarker = marker;
+      markersLayer.addLayer(marker);
     }
+    markersLayer.addTo(mymap);
+    firstMarker.openPopup();
+
     console.log("7. update map");
     // 여기에서 Targets 정류장을 지도에 표시
     // targets[0]~targets[9] 까지 있음 (목적지 + 목적지와 가까운 정류장 9개)
@@ -361,6 +356,33 @@ function autocomplete(arr) {
     dist = computeDistance(departure,arrival); // km
     time = dist / 10; // hour (10km/h)
     return Math.round(time);
+  }
+
+  // Update mypage history
+  function updateHistory(data) {
+    console.log("History", data);
+    for (var i = 1; i <= 7; i++) {
+      var N = data[0].length;
+      var icon = '';
+      var label = '';
+      var amount = data[1][N-i];
+      var time = data[2][N-i];
+
+      // Check log type and set icon
+      if (data[0][N-i] == 2) {
+        icon = '<span uk-icon="plus-circle" style="margin-right:5px;"></span>';
+        label = '<span class="uk-label" style="background-color:#ffd250;color:#fff;font-size: 0.8rem;">보상 ' + amount +'</span>'
+      } else if (data[0][N-i] == 1) {
+        icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
+        label = '<span class="uk-label" style="background-color:#0c7037;color:#fff;font-size: 0.8rem;">사용료 ' + amount +'</span>'
+      } else {
+        icon = '<span uk-icon="minus-circle" style="margin-right:5px;"></span>';
+        label = '<span class="uk-label" style="background-color:#ff1500;color:#fff;font-size: 0.8rem;">대여료 ' + amount +'</span>'
+      }
+
+      // Print icon - amount - time
+      document.getElementById("log"+i).innerHTML= icon + label + " " + timeStampToTime(time);
+    }
   }
 
   /*
@@ -430,6 +452,25 @@ function autocomplete(arr) {
         success: function (data) {
           //console.log(JSON.stringify(data));
           // get Response
+          
+          // 지도 초기화
+          
+          // 지도 중심 계산
+          let lat_center = parseFloat(targets[0][6]);
+          let long_center = parseFloat(targets[0][7]);
+          
+          // 지도 중심 이동
+          mymap.setView([lat_center,long_center], 14);
+          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            // 용환 mapbox public accesToken (이대로 두면 됨)
+            accessToken: 'pk.eyJ1IjoiZXJpYy15b28iLCJhIjoiY2swMG45M29uMDVjNzNtbGs3Zm01ODVlaiJ9.xUr6rCrxrGVEsaV-vf7fFw'
+          }).addTo(mymap);
+
+          markersLayer.clearLayers();
+          mymap.spin(true);
           setTimeout(function () {getResponse(reqTime, callback)}, 3000);
         },
         error: function(code){
@@ -643,4 +684,56 @@ function queryInfos() {
     infos = [d.getMonth()+1, Math.round(weather[0]), Math.round(weather[1]), Math.round(weather[2]), Math.round(weather[3]), Math.round(weather[4]), new Date(datestring).getDay()];
     console.log("infos", infos)
    });
+}
+
+document.getElementById("userProfileButton").style.visibility = "hidden";
+  document.getElementById("signInButton").style.visibility = "visible";
+  var signedInFlag = false;
+  function onSignIn(googleUser) {
+    // Useful data for your client-side scripts:
+    var profile = googleUser.getBasicProfile();
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.disconnect();
+    
+    var myUserEntity = {};
+    signedInFlag = true;
+    myUserEntity.Name = profile.getName();
+    myUserEntity.Email = profile.getEmail();
+    sessionStorage.setItem('myUserEntity',JSON.stringify(myUserEntity));
+    
+
+    document.getElementById("userProfileButton").src=profile.getImageUrl();
+    document.getElementById("userProfileButton").style.visibility = "visible";
+    document.getElementById("signInButton").style.display = "none";
+    document.getElementById("userName").innerHTML=myUserEntity.Name;
+  };
+  function checkIfSignedIn(){
+    if(sessionStorage.getItem('myUserEntity') == null){
+      alert("로그인이 필요합니다.");
+      return false;
+    } else {
+      return true;
+    }
+  }
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+    sessionStorage.clear();
+    signedInFlag = false;
+    
+    document.getElementById("userProfileButton").style.visibility = "hidden";
+    document.getElementById("signInButton").style.display = "";
+  }
+function timeStampToTime(timestamp) {
+  var date = new Date(parseInt(timestamp));
+  var year = date.getFullYear();
+  var month = ("0"+(date.getMonth()+1)).slice(-2);
+  var day = ("0"+date.getDate()).slice(-2);
+  var hours = date.getHours();
+  var minutes = "0" + date.getMinutes();
+  var seconds = "0" + date.getSeconds();
+  result = year + "." + month + "." + day + " " + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  return result;
 }

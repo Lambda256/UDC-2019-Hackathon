@@ -8,13 +8,20 @@
         <link rel="stylesheet" href="css/uikit.css" />
         <link rel="stylesheet" href="css/leaflet.css" />
         <script src="js/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.Spin/1.1.0/leaflet.spin.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="js/uikit.js"></script>
         <script src="js/uikit-icons.min.js"></script>
+        <meta name="google-signin-scope" content="profile email">
+        <meta name="google-signin-client_id" content="246220780726-tr10ltoqeu9t2bj7qchcddsbqjva0ilf.apps.googleusercontent.com">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
     </head>
 
     <body class="uk-height-1-1 ">
       <!-- nav -->
+      
+    
       <div id="nav" class="uk-text-center" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky" style="height:90px;">
       	<nav class="uk-height-1-1 uk-navbar uk-navbar-container" style="background: transparent">
           <div class="uk-width-1-6"></div>
@@ -24,21 +31,22 @@
               <a id="logo" onclick="up()" href="#" uk-totop uk-scroll>
                 <span class="uk-heading-small" style="font-family: 'Black Han Sans', sans-serif; color: #F3F3F2;">
         			    타고벌자
-        	      </span>
+                </span>
               </a>
             </div>
           </div>
           <div class="uk-width-1-6 uk-flex uk-flex-right uk-flex-top">
-            <img class="uk-profile-small uk-border-circle uk-margin-right uk-margin-top" src="src/profile.png" uk-toggle="target: #offcanvas-flip">
+            <img id="userProfileButton" class="uk-profile-small uk-border-circle uk-margin-right uk-margin-top" src="" uk-toggle="target: #offcanvas-flip">
+            <div id="signInButton" class="g-signin2" data-width="50" data-height="50" data-longtitle="false" data-onsuccess="onSignIn">
+          </div>
           </div>
       	</nav>
       </div>
-
       <!-- my page history -->
       <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
         <div class="uk-offcanvas-bar" style="font-family: 'Noto Sans KR', sans-serif;">
           <button class="uk-offcanvas-close" type="button" uk-close></button>
-          <h3 style="margin-bottom:5px;">YEONJAE</h3>
+          <h3  style="margin-bottom:5px;"><span id="userName">YEONJAE</span><span id="refresh" uk-icon="refresh" style="margin-left:5px;"></span></h3>
           <span class="uk-label" style="background-color:#ffd250;color:#000;" onclick="updateBalance()">
             <span uk-icon="bolt"></span><span id="balance"></span>
           </span>
@@ -48,11 +56,16 @@
           <p>
             최근 결제/보상 내역을 확인하세요
           </p>
-          <ul class="uk-list uk-list-divider">
-              <li>List item 1</li>
-              <li>List item 2</li>
-              <li>List item 3</li>
+          <ul id="history" class="uk-list uk-list-divider">
+              <li id="log1"></li>
+              <li id="log2"></li>
+              <li id="log3"></li>
+              <li id="log4"></li>
+              <li id="log5"></li>
+              <li id="log6"></li>
+              <li id="log7"></li>
           </ul>
+          <a href='/' id="signOutButton" onclick="signOut();">Sign out</a>
         </div>
       </div>
 

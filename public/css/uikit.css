@@ -68,6 +68,10 @@ a:hover,
   cursor: pointer;
 }
 
+#refresh:hover {
+  cursor: pointer;
+}
+
 /* TEST HERE */
 /* The container must be positioned relative: */
 .custom-select select {
@@ -80,6 +84,16 @@ a:hover,
 
 .uk-profile-small:hover {
   cursor: pointer;
+}
+
+#history {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.8rem;
+}
+
+.log-label {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.8rem;
 }
 
 /* style the items (options), including the selected item: */
