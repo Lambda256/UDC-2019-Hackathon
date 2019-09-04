@@ -62,8 +62,17 @@ export default new Vuex.Store({
     loginRedirect: (state, name) => {
       state.beforeLogin = name
     },
-    todaysGame: (state, date) => {
-      
+    todayGame: (state, payload) => {
+      console.log(payload)
+      let m = games.filter(function(g) {
+        g.map(temp => {
+          var year=moment(temp.Time).format("YYYY");
+          var month=moment(temp.Time).format("MM");
+          var day=moment(temp.Time).format("DD");
+        })
+        return (payload.day==day && payload.month==month)
+      })
+      gameToday = m.slice()
     }
   },
   mutations: {
