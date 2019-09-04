@@ -87,7 +87,18 @@ export default {
     }),
     methods: {
         submit () {
-            //do something
+            axios.post('http://localhost:3000/api/signup', {
+                'name': this.name,
+                'password': this.password,
+                'email': this.email,
+                'place': this.address
+            })
+            .then(res => {
+                console.log('register-response: ', res)
+            })
+            .catch(err => {
+                console.log('register/error')
+            })
         }
     }
 }
