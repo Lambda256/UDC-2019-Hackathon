@@ -194,7 +194,7 @@ def insertResponse(requestId, stations: list, bikeNums: list, from_):
     }
     data = json.dumps(data)
 
-    print(data)
+    # print(data)
 
     r = curlPost(url, data, headers)
     return r
