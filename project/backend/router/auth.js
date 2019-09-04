@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken')
-const secret = 'token secret';
 //const expiresIn = 60 * 60; // 60 min
 const expiresIn = 60 * 2;
 
 const auth = {
+  secret :'token secret',
   signToken (id) {
-    return jwt.sign({id}, secret, {expiresIn})
+    return jwt.sign({id}, this.secret, {expiresIn})
   },
   ensureAuth () {
     return (req, res, next) => {
@@ -26,7 +26,9 @@ const auth = {
     }
   },
   verify (token) {
-    return jwt.verify(token.replace(/^Bearer\s/, ''), secret)
+    //return jwt.verify(token.replace(/^Bearer\s/, ''), secret)
+    console.log(token)
+    return jwt.verify(token, this.secret)
   }
 }
 
