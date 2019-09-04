@@ -41,7 +41,7 @@ user3.profile_picture.attach(
 )
 
 user1.recharge!
-user2.recharge!(10000)
+user2.recharge!(50000)
 user3.recharge!
 
 token1 = PrivateToken.create!(

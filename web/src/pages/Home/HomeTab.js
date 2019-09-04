@@ -14,7 +14,7 @@ const HomeTab = props => {
   const {tabIndex, setTabIndex} = props;
   return (
     <div className="home-tab">
-      Buy the hours or leaders
+      Buy the hours of leaders
       <br />
       whose time value is donated to change the world
       <div className="tabs">

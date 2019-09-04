@@ -3,7 +3,7 @@ require 'faraday'
 module Luniverse
   TEAM_WALLET = '0xec83e20f5a5e431274f7d8514fdb00bd912a6aa9'
   MAIN_TOKEN = 'TIME'
-  SIDE_TOKEN = 'HOUR'
+  SIDE_TOKEN = 'TUSD'
   TX_API = 'https://api.luniverse.net/tx/v1.0'
 
   CHARITY_REOA = {
@@ -12,9 +12,9 @@ module Luniverse
     'wwf' => '0x0bd8eb784511a418e708a24f9f5afa5d26d48257'
   }
 
-  # User buys HOUR tokens from Team
+  # User buys TUSD tokens from Team
   def self.recharge!(to, amount)
-    result = self.fetch_json!(:post, "#{TX_API}/transactions/recharge", {
+    result = self.fetch_json!(:post, "#{TX_API}/transactions/rechargeTUSD", {
       inputs: {
         receiverAddress: to,
         valueAmount: (amount * 10**18).to_i.to_s
@@ -25,9 +25,9 @@ module Luniverse
     self.wait_till_succeed!(result['txId'])
   end
 
-  # User buys a private token and donate HOUR to the charity
+  # User buys a private token and donate TUSD to the charity
   def self.donate!(from, charity, amount)
-    result = self.fetch_json!(:post, "#{TX_API}/transactions/donate", {
+    result = self.fetch_json!(:post, "#{TX_API}/transactions/donateTUSD", {
       from: from,
       inputs: {
         receiverAddress: CHARITY_REOA[charity],
@@ -39,10 +39,10 @@ module Luniverse
     self.wait_till_succeed!(result['txId'])
   end
 
-  # User trades a private token and send HOUR to the seller
+  # User trades a private token and send TUSD to the seller
   # Transaction fee: 1.0%
   def self.paid_transfer!(from, to, amount)
-    result = self.fetch_json!(:post, "#{TX_API}/transactions/paidTransfer", {
+    result = self.fetch_json!(:post, "#{TX_API}/transactions/transferTUSD", {
       from: from,
       inputs: {
         receiverAddress: to,
