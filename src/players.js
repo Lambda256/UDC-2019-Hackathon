@@ -1,0 +1,566 @@
+const cards = [
+  {
+    id: 0,
+    playername: "Park Hyung Jin",
+    teamname: "Suwon Samsung BlueWings",
+    position: "DF",
+    uniformNumber: 13,
+    weight: 76,
+    height: 182,
+    birthday: "1990-06-24",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 500,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fk9Hl2%2FbtqxXI7cTvm%2FMiRiGT6zbkNduKvWJxLlG1%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 1,
+    playername: "Hong Chul",
+    teamname: "Suwon Samsung BlueWings",
+    position: "DF",
+    uniformNumber: 33,
+    weight: 67,
+    height: 176,
+    birthday: "1990-09-17",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 200,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FCrDIC%2FbtqxVzDn2pQ%2FbGYtNdyDZv8MrviuT6Ng41%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 2,
+    playername: "Min Sang Gi",
+    teamname: "Suwon Samsung BlueWings",
+    position: "DF",
+    uniformNumber: 39,
+    weight: 81,
+    height: 185,
+    birthday: "1991-08-27",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 100,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FHeAh3%2FbtqxVzXGsqJ%2FTOhVE2Beu4uoLYwUZ2NmI1%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 3,
+    playername: "Koo Dae Young",
+    teamname: "Suwon Samsung BlueWings",
+    position: "DF",
+    uniformNumber: 90,
+    weight: 72,
+    height: 177,
+    birthday: "1992-05-09",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2F32k6q%2FbtqxXa3VDFL%2FBqAEU3P6psLOSo68spJbR1%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 4,
+    playername: "Han Eui Gwon",
+    teamname: "Suwon Samsung BlueWings",
+    position: "FW",
+    uniformNumber: 9,
+    weight: 72,
+    height: 181,
+    birthday: "1994-06-30",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 1000,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fba2AXv%2FbtqxWKYIDCF%2Fm1WxSbvVicixMUKSyX2tSk%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 5,
+    playername: "Adam Taggart",
+    teamname: "Suwon Samsung BlueWings",
+    position: "FW",
+    uniformNumber: 18,
+    weight: 69,
+    height: 183,
+    birthday: "1993-06-02",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 300,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fc1Pgaq%2FbtqxVesJF6y%2FX9SoeYTC6vUtiZYykrj310%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 6,
+    playername: "Han Seok Hee",
+    teamname: "Suwon Samsung BlueWings",
+    position: "FW",
+    uniformNumber: 27,
+    weight: 67,
+    height: 173,
+    birthday: "1996-05-67",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 200,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fco7P16%2FbtqxXboff8h%2FQPm6jhojJFRLKpvJk8T8Ek%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 7,
+    playername: "NO Dong Geon",
+    teamname: "Suwon Samsung BlueWings",
+    position: "GK",
+    uniformNumber: 19,
+    weight: 88,
+    height: 192,
+    birthday: "1991-10-04",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 800,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FkE488%2FbtqxWKqTm9W%2F7mQdYMsu2gKEIuuIlsf3Bk%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 8,
+    playername: "Song Jin Kyu",
+    teamname: "Suwon Samsung BlueWings",
+    position: "MF",
+    uniformNumber: 6,
+    weight: 70,
+    height: 177,
+    birthday: "1997-07-12",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 900,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2F561ol%2FbtqxVBHWa3L%2FDYuFaQmZqqIrzAzitbq7h1%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 9,
+    playername: "Choi Sung Guen",
+    teamname: "Suwon Samsung BlueWings",
+    position: "MF",
+    uniformNumber: 25,
+    weight: 73,
+    height: 182,
+    birthday: "1991-07-28",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 400,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fc9fw9x%2FbtqxVAWAV5V%2FIjZxH9VXmRdMyNDk2LYof1%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 10,
+    playername: "Kim Jong Woo",
+    teamname: "Suwon Samsung BlueWings",
+    position: "MF",
+    uniformNumber: 17,
+    weight: 73,
+    height: 176,
+    birthday: "1993-10-01",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FcSLr3x%2FbtqxUKk33Pr%2FPOavHGP0PKrRdB4khCkKz0%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 11,
+    playername: "Song Jin Kyu",
+    teamname: "Suwon Samsung BlueWings",
+    position: "MF",
+    uniformNumber: 6,
+    weight: 70,
+    height: 177,
+    birthday: "1997-07-12",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FrSHlu%2FbtqxWJ6zG5u%2FsVAwfTi6FWKcMdYuIx8hZk%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 12,
+    playername: "Lee Yong",
+    teamname: "Sowon Samsung BlueWings",
+    position: "DF",
+    uniformNumber: 2,
+    weight: 76,
+    height: 180,
+    birthday: "1986-12-24",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FcOBONj%2FbtqxXKKK14V%2FpzFinhIaJ4cQct7bPWzCm0%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 13,
+    playername: "Lee Ju Yong",
+    teamname: "Sowon Samsung BlueWings",
+    position: "DF",
+    uniformNumber: 13,
+    weight: 78,
+    height: 180,
+    birthday: "1992-09-16",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FOugIo%2FbtqxVBnGt5W%2FDkbuCT0SCskHbdzE9WDsY0%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 14,
+    playername: "Kim Jin Su",
+    teamname: "Sowon Samsung BlueWings",
+    position: "DF",
+    uniformNumber: 22,
+    weight: 69,
+    height: 177,
+    birthday: "1992-06-13",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FvM4G3%2FbtqxWdGTM8h%2FS1yHbyV6fl526EJDiEpicK%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 15,
+    playername: "Kim Seung Dae",
+    teamname: "Sowon Samsung BlueWings",
+    position: "FW",
+    uniformNumber: 9,
+    weight: 68,
+    height: 176,
+    birthday: "1991-04-01",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2F3U72B%2FbtqxXbhxzW5%2F6TiEeMpaX3KMxwrK4noLjk%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 16,
+    playername: "Lee Dong Gook",
+    teamname: "Sowon Samsung BlueWings",
+    position: "FW",
+    uniformNumber: 20,
+    weight: 80,
+    height: 185,
+    birthday: "1979-04-29",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FnxJXM%2FbtqxX76M8Oy%2F4de8vuVJtA12yqg5lx8TDK%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 17,
+    playername: "Samuel Rosa",
+    teamname: "Sowon Samsung BlueWings",
+    position: "FW",
+    uniformNumber: 91,
+    weight: 88,
+    height: 187,
+    birthday: "1991-02-25",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FAjeGV%2FbtqxVAI6QEV%2FKSlSw59ybVVw75UsXdXk41%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 18,
+    playername: "Song Bum Keun",
+    teamname: "Sowon Samsung BlueWings",
+    position: "GK",
+    uniformNumber: 31,
+    weight: 88,
+    height: 194,
+    birthday: "1997-10-15",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FWF0K0%2FbtqxWLpQgNz%2FZJPvhHPTD38AA97i4Jc57K%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 19,
+    playername: "Han Kyo Won",
+    teamname: "Sowon Samsung BlueWings",
+    position: "MF",
+    uniformNumber: 7,
+    weight: 73,
+    height: 182,
+    birthday: "1990-06-15",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FmEDz1%2FbtqxUK6vN5r%2F6DhINRDhBiJUpy4bNHbEXk%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 20,
+    playername: "Lee Seung Gi",
+    teamname: "Sowon Samsung BlueWings",
+    position: "MF",
+    uniformNumber: 14,
+    weight: 67,
+    height: 177,
+    birthday: "1988-06-02",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FeEhZJL%2FbtqxWKYLlHl%2FgJqPSdaaRXBQFmxhGEwmmk%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 21,
+    playername: "Moon Seon Min",
+    teamname: "Sowon Samsung BlueWings",
+    position: "MF",
+    uniformNumber: 27,
+    weight: 68,
+    height: 172,
+    birthday: "1992-06-9",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FbTLs4a%2FbtqxUKek7QY%2FGgQjkhB834j0zXkwOOXDik%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 22,
+    playername: "Son Jun Ho",
+    teamname: "Sowon Samsung BlueWings",
+    position: "MF",
+    uniformNumber: 28,
+    weight: 73,
+    height: 178,
+    birthday: "1992-05-12",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FdalyLA%2FbtqxTKMFTpA%2Fu87baO6Mkruzphe3fqta70%2Fimg.jpg",
+    event: ""
+  },
+  // 다른 선수 카드
+  {
+    id: 23,
+    playername: "Cesar Ferando Silva",
+    teamname: "Dawgu FC",
+    position: "FW",
+    uniformNumber: 11,
+    weight: 74,
+    height: 177,
+    birthday: "1989-11-29",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FbLdVi7%2FbtqxZqM1YTC%2Fgtgh0BT43hBJGFM9EID3MK%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 24,
+    playername: "Cho Woo Hyeon",
+    teamname: "Dawgu FC",
+    position: "MF",
+    uniformNumber: 43,
+    weight: 76,
+    height: 181,
+    birthday: "2000-05-01",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FXBo2o%2FbtqxZSWSoGj%2Fi9AaWGRGnh8I5hLvXWy061%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 25,
+    playername: "Rildo De Andrade",
+    teamname: "Dawgu FC",
+    position: "FW",
+    uniformNumber: 7,
+    weight: 68,
+    height: 180,
+    birthday: "1989-03-20",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fb4mCCc%2Fbtqx1zh0go6%2FVcshcw2g1MSO4qCwTIOf21%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 26,
+    playername: "Han Chan Hee",
+    teamname: "Jeonnam Dragons",
+    position: "MF",
+    uniformNumber: 16,
+    weight: 75,
+    height: 181,
+    birthday: "1997-03-17",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FnD0vv%2FbtqxXbXAVK7%2F0Qzlzh5VYIb8HPNMIuM8pK%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 27,
+    playername: "Kim Young Uk",
+    teamname: "Jeonnam Dragons",
+    position: "MF",
+    uniformNumber: 14,
+    weight: 70,
+    height: 177,
+    birthday: "1991-04-29",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2F1gZc1%2FbtqxZThbwmb%2FERlQC37jUzRszsJFjmIq61%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 28,
+    playername: "Kim Geon Woong",
+    teamname: "Jeonnam Dragons",
+    position: "MF",
+    uniformNumber: 4,
+    weight: 81,
+    height: 185,
+    birthday: "1997-08-29",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fmnd5O%2FbtqxX8F60Va%2F0kTd8KuukuwoCXD9OvJWD0%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 29,
+    playername: "Yoonn Jong Gyu",
+    teamname: "FC Seoul",
+    position: "DF",
+    uniformNumber: 23,
+    weight: 65,
+    height: 173,
+    birthday: "1998-03-20",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FNLv1x%2Fbtqx0sDCnlh%2F0BwxVDzJovW9bYX9JPqdRk%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 30,
+    playername: "Jung Seung Yong",
+    teamname: "Gangwon FC",
+    position: "DF",
+    uniformNumber: 22,
+    weight: 83,
+    height: 182,
+    birthday: "1991-03-25",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FbiteR1%2FbtqxXaYGn5g%2F43o1GHpvRuYjN1gUiLoCB1%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 31,
+    playername: "Lee Jae Sung",
+    teamname: "Incheon United FC",
+    position: "DF",
+    uniformNumber: 15,
+    weight: 81,
+    height: 187,
+    birthday: "1988-07-05",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    //수정 9번
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FCYYZc%2FbtqxZR4NpHV%2FIEqnqq0TxfTZkyKZGj9in1%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 32,
+    playername: "Kim Ji Hun",
+    teamname: "Daejeon Citizen",
+    position: "DF",
+    uniformNumber: 26,
+    weight: 68,
+    height: 177,
+    birthday: "2000-06-26",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fcw2jPP%2Fbtqx0sKnnid%2Fcyx5mN5b7ZttwzhDNOF5DK%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 33,
+    playername: "Im Chan Wool",
+    teamname: "Jeju United FC",
+    position: "FW",
+    uniformNumber: 19,
+    weight: 71,
+    height: 176,
+    birthday: "1994-07-14",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2Fz0UP1%2Fbtqx0sKnnpz%2Fr4cqRE9FmkewguQcmaVmpK%2Fimg.jpg",
+    event: ""
+  },
+  {
+    id: 34,
+    playername: "Gwon Wan Kyu",
+    teamname: "Sangju Sangmu FC",
+    position: "DF",
+    uniformNumber: 12,
+    weight: 82,
+    height: 183,
+    birthday: "1991-11-20",
+    firstOwner: "0",
+    currentOwner: "",
+    price: 700,
+    url:
+      "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FzYV4L%2FbtqxZRXWK6b%2Fny6tKuHqfyoP7gWwiTKx0K%2Fimg.jpg",
+    event: ""
+  }
+];
+
+export default cards;
