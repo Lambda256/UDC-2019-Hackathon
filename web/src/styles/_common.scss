@@ -159,6 +159,12 @@ a {
   }
 }
 
+.simple-loading {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+}
+
 .circular-loading {
   position: absolute;
   z-index: 99999;
@@ -173,8 +179,8 @@ a {
   color: #fff;
 }
 
-.intime-letter{
-  font-family: 'Roboto Mono', monospace;
+.intime-letter {
+  font-family: "Roboto Mono", monospace;
   color: #fff;
   font-size: 32px;
   width: 32px;
@@ -195,4 +201,10 @@ select:-webkit-autofill:focus {
   -webkit-text-fill-color: white;
   -webkit-box-shadow: 0 0 0px 1000px #232323 inset;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+.ant-popover-inner{
+  // background-color: #232323 !important;
+  // border: solid 1px #ee0804 !important;
+  // color: #fff !important;
 }
