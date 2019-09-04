@@ -7,16 +7,20 @@ import HomeTab from "./HomeTab";
 import AppContext from "contexts/AppContext";
 import HomeContext from "contexts/HomeContext";
 import { scrollTop } from "utils/scroller";
-
 import { TAB_ALL } from "./HomeTab";
+import numeral from "numeral";
+
 
 const Home = props => {
   const [tabIndex, setTabIndex] = useState(TAB_ALL);
-  const { updateState } = useContext(AppContext);
+  const { setTimeSold } = useContext(AppContext);
   const { fetchingTokens, getTokens, tokens } = useContext(HomeContext);
   useEffect(() => {
     scrollTop();
-    getTokens();
+    getTokens(tokens => {
+      const totalHours = tokens.reduce((total, token) => total + numeral(token.purchase_count).value(), 0);
+      setTimeSold(totalHours);
+    });
   }, []);
   return (
     <div className="home">

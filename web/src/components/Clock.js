@@ -3,6 +3,7 @@ import { Affix } from "antd";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import AppContext from "contexts/AppContext";
+import HomeContext from "contexts/HomeContext";
 import { Power3, TweenMax, Elastic } from "gsap/all";
 import moment from "moment";
 import numeral from "numeral";
@@ -13,7 +14,10 @@ const select = function(s) {
 
 const Clock = props => {
   const { currentCampaign, timeSold, setTimeSold } = useContext(AppContext);
+  const { tokens } = useContext(HomeContext);
   const fadeIn = props.history.location.pathname.indexOf("/token") > -1;
+
+  let totalDonation = tokens.reduce((total, token) => total + numeral(token.total_donation).value(), 0);
 
   useEffect(() => {
     var xmlns = "http://www.w3.org/2000/svg",
@@ -388,7 +392,7 @@ const Clock = props => {
           have generated a donation fund of {" "}
           {currentCampaign
             ? numeral(currentCampaign.total_donation).format("$0,0.00")
-            : "$1,000,000.00"}
+            : numeral(totalDonation).format("$0,0.00")}
         </text>
       </svg>
 

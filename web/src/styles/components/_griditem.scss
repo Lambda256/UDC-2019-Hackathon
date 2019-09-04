@@ -10,6 +10,28 @@
   min-height: 474px;
   border: solid 0.5px #4f4f4f;
 
+  .red-line-container {
+    position: absolute;
+    right: 5px;
+    bottom: 20px;
+  }
+
+  .red-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    color: #ee0804;
+    font-size:10px;
+    margin-bottom: 8px;
+  }
+
+  .red-line {
+    width: 2px;
+    max-height: 350px;
+    bottom: 0;
+    margin-left: 5px;
+    background-color: #ee0804;
+  }
+
   .hover-layer {
     position: absolute;
     top: 0;

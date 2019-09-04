@@ -6,7 +6,7 @@ const { Provider, Consumer } = AppContext;
 
 class AppProvider extends Component {
   state = {
-    timeSold: 10,
+    timeSold: 0,
     updatingTime: false,
     currentCampaign: null
   };
