@@ -4,7 +4,7 @@ import moment from "moment";
 import numeral from "numeral";
 import * as d3 from "d3";
 
-var margin = { top: 40, right: 20, bottom: 30, left: 30 };
+var margin = { top: 40, right: 20, bottom: 30, left: 50 };
 
 const Chart = props => {
   const { width, height, showAxis, graphData } = props;
@@ -14,25 +14,24 @@ const Chart = props => {
     // append the svg object to the body of the page
     if (graphData) {
       console.log("DATA", graphData);
-      const generateGraph = async () => {
-        const data = Object.assign(
-          (await d3.csv(
-            "https://gist.githubusercontent.com/mbostock/14613fb82f32f40119009c94f5a46d72/raw/d0d70ffb7b749714e4ba1dece761f6502b2bdea2/aapl.csv",
-            d3.autoType
-          ))
-            .map(({ date, close }) => ({ date, value: close, label: "hello" }))
-        );
+      // const generateGraph = async () => {
+      // const data = Object.assign(
+      //   (await d3.csv(
+      //     "https://gist.githubusercontent.com/mbostock/14613fb82f32f40119009c94f5a46d72/raw/d0d70ffb7b749714e4ba1dece761f6502b2bdea2/aapl.csv",
+      //     d3.autoType
+      //   ))
+      //       // .filter((item, index) => index < 80)
+      //       .map(({ date, close }) => ({ date, value: close, label: "hello" }))
+      //   );
 
-        // const generateGraph = () => {
-        //   const data = Object.assign(graphData, d3.autoType).map(
-        //     ({ price, updated_at }, index) => ({
-        //       date: moment(updated_at)
-        //         .add(index, "day")
-        //         .format("YYYY-MM-DD"),
-        //       value: numeral(price).value(),
-        //       label: "hello"
-        //     })
-        //   );
+      const generateGraph = () => {
+        const data = Object.assign(graphData, d3.autoType).map(
+          ({ price, updated_at }, index) => ({
+            date: moment(updated_at),
+            value: numeral(price).value(),
+            label: "hello"
+          })
+        );
 
         console.log("data format", data);
         const x = d3
@@ -45,7 +44,8 @@ const Chart = props => {
           .domain([0, d3.max(data, d => d.value)])
           // .domain([0, 260])
           .nice()
-          .range([height - margin.bottom, margin.top]);
+          .range([height - margin.bottom, 0]);
+          // .range([height - margin.bottom, 0]);
 
         var initialarea = d3
           .area()
@@ -208,7 +208,7 @@ const Chart = props => {
 Chart.propTypes = {};
 
 Chart.defaultProps = {
-  width: window.innerWidth * 3,
+  width: window.innerWidth * 2,
   height: 350 - margin.bottom,
   showAxis: true
 };

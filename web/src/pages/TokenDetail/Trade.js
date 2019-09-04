@@ -21,7 +21,7 @@ const Trade = props => {
         Trade {symbol} Token
       </div>
       <div className="graph">
-        {fetchingHistory ? <SimpleProgress/> : <Chart graphData={graphData}/>}
+        {fetchingHistory ? <SimpleProgress/> : <Chart graphData={graphData} />}
       </div>
       <div className="card-container">
         <BuySell />
