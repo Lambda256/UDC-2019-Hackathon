@@ -1,14 +1,19 @@
-import React, { useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import AppContext from "contexts/AppContext";
 import TokenContext from "contexts/TokenContext";
 import AuthContext from "contexts/AuthContext";
-import { Icon, Input, Button } from "antd";
+import { Icon, Input, Button, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import SimpleProgress from "components/SimpleProgress";
+import numeral from "numeral";
 import _ from "lodash";
 
 const RowItem = props => {
-  const { price, token, percent, lastChild } = props;
+  const { price, percent, amount, current_price, lastChild } = props;
+
+  const temp = numeral(current_price).value();
+  const diff = (numeral(price).value() - temp) / temp;
+
   return (
     <div className={`row-space-between row-item ${lastChild && "last"}`}>
       <div className="text-grey">
@@ -18,27 +23,29 @@ const RowItem = props => {
             style={{ color: "white", fontSize: 10, marginRight: 8 }}
           />
         )}
-        ${parseFloat(price).toFixed(2)}
+        {numeral(price).format("$0,0.00")}
       </div>
-      <div className="text-grey">{token}</div>
+      <div className="text-grey">{amount}</div>
       <div
         className={`text-grey percent ${percent < 0 ? "negative" : "positive"}`}
       >
-        {parseFloat(percent).toFixed(2)}%
+        {numeral(diff).format("0,0.00%")}
       </div>
     </div>
   );
 };
 
 const Sell = props => {
+  const [inputPrice, setPrice] = useState("");
+  const [inputAmount, setAmount] = useState("");
   const { currentCampaign } = useContext(AppContext);
   const { getWallet, fetchingWallet, wallet } = useContext(AuthContext);
-  const { symbol } = currentCampaign;
+  const { selling, sellToken, orders } = useContext(TokenContext);
+  const { id, symbol } = currentCampaign;
 
   useEffect(() => {
     getWallet();
-  }, [currentCampaign, getWallet]);
-
+  }, [currentCampaign, getWallet, orders]);
 
   if (fetchingWallet)
     return (
@@ -47,10 +54,10 @@ const Sell = props => {
       </div>
     );
 
-  let currentTokenBalance = wallet && _.find(wallet.my_tokens, [
-    "private_token_id",
-    currentCampaign.id
-  ]);
+  let currentTokenBalance =
+    wallet &&
+    _.find(wallet.my_tokens, ["private_token_id", currentCampaign.id]);
+
   return (
     <div className="medium-card input-container">
       <div className="card-header buy-sell-header text-grey uppercase">
@@ -63,13 +70,51 @@ const Sell = props => {
       </div>
 
       <div className="sell-input-container row-align-center">
-        <Input placeholder="Input Price" />
-        <Input className="quantity-input" placeholder="Quantity" />
+        <Input
+          placeholder="Input Price"
+          prefix={<span className="text-white">$</span>}
+          value={inputPrice}
+          onChange={e => setPrice(e.target.value)}
+        />
+        <Input
+          className="quantity-input"
+          placeholder="Quantity"
+          value={inputAmount}
+          onChange={e => setAmount(e.target.value)}
+        />
         <div className="up-down-container">
-          <Icon type="up" className="up-down-button" />
-          <Icon type="down" className="up-down-button" />
+          <Icon
+            type="up"
+            className="up-down-button"
+            onClick={() =>
+              setAmount(
+                Math.min(currentTokenBalance.balance, inputAmount + 0.1)
+              )
+            }
+          />
+          <Icon
+            type="down"
+            className="up-down-button"
+            onClick={() => setAmount(Math.max(0, inputAmount - 0.1))}
+          />
         </div>
-        <Button className="sell-button">SELL</Button>
+
+        <Popconfirm
+          disabled={selling}
+          className="popover"
+          placement="bottom"
+          title={`Are you sure you want to sell ${numeral(inputAmount).format(
+            "0,0.00"
+          )} ${symbol} for ${numeral(
+            numeral(inputAmount).value() * numeral(inputPrice).value()
+          ).format("$0,0.00")}？`}
+          icon={<Icon type="question-circle-o" style={{ color: "#ee0804" }} />}
+          onConfirm={() => sellToken(id, inputPrice, inputAmount)}
+        >
+          <Button className="sell-button">
+            {selling ? <Icon type="loading" /> : "SELL"}
+          </Button>
+        </Popconfirm>
       </div>
     </div>
   );
@@ -77,19 +122,14 @@ const Sell = props => {
 
 const BuySell = props => {
   const { currentCampaign } = useContext(AppContext);
-  const { orders, getOrders, fetchingOrders } = useContext(TokenContext);
+  const { buying, orders, getOrders, fetchingOrders, takeToken } = useContext(
+    TokenContext
+  );
 
+  const { id, symbol, current_price } = currentCampaign;
   useEffect(() => {
-    getOrders(currentCampaign.id);
+    getOrders(id);
   }, []);
-
-  const dummyData = _.range(0, 10).map((item, index) => {
-    return {
-      price: _.random(0, 50),
-      token: _.random(1, 10),
-      percent: _.random(-100, 100)
-    };
-  });
 
   if (fetchingOrders) {
     return (
@@ -99,12 +139,13 @@ const BuySell = props => {
     );
   }
 
+  const lastItem = orders[orders.length - 1];
   return (
     <div className="medium-card buy-sell-container">
       <div className="card-header buy-sell-header text-grey uppercase">Buy</div>
       <div className="row-space-between buy-sell-row">
         <b className="text-grey">Price</b>
-        <b className="text-grey">EMI</b>
+        <b className="text-grey">{symbol}</b>
         <b className="text-grey percent">% to the current price</b>
       </div>
 
@@ -112,7 +153,8 @@ const BuySell = props => {
         return (
           <RowItem
             key={index}
-            lastChild={index === dummyData.length - 1}
+            lastChild={index === orders.length - 1}
+            current_price={current_price}
             {...item}
           />
         );
@@ -127,13 +169,33 @@ const BuySell = props => {
               Total
             </div>
             <div className="text-grey">
-              7 <span>EMI</span> x $30.00
+              {numeral(lastItem.amount).format("0.00")} <span>{symbol}</span> x
+              ${numeral(lastItem.price).format("0,0.00")}
             </div>
             <div className="current-token text-white">
-              210.00<span> USD</span>
+              {numeral(
+                numeral(lastItem.amount).value() *
+                  numeral(lastItem.price).value()
+              ).format("0,0.00")}
+              <span> USD</span>
             </div>
           </div>
-          <Button className="buy-button">BUY</Button>
+          <Popconfirm
+            disabled={buying}
+            className="popover"
+            placement="bottom"
+            title={`Are you sure you want to buy 1 ${symbol} for ${numeral(
+              numeral(lastItem.amount).value() * numeral(lastItem.price).value()
+            ).format("$0,0.00")}？`}
+            icon={
+              <Icon type="question-circle-o" style={{ color: "#ee0804" }} />
+            }
+            onConfirm={() => takeToken(id, lastItem.id)}
+          >
+            <Button className="buy-button">
+              {buying ? <Icon type="loading" /> : "BUY"}
+            </Button>
+          </Popconfirm>
         </>
       )}
 

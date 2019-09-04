@@ -25,6 +25,7 @@ const WalletRow = props => {
     user,
     current_price,
     profile_picture,
+    loading,
     symbol,
     onClick
   } = props;
@@ -54,6 +55,7 @@ const WalletRow = props => {
         <div className="flex-action">
           <Button
             onClick={() => {
+              if (loading) return;
               if (type === "main") {
                 onClick();
                 return;
@@ -61,7 +63,13 @@ const WalletRow = props => {
               setCollapsed(false);
             }}
           >
-            {type === "main" ? "Recharge" : "Redeem"}
+            {loading ? (
+              <Icon type="loading" />
+            ) : type === "main" ? (
+              "Recharge"
+            ) : (
+              "Redeem"
+            )}
           </Button>
         </div>
       </div>
@@ -158,7 +166,8 @@ const Wallet = props => {
     fetchingWallet,
     getWallet,
     recharge,
-    redeem
+    redeem,
+    recharging
   } = useContext(AuthContext);
   useEffect(() => {
     getWallet();
@@ -207,6 +216,7 @@ const Wallet = props => {
             current_price={1}
             symbol="HOUR"
             onClick={recharge}
+            loading={recharging}
             name="Intime Main Token"
             profile_picture={hourToken}
           />

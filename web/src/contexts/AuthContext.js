@@ -13,7 +13,8 @@ class AuthProvider extends Component {
     user: null,
     authenticating: false,
     wallet: null,
-    fetchingWallet: false
+    fetchingWallet: false,
+    recharging: false
   };
 
   componentWillMount() {
@@ -67,10 +68,11 @@ class AuthProvider extends Component {
   };
 
   recharge = async () => {
-    const { wallet } = this.state;
+    const { wallet, recharging } = this.state;
+    if (recharging) return;
     console.log("recharging!");
     try {
-      await this.setState({ fetchingWallet: true });
+      await this.setState({ recharging: true });
       const result = await api.patch("/users/recharge.json", {}, true);
       const walletClone = _.clone(wallet);
       walletClone.hour_balance = result.hour_balance;
@@ -79,7 +81,7 @@ class AuthProvider extends Component {
     } catch (e) {
       handleErrorMessage(e);
     } finally {
-      await this.setState({ fetchingWallet: false });
+      await this.setState({ recharging: false });
     }
   };
 

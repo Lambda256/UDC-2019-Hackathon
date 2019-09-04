@@ -21,8 +21,6 @@ export default function Accept(props) {
     }
   });
 
-  console.log(image);
-
   return (
     <div className="container">
       <div {...getRootProps({ className: "dropzone" })}>

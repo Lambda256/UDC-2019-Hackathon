@@ -2,27 +2,19 @@ import React, { Component } from "react";
 import api from "utils/api";
 import { notification } from "antd";
 import { handleErrorMessage } from "utils/errorMessage";
+import _ from "lodash";
 
 const TokenContext = React.createContext();
 const { Provider, Consumer } = TokenContext;
 
 class TokenProvider extends Component {
   state = {
-    symbol: "",
-    initial_price: 0,
-    charity: "",
-    biography: "",
-    social_links: [],
-    tokens: [],
     orders: [],
     fetchingOrders: false,
-    holders: []
+    holders: [],
+    buying: false,
+    selling: false,
   };
-
-  async componentDidMount() {
-    // await this.getTokens();
-    console.log("tokens", this.state.tokens);
-  }
 
   createToken = async () => {
     const {
@@ -75,7 +67,7 @@ class TokenProvider extends Component {
       await this.setState({ fetchingOrders: true });
       const orders = await api.get("/orders.json", { private_token_id }, true);
       console.log("orders", orders);
-      this.setState({ orders });
+      this.setState({ orders: _.reverse(orders) });
     } catch (e) {
       handleErrorMessage(e);
     } finally {
@@ -95,6 +87,42 @@ class TokenProvider extends Component {
     }
   };
 
+  takeToken = async (private_token_id, take_id) => {
+    const { orders, buying } = this.state;
+    if(buying) return;
+    try {
+      await this.setState({buying: true});
+      await api.patch(`/orders/${take_id}/take.json`, {}, true);
+      notification["success"]({ message: "Buy order successfully taken." });
+      const ordersClone = _.clone(orders);
+      ordersClone.pop();
+      this.setState({ orders: ordersClone });
+    } catch (e) {
+      handleErrorMessage(e);
+    } finally {
+      await this.setState({buying: false});
+    }
+  };
+
+  sellToken = async (private_token_id, price, amount) => {
+    const { orders, selling } = this.state;
+    if(selling) return;
+    try {
+      const form = {order: {private_token_id, price, amount}};
+      await this.setState({selling: true});
+      const result = await api.post(`/orders`, form, true);
+      notification["success"]({ message: "Sell order successfully posted." });
+      const ordersClone = _.clone(orders);
+      ordersClone.push(result);
+      _.sortBy(ordersClone, ['price']);
+      this.setState({ orders: ordersClone });
+    } catch (e) {
+      handleErrorMessage(e);
+    } finally {
+      await this.setState({selling: false});
+    }
+  }; 
+
   updateState = (key, value) => {
     this.setState({ [key]: value });
   };
@@ -105,7 +133,9 @@ class TokenProvider extends Component {
         value={{
           ...this.state,
           getOrders: this.getOrders,
-          buyToken: this.buyToken
+          buyToken: this.buyToken,
+          sellToken: this.sellToken,
+          takeToken: this.takeToken
         }}
       >
         {this.props.children}
