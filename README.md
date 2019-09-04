@@ -1,5 +1,7 @@
 # 스마트 공유 모빌리티 서비스, 타고벌자
 
+![title](https://github.com/eric-yoo/mobicrypt/blob/master/images/phone.png)
+
 * Team VMO
 
 ## Prerequisites
@@ -24,6 +26,8 @@ pip3 install -r requirements.txt
 
 ### FL (Federated Learning)
 
+![PPDL](https://github.com/eric-yoo/mobicrypt/blob/master/images/PPDL.png)
+
 모빌리티 예측 모델을 탈중앙화된 환경에서 학습하고 수행할 수 있는, 탈중앙하된 인공신경망 모델입니다. FL 참여자들은 서로 데이터를 공개하지 않고 공통의 인공 신경망 모델을 학습시킬 수 있습니다(Privacy Preserving Deep Learning, PPDL).
 
 현재 예측 모델은 tensorflow 기반의 간단한 인공 신경망으로 설계되어 있습니다.
@@ -44,7 +48,7 @@ pip3 install -r requirements.txt
 python FL/main.py --nodes=5 --round=1000 --globalSet=10000 --preTrain=-1
 ```
 
-### inference
+### Inference
 
 스마트 컨트랙트에 등록된 inference 요청을 수집, 수행하고 결과를 스마트 컨트랙트에 등록합니다.
 
@@ -54,7 +58,7 @@ python FL/main.py --nodes=5 --round=1000 --globalSet=10000 --preTrain=-1
 python inference/inferencer.py
 ```
 
-### relay
+### Relay
 
 FL을 위한 블록체인과 루니버스 사이드체인 간 relay를 위한 모듈입니다.
 
@@ -65,6 +69,10 @@ python relay/relayer.py
 ```
 
 ### Simulation
+
+![simul](https://github.com/eric-yoo/mobicrypt/blob/master/images/simul.png)
+
+시뮬레이션을 통해 합리적인 대여요금 및 인센티브 제도를 찾습니다.
 
 - `agent.py`: 시뮬레이션에 참여하는 사용자(user)를 정의합니다.
 
