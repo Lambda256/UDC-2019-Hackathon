@@ -194,7 +194,7 @@ Chart.propTypes = {};
 
 Chart.defaultProps = {
   width: window.innerWidth * 3,
-  height: 500 - margin.bottom,
+  height: 350 - margin.bottom,
   showAxis: true
 };
 
