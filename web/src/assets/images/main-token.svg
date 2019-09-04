@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 51 51">
+    <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+        <circle cx="24.576" cy="24.576" r="24.576" fill="#232323" stroke="#A6A7A8"/>
+        <g transform="translate(7.488 3.168)">
+            <text fill="#D8D8D8" font-family="RobotoMono-Regular, Roboto Mono" font-size="34.56">
+                <tspan x=".536" y="32">t</tspan>
+            </text>
+            <circle cx="26.707" cy="17.184" r="3.456" fill="#EE0804"/>
+            <circle cx="26.707" cy="28.934" r="3.456" fill="#EE0804"/>
+        </g>
+    </g>
+</svg>

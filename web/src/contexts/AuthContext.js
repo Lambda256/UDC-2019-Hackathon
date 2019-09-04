@@ -94,7 +94,7 @@ class AuthProvider extends Component {
       await this.setState({ fetchingWallet: true });
       const wallet = await api.get("/users/my_wallet.json", {}, true);
       console.log("wallet", wallet);
-      this.setState({ wallet });
+      await this.setState({ wallet });
     } catch (e) {
       handleErrorMessage(e);
     } finally {

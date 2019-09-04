@@ -1,59 +1,68 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-const TAB_POLITICS = "politics";
-const TAB_ECONOMICS = "economics";
-const TAB_TECHNOLOGY = "technology";
-const TAB_JOURNALISM = "journalism";
-const TAB_ENTERTAINMENT = "entertainment";
+export const TAB_ALL = "all";
+export const TAB_POLITICS = "politics";
+export const TAB_ECONOMICS = "economics";
+export const TAB_TECHNOLOGY = "technology";
+export const TAB_JOURNALISM = "journalism";
+export const TAB_ENTERTAINMENT = "entertainment";
+export const TAB_BUSINESS = "business";
+export const TAB_SPORT = "sport";
 
 const HomeTab = props => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const {tabIndex, setTabIndex} = props;
   return (
     <div className="home-tab">
       Buy the hours or leaders
       <br />
       whose time value is donated to change the world
       <div className="tabs">
+         <div
+          className={`tab-item hover-link ${tabIndex === TAB_ALL && "selected"}`}
+          onClick={() => setTabIndex(TAB_ALL)}
+        >
+          All
+        </div>
         <div
-          className={`tab-item hover-link ${tabIndex === 0 && "selected"}`}
-          onClick={() => setTabIndex(0)}
+          className={`tab-item hover-link ${tabIndex === TAB_POLITICS && "selected"}`}
+          onClick={() => setTabIndex(TAB_POLITICS)}
         >
           Politics
         </div>
         <div
-          className={`tab-item hover-link ${tabIndex === 1 && "selected"}`}
-          onClick={() => setTabIndex(1)}
+          className={`tab-item hover-link ${tabIndex === TAB_ECONOMICS && "selected"}`}
+          onClick={() => setTabIndex(TAB_ECONOMICS)}
         >
           Economics
         </div>
         <div
-          className={`tab-item hover-link ${tabIndex === 2 && "selected"}`}
-          onClick={() => setTabIndex(2)}
+          className={`tab-item hover-link ${tabIndex === TAB_TECHNOLOGY && "selected"}`}
+          onClick={() => setTabIndex(TAB_TECHNOLOGY)}
         >
           Technology
         </div>
         <div
-          className={`tab-item hover-link ${tabIndex === 3 && "selected"}`}
-          onClick={() => setTabIndex(3)}
+          className={`tab-item hover-link ${tabIndex === TAB_JOURNALISM && "selected"}`}
+          onClick={() => setTabIndex(TAB_JOURNALISM)}
         >
           Journalism
         </div>
         <div
-          className={`tab-item hover-link ${tabIndex === 4 && "selected"}`}
-          onClick={() => setTabIndex(4)}
+          className={`tab-item hover-link ${tabIndex === TAB_ENTERTAINMENT && "selected"}`}
+          onClick={() => setTabIndex(TAB_ENTERTAINMENT)}
         >
           Entertainment
         </div>
         <div
-          className={`tab-item hover-link ${tabIndex === 5 && "selected"}`}
-          onClick={() => setTabIndex(5)}
+          className={`tab-item hover-link ${tabIndex === TAB_BUSINESS && "selected"}`}
+          onClick={() => setTabIndex(TAB_BUSINESS)}
         >
           Business
         </div>
         <div
-          className={`tab-item hover-link ${tabIndex === 6 && "selected"}`}
-          onClick={() => setTabIndex(6)}
+          className={`tab-item hover-link ${tabIndex === TAB_SPORT && "selected"}`}
+          onClick={() => setTabIndex(TAB_SPORT)}
         >
           Sports
         </div>

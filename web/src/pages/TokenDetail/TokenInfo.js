@@ -6,7 +6,6 @@ import TokenContext from "contexts/TokenContext";
 import LineChart from "./LineChart";
 import wwf from "assets/images/wwf.svg";
 import numeral from "numeral";
-import { scrollBottom } from "utils/scroller";
 
 const TokenInfo = props => {
   const { currentCampaign } = useContext(AppContext);
@@ -34,7 +33,7 @@ const TokenInfo = props => {
             current_price
           ).format("$0,0.00")}？`}
           icon={<Icon type="question-circle-o" style={{ color: "#ee0804" }} />}
-          onConfirm={() => buyToken(id)}
+          onConfirm={() => buyToken(id, symbol)}
         >
           <Button className="buy-token" onClick={() => {
             if(!user) notification["error"]({message: "You need to be logged in to complete this action."})

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="51px" height="51px" viewBox="0 0 51 51" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 57.1 (101010) - https://sketch.com -->
+    <title>37F5E1DE-1402-47AC-9910-663CB6BEA262</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="main" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="wallet" transform="translate(-359.000000, -1407.000000)" stroke="#A6A7A8">
+            <g id="Group-Copy" transform="translate(320.000000, 1402.000000)">
+                <g id="purchased-copy" transform="translate(40.000000, 6.000000)">
+                    <circle id="Oval" cx="24.5" cy="24.5" r="24.5"></circle>
+                    <g id="Group-8" transform="translate(8.000000, 8.000000)" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22,10.99945 C28.0751322,10.99945 33,15.9243178 33,21.99945 C33,28.0745822 28.0751322,32.99945 22,32.99945 C15.9248678,32.99945 11,28.0745822 11,21.99945" id="Path"></path>
+                        <circle id="Oval" cx="11" cy="11" r="11"></circle>
+                        <path d="M13.72195,8.24945 C13.4970526,6.92655017 12.35123,5.95845554 11.00935,5.9576 C9.49025,5.9576 8.25935,6.9597 8.25935,8.47825 C8.25935,9.9968 9.63435,10.68485 11.00935,10.99945 C12.38435,11.31405 13.75935,12.00155 13.75935,13.52065 C13.75935,15.03975 12.52845,16.04185 11.00935,16.04185 C9.49056694,16.04185 8.25935,14.8106331 8.25935,13.29185" id="Path"></path>
+                        <path d="M11.0099,5.95705 L11.0099,4.4 M11.0099,17.5989 L11.0099,16.0413" id="Shape"></path>
+                        <path d="M22,28.5989 L22,27.0402" id="Path"></path>
+                        <path d="M19.25,24.2902 C19.25,25.8089831 20.4812169,27.0402 22,27.0402 C23.5191,27.0402 24.75,26.0381 24.75,24.5201 C24.75,23.0021 23.375,22.30855 22,21.99945 C21.4420946,21.8828802 20.9061723,21.6786839 20.41215,21.39445" id="Path"></path>
+                        <path d="M24.7115,19.24945 C24.6102376,18.6506462 24.3133375,18.1022996 23.86725,17.6902" id="Path"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

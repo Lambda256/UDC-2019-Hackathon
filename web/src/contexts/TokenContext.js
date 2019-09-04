@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import api from "utils/api";
+import { notification } from "antd";
 import { handleErrorMessage } from "utils/errorMessage";
 
 const TokenContext = React.createContext();
@@ -46,22 +47,25 @@ class TokenProvider extends Component {
     }
   };
 
-  buyToken = async id => {
+  buyToken = async (id, symbol) => {
     const { buyingToken } = this.state;
     if (buyingToken) return;
 
     try {
-      this.setState({ buyingToken: true });
+      await this.setState({ buyingToken: true });
       const privateTokens = await api.post(
         `/private_tokens/${id}/buy.json`,
         {},
         true
       );
-      this.setState({ privateTokens });
+      notification["success"]({
+        message: `1 ${symbol} successfully purchased!`
+      });
+      await this.setState({ privateTokens });
     } catch (e) {
       handleErrorMessage(e);
     } finally {
-      this.setState({ buyingToken: false });
+      await this.setState({ buyingToken: false });
     }
   };
 

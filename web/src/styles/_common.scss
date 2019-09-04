@@ -119,6 +119,9 @@ a {
   color: $text_black;
 }
 
+.text-dark-grey {
+  color: $text_dark;
+}
 .text-grey {
   color: $text_grey;
 }
@@ -154,7 +157,7 @@ a {
 .hover-link {
   &:hover {
     cursor: pointer;
-    color: #ee0804;
+    color: #ee0804 !important;
     transition: color 0.5s;
   }
 }

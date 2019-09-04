@@ -8,7 +8,9 @@ import userFace from "assets/images/user-face.svg";
 
 const Header = props => {
   const { user } = useContext(AuthContext);
-  const tokenPage = props.history.location.pathname.includes("/token");
+  const tokenPage =
+    props.history.location.pathname.includes("/token") ||
+    props.history.location.pathname.indexOf("/wallet") > -1;
   const hideJoin = props.history.location.pathname.includes("/transactions");
   return (
     <div className={`header ${tokenPage && "fullscreen"}`}>
@@ -18,10 +20,12 @@ const Header = props => {
       {!hideJoin && (
         <>
           {user ? (
-            <div className="header-name row-align-center hover-link">
-              <img src={user.profile_picture || userFace} alt="" />
-              <div className="text-grey uppercase">{user.name}</div>
-            </div>
+            <Link to="/wallet">
+              <div className="header-name row-align-center hover-link">
+                <img src={user.profile_picture || userFace} alt="" />
+                <div className="text-grey uppercase">{user.name}</div>
+              </div>
+            </Link>
           ) : (
             <Link to="/login">
               <Button>JOIN</Button>
