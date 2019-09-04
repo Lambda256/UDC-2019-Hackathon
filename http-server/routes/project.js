@@ -1,29 +1,15 @@
 const { luniGet, luniPost, recoverOutputs, toStructArray } = require('../core/helper.js');
-const boxAbi = require('../abi/GiveBox.json').abi;
-const auth   = require('../core/auth.js');
-
+const boxAbi  = require('../abi/GiveBox.json').abi;
+const auth    = require('../core/auth.js');
+const { web3 } = require('../core/track.js')
+const config = require('../config.json');
 module.exports = router = require('express').Router()
-
-let database = {
-	'1' : {
-		goal: 400,
-		funding: 210,
-		target_day: '2019-12-25',
-		troopers: 2,
-		select: '0',
-		content: '',
-		supporters: [
-			{ id:1, name: '정기영', isTrooper: true, appliedTrooper:true, funding: 50, date: Date.now(), txid: '0x0000000', status: ''},
-			{ id:2, name: '이혜림', isTrooper: false, appliedTrooper:false, funding: 40, date: Date.now(), txid: '0x0000000', status: ''}
-		]
-	}
-}
 
 router.get('/:id', (req, res, next)=>{
 
 	let projectId = String(req.params.id)
 
-	luniPost("/transactions/test_getProject_v1", { inputs: { projectId: 0 }})
+	luniPost("/transactions/test_getProject_v1", { inputs: { projectId: projectId }})
 	.then(r => {
 
 		res.json( recoverOutputs(boxAbi, "getProject", r.data.data.res) )
@@ -42,7 +28,7 @@ router.get('/:id/backers', (req, res, next)=>{
 	luniPost("/transactions/test_getBackers_v1", { inputs: { projectId: projectId }})
 	.then(r => {
 
-		let data = toStructArray(['$id', '$amount', '$date', '$txid', 'applyTrooper', 'isTrooper', '*name'],  r.data.data.res)
+		let data = toStructArray(['$id', '$amount', '$date', '$blockNumber', 'applyTrooper', 'isTrooper', '*name'],  r.data.data.res)
 
 		return res.json(data)
 	})
@@ -51,6 +37,44 @@ router.get('/:id/backers', (req, res, next)=>{
 	})
 
 })
+
+router.get('/:id/content', (req, res, next)=>{
+
+	let projectId = String(req.params.id)
+
+	luniPost("/transactions/test_getProjCon_v1", { inputs: { projectId: projectId }})
+	.then(r => {
+		
+		return res.json({content:r.data.data})
+	})
+	.catch(err => {
+		res.status(500).json({ success:false, message: err.message })
+	})
+
+})
+
+router.post('/:id/content', (req, res, next)=>{
+
+	let projectId = req.params.id;
+
+	luniPost("/transactions/test_editProjCon_v1", { 		
+		from: config.adminAddr,
+		inputs: { 
+			projectId: projectId,
+			title: req.body.title,
+			content: req.body.content,
+		}
+	}).then(r => {
+		
+		return res.json({success:true})
+
+	}).catch(err => {
+
+		res.status(500).json({ success:false, message: err.message })
+	})
+
+})
+
 
 router.post('/:id/give', (req, res, next)=>{
 

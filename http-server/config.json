@@ -1,17 +1,18 @@
 {
 	"port"     : "8000",
-	"HOST"     : "https://api.luniverse.io/tx/v1.0",
-	"apiKey"   : "FyKWNfLb9pV2qgcW8fc14cswGNdHivRcbAjkYdkxARJVK66MX2kSVw55A445ddoJ",
-	"provider" : "http://baas-rpc.luniverse.io:8545?lChainId=5300575914426995782",
-	"adminKey" : "327cf45205cae9eb6a893fe872d5f952b065f2a29c1db088a369943b9d126136",
+	"HOST"     : "https://api.luniverse.net/tx/v1.0",
+	"apiKey"   : "vKdymzk5HL69AQkLMberpvTtqZkMP2R6nY4FSBYmYT9s8VdmV8dMztYAkpmViKnY",
+	"provider" : "http://baas-rpc.luniverse.net:8545?lChainId=8253766290815603891",
+	"adminKey" : "",
+	"adminAddr": "0x12c60cb9f9fdcb61eb45f04690635a43e33714cc",
 	"contracts": {
 		"GiveBox": {
 			"abiFile": "./abi/GiveBox.json",
-			"address": "0x0b15Bffb75dc8a2C854f5E51F1426764Cfb24c9c"
+			"address": "0xaC9E1B742bDC65FA3821324B9EE4E5FcB40522A2"
 		},
 		"GiveToken": {
 			"abiFile": "./abi/GiveToken.json",
-			"address": "0x67dF2F6557147D5Bf2D7181773Aaa18adEc0656a"
+			"address": "0x931c43A99ab557fEe73dE32fCEcf77eD1972c91F"
 		}
 	}
 }

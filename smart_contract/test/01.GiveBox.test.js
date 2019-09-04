@@ -181,7 +181,6 @@ contract('Give Box', function ([sender, user1, user2, hacker, hogoo]) {
             
     })
     
-
     // 리뷰 등록테스트
     // 프로젝트 클로징 등록 테스트 
     // 투표.
