@@ -1,0 +1,36 @@
+<div id="workplace-list">
+	<h3>근무지 정보</h3>
+	<div class="list">
+		<div class="mdc-data-table">
+		  <table class="mdc-data-table__table" aria-label="근무지 목록">
+		    <thead>
+		      <tr class="mdc-data-table__header-row">
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">No</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">근무지명</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">주소</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Longitude</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Altitude</th>
+		        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Use</th>
+		      </tr>
+		    </thead>
+		    <tbody class="mdc-data-table__content">
+		    {{#workPlaceList}}
+		    <tr class="mdc-data-table__row">
+		        <td class="mdc-data-table__cell">{{workCode}}</td>
+		        <td class="mdc-data-table__cell">{{workName}}</td>
+		        <td class="mdc-data-table__cell">{{workAddress}}</td>
+		        <td class="mdc-data-table__cell">{{longitude}}</td>
+		        <td class="mdc-data-table__cell">{{latitude}}</td>
+		        <td class="mdc-data-table__cell">{{workUseYn}}</td>
+		     </tr>
+		    {{/workPlaceList}}
+		    {{^workPlaceList}}
+		    <tr>
+		    No Work Place
+		    </tr>
+		    {{/workPlaceList}}
+		    </tbody>
+		  </table>
+		</div>
+	</div>
+</div>

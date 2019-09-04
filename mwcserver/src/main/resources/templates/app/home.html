@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<meta name="context-path" th:content="@{/}" />
+<!-- include css definitions -->
+<th:block th:include="app/include-css"></th:block>
+</head>
+<body class="skin-blue sidebar-mini sidebar-collapse" style="height: auto; min-height: 100%;">
+
+	<!-- include javascript libraries definitions -->
+	<th:block th:include="app/include-script"></th:block>
+	<!-- script -->
+	<th:block th:include="app/home-js"></th:block>
+	<script th:src="@{/js/qrcode.js}"></script>
+	
+	<!-- Site wrapper -->
+	<div class="wrapper" style="height: auto; min-height: 100%;">
+
+		<header class="main-header">
+			<!-- Logo -->
+			<a href="/" class="logo">
+		      <!-- mini logo for sidebar mini 50x50 pixels -->
+		      <span class="logo-mini"><b>M</b>WC</span>
+		      <!-- logo for regular state and mobile devices -->
+		      <span class="logo-lg"><b>My</b>WorkChain</span>
+		    </a>
+			<!-- Header Navbar: style can be found in header.less -->
+			<nav class="navbar navbar-static-top">
+				<!-- Sidebar toggle button-->
+				<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<div class="navbar-custom-menu">
+					<ul class="nav navbar-nav">
+						<li>
+							<a id="geo" target="_new" href="https://www.google.com/maps/search/?api=1&query=37.4406277,126.45739799999998" th:object="${user}">
+								<span id="geo-tooltip" data-toggle="tooltip" data-placement="bottom" th:attr="data-workplacecode=*{currentWorkplaceCode}" th:text="'위치 : ' + *{workPlaceName}">근무위치</span>
+							</a>
+						</li>
+						<li class="dropdown user user-menu">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<img th:src="@{/imgs/gabriel.jpeg}" class="user-image" alt="User Image">
+								<span class="hidden-xs">Gabriel</span>
+							</a>
+						</li>
+						<li class="dropdown messages-menu">
+							<a href="#" onclick="market_click()" class="dropdown-toggle" target="_blank">
+								<i class="fa fa-shopping-cart"></i>
+								<span class="label label-success">4</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<!-- =============================================== -->
+
+		<!-- Left side column. contains the sidebar -->
+		<aside class="main-sidebar">
+			<!-- sidebar: style can be found in sidebar.less -->
+			<section class="sidebar" style="height: auto;">
+				<!-- /.search form -->
+				<!-- sidebar menu: : style can be found in sidebar.less -->
+				<ul class="sidebar-menu tree" data-widget="tree">
+					<li class="header">MAIN NAVIGATION</li>
+					<li>
+						<a href="#" onclick="memu_click('calendar')">
+							<i class="fa fa-calendar"></i><span>캘린더</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" onclick="memu_click('work')">
+							<i class="fa fa-hourglass-2"></i><span>근무 기록 조회</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" onclick="memu_click('reward')">
+							<i class="fa fa-battery-4"></i><span>리워드 조회</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" onclick="memu_click('qrscan')">
+							<i class="fa fa-battery-4"></i><span>QR코드 스캔</span>
+						</a>
+					</li>
+				</ul>
+			</section>
+			<!-- /.sidebar -->
+		</aside>
+
+		<!-- =============================================== -->
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper" style="min-height: 901px;">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					캘린더<small>업무를 시작하고 종료하세요.</small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-calendar"></i> Home</a></li>
+					<li class="active">Calendar</li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+				<div id='calendar'></div>
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+		<footer class="main-footer">
+			<!-- <div class="pull-right hidden-xs">
+				<b>Version</b> 1.0.0
+			</div>
+			<strong>Copyright © 2019 <a href="http://bankwareglobal.com">BankwareGlobal FinLab</a>.
+			</strong> All rights reserved. -->
+			<img th:src="@{/imgs/avatar5.png}" class="user-image" alt="User Image">
+			<!--주52시간 progress bar-->
+		</footer>
+	</div>
+	<!-- ./wrapper -->
+	
+	<!-- 업무 시작/종료 Modal -->
+	<div class="modal modal-center fade" id="modal-commute" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-center" role="document">
+	    	<div class="modal-content">
+   		      	<div class="modal-header">
+				  	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				   	 	<span aria-hidden="true">&times;</span>
+				  	</button>
+				  	<h5 class="modal-title" id="modal-commute-date">Modal title</h5>
+				</div>
+	      		<div class="modal-body">
+				    <button id="start_work" type="button" class="btn btn-primary btn-lg btn-block">업무시작(GEO)</button>
+				    <button id="start_qr" type="button" class="btn btn-primary btn-lg btn-block">업무시작(QR)</button>
+				    <button id="end_work" type="button" class="btn btn-secondary btn-lg btn-block" disabled>업무종료(GEO)</button>
+				    <button id="end_qr" type="button" class="btn btn-secondary btn-lg btn-block" disabled>업무종료(QR)</button>
+	      		</div>
+	      		<div class="modal-footer">
+	       		 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+
+	<!-- 업무 상세 Modal -->
+	<div class="modal modal-center fade" id="modal-commute-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-center" role="document">
+	    	<div class="modal-content">
+   		      	<div class="modal-header">
+				  	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				   	 	<span aria-hidden="true">&times;</span>
+				  	</button>
+   		      		<h4 class="modal-title" id="modal-commute-date">근무 일자 : <span id="commute_date">sssd</span></h4>
+				  	<h5 class="modal-title" id="modal-commute-time">근무 시간 : <small id="commute_time">sssd</small></h5>
+				</div>
+	      		<div class="modal-body">
+					<div class="box box-info">
+						<div class="box-header with-border">
+							<h3 class="box-title">업무 시작</h3>
+						</div>
+						<div class="box-body">
+							<div class="form-group">
+								시간 : <span id="modal_working_start_time">555</span>
+							</div>
+							<div class="form-group">
+								좌표 : <span id="modal_working_start_location_latitude">123</span>, <span id="modal_working_start_location_longitude">456</span>
+							</div>
+						</div>
+					</div>
+					<div class="box box-success">
+						<div class="box-header with-border">
+							<h3 class="box-title">업무 종료</h3>
+						</div>
+						<div class="box-body">
+							<div class="form-group">
+								시간 : <span id="modal_working_end_time">666</span>
+							</div>
+							<div class="form-group">
+								좌표 : <span id="modal_working_end_location_latitude">aaa</span>, <span id="modal_working_end_location_longitude">zzz</span>
+							</div>
+						</div>
+					</div>
+				</div>
+	      		<div class="modal-footer">
+	       		 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+	
+	<!-- 업무 시작/종료 QRModal -->
+	<div class="modal modal-center fade" id="qrmodal-commute" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-center" role="document">
+	    	<div class="modal-content">
+   		      	<div class="modal-header">
+				  	<h5 class="modal-title" id="qrmodal-commute-date">Modal - 출/퇴근 QR</h5>
+				  	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				   	 	<span aria-hidden="true">&times;</span>
+				  	</button>
+				</div>
+	      		<div class="modal-body">
+				    <div id="qrcode"></div>
+	      		</div>
+	      		<div class="modal-footer">
+	       		 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+	
+	<div class="modal modal-center fade" id="wkmodal-commute" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-center" role="document">
+	    	<div class="modal-content">
+   		      	<div class="modal-header">
+				  	<h5 class="modal-title" id="wkmodal-commute-date">업무시작/종료 결과</h5>
+				  	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				   	 	<span aria-hidden="true">&times;</span>
+				  	</button>
+				</div>
+	      		<div class="modal-body">
+				    <div id="wkmodal"></div>
+	      		</div>
+	      		<div class="modal-footer">
+	       		 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+	
+</body>
+</html>

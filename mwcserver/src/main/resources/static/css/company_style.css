@@ -1,0 +1,294 @@
+
+/******** icon region ********/
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+    url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+    url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+/******** # icon region ********/
+
+/********************** HEADER **************************/
+#header {
+	height: 55px;
+	box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background-color: #5803d2;
+}
+.toolbar {
+	height: 55px;
+/* 	background-color: #484848; */
+	position: relative;
+	padding: 0 24px;
+    padding-right: 72px;
+    display: flex;
+}
+.toolbar div {
+	height: 100%;
+}
+.toolbar .toolbar-section {
+	
+}
+.toolbar .toolbar-section .toolbar-title-link {
+	line-height: 3.2em;
+	font-weight: 400;
+	letter-spacing: .06em;
+    font-size: 1.24rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+.toolbar-title-link, .toolbar-title-link:active, .toolbar-title-link:focus, .toolbar-title-link:hover, .toolbar-title-link:visited {
+	text-decoration: none;
+	color: rgba(0,0,0,.87);
+}
+.toolbar .toolbar-section#logo {
+	
+}
+.toolbar .toolbar-section#menu {
+	padding-left: 30px;
+}
+.toolbar .toolbar-section#menu .tabs {
+	height: 55px;
+}
+.toolbar .toolbar-section#menu .tabs .tab {
+	font-size: 1rem;
+	color: white;
+	display: inline-block;
+	width: 10em;
+	margin-top: 7px;
+    line-height: 3.0rem;
+}
+.toolbar .toolbar-section#menu .tabs .tab:hover {
+	color: rgba(255, 255, 255, 0.7);
+}
+.mdc-tab-indicator .mdc-tab-indicator__content--underline {
+	background-color: white;
+	height: 3px;
+	border-color: transparent!important;
+}
+
+/************************ CONTENT *****************************/
+
+.mdc-layout-grid__inner {
+	margin-bottom: 20px!important;
+}
+.item-wrapper {
+	/* border: 1px solid #ddd; */
+	margin-bottom: 20px;
+	border-radius: 10px;
+}
+/* <<<<<  Common  >>>>>>*/
+.page-content {
+	/* TODO: �씠嫄� margin�쑝濡� �몢�땲源� Scroll�씠 諛쒖깮�븿..*/
+/* 	margin-top: 55px; */
+	display: flex;
+}
+.page-content .page_drawer {
+	z-index: 7;
+	float: left;
+	border-right: 1px solid #e4e4e4;
+	background-color: white;
+}
+.page-content .page_drawer .mdc-drawer {
+	width: 200px;
+	margin-top: 55px;
+	border-right: none;
+}
+.page-content .page_drawer .mdc-drawer .mdc-drawer__content .mdc-list a {
+	font-size: 1rem;
+	cursor: pointer;
+	margin: 0;
+    border-radius: 0px;
+    padding: 0px 15px;
+}
+.page-content .page-main-section {
+	flex: 1;
+	position: relative;
+    height: 100%;
+    overflow-y: auto;
+    margin-top: 55px;
+    padding: 40px;
+}
+.page-content .page-main-section .controls {
+	box-sizing: border-box;
+    position: fixed;
+	top: 55px;
+    right: 0;
+    /*main 履쎄낵 �떎瑜닿쾶 �쇊履� 1px �룷�븿�릺�뼱�엳�뼱 怨좊젮�뻽�쓬.*/
+    left: 201px;
+    height: 95px;
+    padding: 0;
+    margin: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 5;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-shadow: 2px 2px 4px -1px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+.page-content .page-main-section .controls .search {
+	height: 65px;
+}
+.page-content .page-main-section .controls .search .search-option{
+	display: inline-block;
+}
+.page-content .page-main-section .controls .headerName-container {
+	height: 30px;
+}
+.page-content .page-main-section .controls .headerName-container .headerName-bar {
+	height: 100%;
+	padding: 0px;
+	position: relative;
+    width: 100%;
+    display: flex;
+    
+}
+.page-content .page-main-section .controls .headerName-container .headerName-bar .col-head {
+	display: inline-block;;
+	height: 100%;
+	padding: 0 10px;
+	border-right: 1px solid rgba(0, 0, 0, 0.05);
+	overflow: hidden;
+	cursor: pointer;
+}
+.page-content .page-main-section .controls .headerName-container .headerName-bar .col-head:hover {
+	background-color: #f3f3f3;
+}
+.page-content .page-main-section .controls .headerName-container .headerName-bar .col-head:active {
+	background-color: #efefef;
+}
+.page-content .page-main-section .controls .headerName-container .headerName-bar span {
+	font-size: 1rem;
+	line-height: 2rem;
+	font-weight: 500;
+}
+.page-content .page-main-section .controls .headerName-container .headerName-bar .col-head.desc {
+	background-image: url(../img/icon_select_desc_on.png);
+	background-repeat: no-repeat;
+}
+.page-content .page-main-section .controls .headerName-container .headerName-bar .col-head.asc {
+	background-image: url(../img/icon_select_asc_off.png);
+	background-repeat: no-repeat;
+}
+.page-content .page-main-section .controls .headerName-container .headerName-bar .col-head.main {
+	background-position: 98.5% center;
+}
+.page-content .page-main-section .controls .headerName-container .headerName-bar .col-head.long {
+	background-position: 98% center;
+}
+.page-content .page-main-section .controls .headerName-container .headerName-bar .col-head.short {
+	background-position: 94% center;
+}
+.page-content .page-main-section .controls .headerName-container .mdc-list {
+	padding: 0px;	
+}
+.page-content .page-main-section .controls .headerName-container .mdc-list li {
+	height: 30px;
+	position: relative;
+	width: 100%;
+	padding: 0px;	
+}
+.page-content .page-main-section .controls .headerName-container .mdc-list li .col {
+	height: 100%;
+	padding: 0 10px;
+	border-right: 1px solid rgba(0, 0, 0, 0.05);
+	overflow: hidden;
+}
+.page-content .page-main-section .list .mdc-list {
+	padding: 0px;
+}
+.page-content .page-main-section .list .mdc-list li {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 0px;
+	position: relative;
+    width: 100%;
+}
+.page-content .page-main-section .list .mdc-list li .col span {
+/* 	line-height: 3.4em; */
+	margin-top: 16px;
+	font-size: 0.89rem;
+}
+
+.no-customer {
+/*  	height: 100%; */
+ 	text-align: center;
+ 	overflow: hidden;
+ 	margin-top: 50vh;
+    font-size: 2rem;
+    font-weight: 900;
+    color: rgba(0,0,0,0.45);
+}
+
+/* dialog */
+.mdc-dialog.open {
+	display: block;
+}
+.mdc-dialog.open .mdc-dialog__container {
+	opacity: 100;
+}
+
+/* # dialog */
+
+progress{
+  border: 1pt solid;
+  width: 200px;
+  height: 20px;
+  background: crimson;
+}
+
+.progress-green::-webkit-progress-value {
+  background-color:green;
+}
+
+.progress-green::-webkit-progress-bar {
+  background-color:#fff;
+}
+
+.progress-orange::-webkit-progress-value {
+  background-color:orange;
+}
+
+.progress-orange::-webkit-progress-bar {
+  background-color:#fff;
+}
+
+.progress-red::-webkit-progress-value {
+  background: red;
+}
+
+.progress-red::-webkit-progress-bar {
+  background: #fff;
+}
