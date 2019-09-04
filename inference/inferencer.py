@@ -17,8 +17,8 @@ import preprocessing
 
 
 # hardcoding factors
-REOA = "0x7f9e54d53549ba46dbe32ab39fd5fee3fd7cbe78"
-contractAddr = "0xcF7DcD31070485E71ecc29ef04Dbb0895E3371dc"
+REOA = "0x128a8b8c9507aec53d949c53d5be57c4d98f9256"
+contractAddr = "0xaa7De5581188449339058e5908fC0B06e61db3f9"
 waitingInterval = 1.0
 
 
@@ -125,7 +125,7 @@ def sendTransaction(from_, flmodel, flblock, min_max_scaler):
         # CASE 1: giveIncentive
         print("> give incentive to", userAddr)
 
-        r = API.balanceOf(userAddr)
+        r = API.balanceOf(userAddr, REOA)
         beforeBalance = int(r['data']['res'][0])
 
         r = API.getReturnInfo(userAddr, from_)
@@ -157,7 +157,7 @@ def sendTransaction(from_, flmodel, flblock, min_max_scaler):
 
         # give incentive
         r = API.giveIncentive(userAddr, incentive, int(time.time()), from_)
-        r = API.balanceOf(userAddr)
+        r = API.balanceOf(userAddr, REOA)
         afterBalance = int(r['data']['res'][0])
 
         # waiting
@@ -166,7 +166,7 @@ def sendTransaction(from_, flmodel, flblock, min_max_scaler):
         while afterBalance < beforeBalance + incentive:
             pinwheel(
                 t, keyword="> waiting for earning incentive... (ETA: %f)" % avgTime(incenTimes))
-            r = API.balanceOf(userAddr)
+            r = API.balanceOf(userAddr, REOA)
             afterBalance = int(r['data']['res'][0])
             t += 1
         endTime = time.time()
