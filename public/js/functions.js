@@ -229,7 +229,7 @@ function autocomplete(arr) {
        setTimeout(function() {
          allowance(userAddr, userAddr, contractAddr).done(function(msg){
            console.log(msg);
-           rentBike(userAddr, departure[2], (new Date()).getTime());
+           rentBike(userAddr, departure[2], Math.round((new Date()).getTime()/1000));
            rentbutton.innerHTML = "결제";
          });
        }, 3000);
@@ -244,7 +244,7 @@ function autocomplete(arr) {
          alert("대여한 이력이 없습니다!")
        } else {
          // rent => return
-         var returnTime = (new Date()).getTime();
+         var returnTime = Math.round((new Date()).getTime()/1000);
          var returnStation = prompt("반납 대여소 번호를 입력해주세요", "");
          console.log(returnStation);
          returnBike(userAddr, returnStation, returnTime).done(function(msg){
@@ -303,7 +303,7 @@ function autocomplete(arr) {
   // Send expected arrival time & target id by Tx
   function sendPredictTx(targetIDs, travelTimes, callback) {
     console.log("5. Send predict tx with timestamp [todo]");
-    var reqTime = (new Date()).getTime();
+    var reqTime = Math.round((new Date()).getTime()/1000);
     requestPredict(userAddr, reqTime, targetIDs, travelTimes, infos, callback);
     //callback(departure, targets, updateMap);
   }
@@ -783,7 +783,7 @@ document.getElementById("userProfileButton").style.visibility = "hidden";
     document.getElementById("offcanvas-flip").style.display = "none";
   }
 function timeStampToTime(timestamp) {
-  var date = new Date(parseInt(timestamp));
+  var date = new Date(parseInt(timestamp)*1000);
   var year = date.getFullYear();
   var month = ("0"+(date.getMonth()+1)).slice(-2);
   var day = ("0"+date.getDate()).slice(-2);
