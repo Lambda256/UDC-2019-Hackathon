@@ -91,7 +91,7 @@ https://github.com/Lambda256/UDC-2019-Hackathon/tree/vmo
 ### Contracts [/chains/contracts]
 
 #### Contract 목록 조회 [GET /chains/{chainId}/contracts]
-등록된 Smart Contract의 목록을 조회하기 위한 API (`Account Token` 필요)
+등록된 Smart Contract의 목록을 조회하기 위한 API (`Account Token` 필요, 개발자도구의 네트워크 탭 참조)
 
 + Parameters
     + chainId: `1234` (string, required) - (고유값) Chain ID
