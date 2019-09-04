@@ -65,8 +65,8 @@ UDC와 루니버스는 이런 물음에 답하는 개발자를 만나고자 ‘�
 
 ## Contract deploy API
 
-### Contracts [/chains/contracts]
-#### Contract 등록 [POST /chains/{chainId}/contracts]
+### Contracts [/be/chains/contracts]
+#### Contract 등록 [POST /be/chains/{chainId}/contracts]
 Chain에 Smart Contract를 배포하기 위한 소스코드/바이트코드를 등록하기 위한 API (`Account Token` 필요, 개발자도구 네트워크 탭 참조)
 
 + Parameters
@@ -124,7 +124,7 @@ Chain에 Smart Contract를 배포하기 위한 소스코드/바이트코드를 �
                         + `DEPLOY-FAILED` - 배포실패
                         + `DEPLOYED` - 배포완료
                         
-#### Contract 배포(서명) [POST /chains/{chainId}/contracts/{contractId}/deploy]
+#### Contract 배포(서명) [POST /be/chains/{chainId}/contracts/{contractId}/deploy]
 Chain으로 Contract를 배포(서명)하기 위한 API (`Account Token` 필요, 개발자도구 네트워크 탭 참조)
 
 ::: note
