@@ -6,7 +6,7 @@ import logoGrey from "assets/images/logo-grey.svg";
 import userFace from "assets/images/user-face.svg";
 
 const Header = props => {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const tokenPage =
     props.history.location.pathname.includes("/token") ||
     props.history.location.pathname.indexOf("/wallet") > -1;
@@ -34,6 +34,12 @@ const Header = props => {
                   style={{ marginLeft: 16, fontSize: 20 }}
                 />
               </Link>
+              <Icon
+                onClick={logout}
+                type="logout"
+                className="text-grey hover-link"
+                style={{ marginLeft: 16, fontSize: 20, marginBottom: 4 }}
+              />
             </div>
           ) : (
             <Link to="/login">
