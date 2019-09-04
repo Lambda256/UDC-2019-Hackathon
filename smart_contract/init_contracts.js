@@ -1,7 +1,7 @@
-const END_POINT = "http://baas-rpc.luniverse.io:8545?lChainId=5300575914426995782"
-//const PRIV_KEY  = "327cf45205cae9eb6a893fe872d5f952b065f2a29c1db088a369943b9d126136" // sabzil37
-const PRIV_KEY  = "7F4C870CC1C6B10ECB0609683BD55650A2F53A5BDD3A8F1D3F8078F80D643D55" // acc1LEOA
-
+const END_POINT = "http://baas-rpc.luniverse.net:8545?lChainId=8253766290815603891"                   
+const PRIV_KEY  = "ab55eb5cd814c65ae60625aa23a2287fe07f515277bd0ba0b73210aaf2072617" // sabzil37
+//const PRIV_KEY  = "7F4C870CC1C6B10ECB0609683BD55650A2F53A5BDD3A8F1D3F8078F80D643D55" // acc1LEOA
+ 
 //-----------------------------------------------------------------------------------------
 const WEB3 = require('web3')
 const BigNumber = require('bignumber.js');
@@ -14,17 +14,18 @@ function ether(wei) { return web3.utils.toWei(String(wei)) }
 function toEther(wei) { return web3.utils.fromWei(String(wei)) }
 //-----------------------------------------------------------------------------------------
 
-let Addr_GiveToken = "0x67dF2F6557147D5Bf2D7181773Aaa18adEc0656a"
-let Addr_GiveBox   = "0x0b15Bffb75dc8a2C854f5E51F1426764Cfb24c9c"
+let Addr_GiveToken = "0x931c43A99ab557fEe73dE32fCEcf77eD1972c91F"
+let Addr_GiveBox   = "0x0b15Bffb75dc8a2C854f5E51F1426764Cfb24c9c" // 아직
 
 const compiledToken = require("./build/contracts/GiveToken.json")
 const compiledBox   = require("./build/contracts/GiveBox.json")
 
-let sabzil37 = "0x69bacc094364b0b2be82b64deb861aa9b5d2e424"
+let sabzil37 = "0x12c60cb9f9fdcb61eb45f04690635a43e33714cc"
+let acc1LEOA   = "0x8fef48bb947ab5def2d44572483390025a360aa2" // 암합회 루니버스용 
 
-let testREOA   = "0x5a1cc6809c2d8bce5fb9156242294e7f09ac5ea3"   // 거기
-let sabzilREOA = "0x6f416e6c9de497cab058fa552cc578dce8e66a5d"
-let acc1LEOA   = "0x2F6d2E7a28A384A513984f42dCca798bB70E3f89"
+//let testREOA   = "0x5a1cc6809c2d8bce5fb9156242294e7f09ac5ea3"   // 거기
+//let sabzilREOA = "0x6f416e6c9de497cab058fa552cc578dce8e66a5d"
+
 
 const deployToken = async () => {
     const com_giveToken = require('./build/contracts/GiveToken.json')
@@ -118,5 +119,5 @@ const give = async () => {
 //balance(acc1LEOA).catch(err => { console.log('[ERROR]:', err); })
 
 //distribToken().catch(err => { console.log('[ERROR]:', err); })
-createProject().catch(err => { console.log('[ERROR]:', err); })
+distribToken().catch(err => { console.log('[ERROR]:', err); })
 //linkContract().catch(err => { console.log('[ERROR]:', err); })

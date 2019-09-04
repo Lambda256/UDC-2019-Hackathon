@@ -127,16 +127,63 @@ contract('Give Box', function ([sender, user1, user2, hacker, hogoo]) {
     it('기부자 목록 테스트', async function () {
 
         let peoples = await this.box.getBackers(0);
-
+        
         let data = lxUtil.toStructArray( [
-            '$id', '$amount', '$date', '$txid', 'applyTrooper', 'isTrooper', '*name'],  peoples)
-
+            '$id', '$amount', '$date', '$blockNumber', 'applyTrooper', 'isTrooper', '*name'],  peoples)
+            
         expect( data ).to.include.deep.members([
-            {id:0, amount: 40000000000000000000, name:"정기영", date: data[0].date, applyTrooper: true, isTrooper: false, txid: 0}
+            {id:0, amount: 40000000000000000000, name:"정기영", date: data[0].date, blockNumber: data[0].blockNumber, applyTrooper: true, isTrooper: false}
         ])
 
     })
 
+    it('기부자 주소 목록 테스트', async function () { 
 
+        let addrs = await this.box.getBackersAddrs(0);        
+        let data = lxUtil.toStructArray( ['addr', '$blockNumber'],  addrs)
+
+        expect( data.length ).to.be.equal(2)
+        
+    })
+    
+    it('프로젝트 내용 및 옵션 변경 테스트', async function () { 
+        
+        let nowStamp = Date.now();
+
+        await this.box.editProjectContent(0, "제목 수정됨", "내용 수정됨");
+        await this.box.editProjectOptions(0, ether("300"), nowStamp, 8)
+        
+        let projContent = await this.box.getProjectContent(0);
+        let proj = await this.box.getProject(0);
+        
+        expect( projContent ).to.be.equal( "내용 수정됨")
+        
+        expect( proj.goal ).to.be.bignumber.equal( ether("300") )
+        expect( proj.date ).to.be.bignumber.equal( nowStamp.toString() )
+        expect( proj.trooperSelect ).to.be.bignumber.equal( "8" )
+                
+    })
+
+    it('인출 테스트', async function () { 
+
+        // 프로젝트 마감 후 인출 테스트 
+        await this.box.withdraw(0, user2)
+        
+        // 유저 계좌에서 증가 확인
+        expect( await this.bals.user2.delta() ).to.be.bignumber.equal( ether("50") )
+    })
+
+    it('권한 없는 인출 테스트', async function () { 
+        
+        await expectRevert(
+            this.box.withdraw(0, hacker, {from:hacker})
+            , "WhitelistAdminRole: caller does not have the WhitelistAdmin role")
+            
+    })
+    
+
+    // 리뷰 등록테스트
+    // 프로젝트 클로징 등록 테스트 
+    // 투표.
 })
 
