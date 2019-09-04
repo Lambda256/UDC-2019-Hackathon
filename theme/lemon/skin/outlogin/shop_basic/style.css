@@ -1,0 +1,52 @@
+@charset "utf-8";
+
+/* 아웃로그인 스킨 */
+.ol {display:none;position:relative;border-bottom:1px solid #f3f3f3;position:absolute;top:70px;right:0;z-index:99;background:#fff;width:350px;border: 1px solid #e9e7e7; 
+-webkit-box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.08);
+-moz-box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.08);
+box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.08);}
+.ol .btn_close {position: absolute;top: 0;right: 0; height: 60px;color: #aaa;background: none; border: 0;width: 40px;font-size:15px}
+.ol .btn_close:hover {color:#000}
+.ol h2{border-bottom: 1px solid #f3f3f3;padding: 20px;font-size: 1.250em;line-height: 20px; font-weight: bold;}
+.ol a.btn_admin {display:inline-block;padding:0 10px;height:25px;background:#d13f4a;color:#fff;text-decoration:none;line-height:25px;vertical-align:middle} /* 관리자 전용 버튼 */
+.ol a.btn_admin:focus, .ol a.btn_admin:hover {text-decoration:none}
+
+#ol_before {}
+#ol_before form{padding:30px;}
+#ol_before fieldset {position:relative}
+#ol_id {display:block;width:100%;margin-bottom:10px}
+.ol_idlabel {color:#333;}
+#ol_pw {display:block;;width:100%;margin:3px 0}
+.ol_pwlabel {color:#333;}
+#auto_login {}
+#auto_login_label {letter-spacing:-0.1em}
+#ol_submit {width:100%;}
+#ol_before a {letter-spacing:-0.15em}
+#ol_svc {text-align:center;margin:10px 0 0}
+#ol_svc a{display:inline-block;color:#333;margin:0 5px 5px}
+#ol_auto {position:relative;margin:20px 0;font-size:0.92em;color:#555}
+#ol_auto label {letter-spacing:-0.1em}
+#ol_auto input {width:13px;height:13px;vertical-align:bottom} 
+
+#ol_after {width:300px}
+#ol_after .ol_hd {padding:20px;padding-left:80px;position:relative;min-height:50px}
+#ol_after .profile_img{display:block;position:absolute;top:20px;left:20px;background: -webkit-linear-gradient(left top, #5334ff 0%, #ff62cf 100%);;border-radius:50px;padding:1px}
+#ol_after .profile_img img{width:50px;height:auto;border-radius:50px;border:2px solid #fff}
+#ol_after .ol_hd  strong{font-size:1.167em;font-weight:400;display:block;line-height:50px;margin-bottom:5px}
+#ol_after #ol_after_info{position:absolute;bottom:0;right:-5px;background:#fff;width:26px;line-height:26px;display:block;border-radius:50px;text-align:center}
+#ol_after_logout{position:absolute;top:50%;right:20px;margin-top:-15px;padding:0 10px;line-height:30px;border-radius:3px}
+#ol_after_private {border-top:1px solid #f3f3f3;padding:20px 0}
+#ol_after_private li{position:relative;display:block;padding:10px 20px;line-height:20px;font-size: 1.083em}
+#ol_after_private li strong{float:right;color:#f2547f}
+#ol_after_private li a{display:block;font-weight:300}
+#ol_after_private li:after {display:block;visibility:hidden;clear:both;content:""} 
+#ol_after_private li:hover{background:#fafafa;
+background: -moz-linear-gradient(-45deg, rgba(247,248,249,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(-45deg, rgba(247,248,249,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg, rgba(247,248,249,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f8f9', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */}
+#ol_after_private li:hover:before{content:'';width:2px;height:100%;background:#fb6369;position:absolute;top:0;left:0}
+#ol_after_private li i{text-align:center;width:30px;margin-right:20px;color:#2c1787}
+#ol_after_private li .fa-gift{font-size:18px}
+#ol_after_private li .fa-comments-o{font-size:18px}
+#ol_after_private li .fa-question-circle-o {font-size:18px}
