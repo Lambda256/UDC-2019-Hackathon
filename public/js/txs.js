@@ -167,3 +167,31 @@ function getRecord(from, addr) {
       }
   });
 }
+
+/*
+ * 대여 시간 확인
+ * 0 - 대여X
+ * Else - 대여시간
+ */
+function rentTime(from, addr) {
+  var querydata = '{"from": "' + from + '", "inputs": {"": "' + addr + '"}}'
+  console.log("getRecord", querydata);
+  return $.ajax({
+      url: "https://api.luniverse.net/tx/v1.0/transactions/rentTimes" + version,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('Authorization', 'Bearer SfnBZUboFmWwav6CkYJrkyEQGp77qLJzhQ4hcmumhd8CYbp7z9hiRDex7jDaLgvr');
+      },
+      type: 'POST',
+      contentType: 'application/json',
+      processData: false,
+      data: querydata,
+      success: function (data) {
+        //console.log(JSON.stringify(data));
+        //alert("SUCCESS");
+      },
+      error: function(code) {
+        console.log(code);
+        alert("FAIL");
+      }
+  });
+}

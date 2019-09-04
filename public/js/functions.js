@@ -235,11 +235,19 @@ function autocomplete(arr) {
 
    // return button listener
    document.getElementById("return").addEventListener("click", function(e) {
-     var returnTime = (new Date()).getTime();
-     returnBike(userAddr, 2386, returnTime).done(function(msg){
-       requestIncentive(userAddr, returnTime, 2386, 0, infos);
-     });
-     alert("return to 2386");
+     rentTime(userAddr, userAddr).done(function(msg){
+       // No rent
+       if (msg.data.res[0] == 0) {
+         alert("대여한 이력이 없습니다!")
+       } else {
+         // rent => return
+         var returnTime = (new Date()).getTime();
+         returnBike(userAddr, 2386, returnTime).done(function(msg){
+           requestIncentive(userAddr, returnTime, 2386, 0, infos);
+         });
+         alert("2386번 정거장에 반납합니다.");
+       }
+     })
    });
 
    // refresh button listener
