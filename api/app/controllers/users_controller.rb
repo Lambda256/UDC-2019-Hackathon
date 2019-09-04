@@ -39,7 +39,19 @@ class UsersController < ApplicationController
   def my_wallet
     render json: {
       hour_balance: @current_user.hour_balance!,
-      my_tokens: @current_user.user_private_tokens.includes(:private_token).as_json(only: [:private_token_id, :balance, :pending_balance]),
+      my_tokens: @current_user.user_private_tokens.as_json(
+        only: [
+          :private_token_id,
+          :balance,
+          :pending_balance
+        ]
+      ),
+      private_tokens: @current_user.private_tokens.includes(:owner).map { |t|
+        t.as_json(only: [:id, :symbol]).merge(
+          name: t.owner.name,
+          profile_picture: url_for(t.owner.profile_picture)
+        )
+      },
       # time_transactions: Luniverse::get_transactions!(@current_user.reoa),
       private_transactions: Transaction.where('sender_id = ? OR receiver_id = ?', @current_user.id, @current_user.id).order(id: :desc)
     }

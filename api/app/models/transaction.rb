@@ -56,7 +56,7 @@ class Transaction < ApplicationRecord
     raise 'Receiver not found' if receiver.nil?
 
     # Receiver send TIME to sender
-    tx = Luniverse::transfer!(receiver.reoa, sender.reoa, price * amount)
+    tx = Luniverse::paid_transfer!(receiver.reoa, sender.reoa, price * amount)
 
     # Sender send PrivateToken to receiver
     ActiveRecord::Base.transaction do
@@ -65,8 +65,8 @@ class Transaction < ApplicationRecord
       sender_token.lock!
       receiver_token.lock!
 
-      sender_token.balance -= amount
-      raise 'Not enough balance' if sender_token.balance < 0
+      sender_token.pending_balance -= amount
+      raise 'Not enough pending balance' if sender_token.pending_balance < 0
       receiver_token.balance += amount
 
       self.create!(

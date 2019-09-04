@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
 
   # GET /orders.json?private_token_id=:id
   def index
-    render json: Order.best_bids(params[:private_token_id], 10)
+    render json: Order.best_bids(params[:private_token_id], 6)
   end
 
   # POST - /orders.json
