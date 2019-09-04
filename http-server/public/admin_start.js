@@ -1,21 +1,71 @@
+function stampToDate(stamp) {
+    let d = new Date(parseInt(stamp));
+    return d.toLocaleDateString();//.replace(/./g,"").replace(/\s/g, "-")    
+}
 
 function loadProject(projectId) {
 
-    $.get("http://localhost:8000/project/0").then(r => {
+    $.get(`http://localhost:8000/project/${projectId}`).then(r => {
         
         $("#title").val(r.title)
         $("#goal").val(r.goal)
-        $("#trooperCount").val(r.goal)
-        
+        $("#trooperSelect").val(r.trooperSelect)                        
+        $("#date").calendar('set date', stampToDate(r.date));        
+
         if (r.isClosed != "0") {
             $("#isClosed").checkbox('check');        
         }        
     })
 
-    $.get("http://localhost:8000/project/0/content").then(r => {
+    $.get(`http://localhost:8000/project/${projectId}/content`).then(r => {                
+        $("#content").val(r.content)
+    })
+}
 
-        console.log('rrr:', r[0]);
+function getProjects() {
+    $.get("http://localhost:8000/project/all/").then(r => {
+        
+        let dropItem = [];
 
+        for (let i = 0; i < r.count; i++) {
+            dropItem.push(`<div class="item" data-value="${i}">${i}번</div>`)
+        }
+
+        dropItem.push(`<div class="item" data-value="new">신규생성</div>`)
+
+        setProjectDropdown(dropItem)        
+    })    
+}
+
+        
+function newProject() {
+    let newName = prompt("신규생성할 프로젝트 이름");
+    if (!newName) return;
+
+    $.post(`/project/new/`, {
+        title: newName
+    }).then(r => {            
+        toastr.success("전송 되었습니다.");        
+        setTimeout(()=>{ getProjects(); }, 1000);
+    })
+}
+
+function setProjectDropdown(items) {
+    
+    if (items) {
+        $('#setProj .menu').html(items);
+    }
+    
+    $('#setProj').dropdown({
+        onChange: function(value, text, $selectedItem) {
+            if (value == "new") {
+                newProject()
+
+            } else {
+                loadProject(value)
+                $("#Panel").show()                   
+            }            
+        }
     })
 }
 
@@ -85,65 +135,44 @@ function start() {
 
     $('#setProj').dropdown({
         onChange: function(value, text, $selectedItem) {
-            loadProject(value);
-            $("#Panel").show();                    
+            loadProject(value)
+            $("#Panel").show()                   
         }
     })
 
-    $("#Btn_Save").click(()=>{
+    $("#Btn_Save").click(()=>{        
         let projId = $('#setProj').dropdown("get value")
 
-        $.post("/project/"+projId+"/content", {
+        $("#Btn_Save").addClass("loading");
+        
+        $.post(`/project/${projId}/content`, {
             title: $("#title").val(),
             content: $("#content").val()
         }).then(r => {
-            console.log(r);
-            alert('전송 되었습니다.');
+            $("#Btn_Save").removeClass("loading");
+            toastr.success("전송 되었습니다.");            
         })
+        
+        let goal = String($("#goal").val())
+        let date = new Date($("#v_date").val()).getTime()
+        let trooperSelect = $("#trooperSelect").val()                
+        
+        $.post(`/project/${projId}/options`, { goal, date, trooperSelect }).then(r => {
+            //$("#Btn_Save").removeClass("loading");
+            //toastr.success("전송 되었습니다.");            
+        })
+        
+    })
+    
+    $('#date').calendar({ type: 'date' })
+    //$("#Btn_Finish").click(()=>{
+    //    let devId = $('#setRoom').dropdown("get value");
+    //    adminWs.publish(devId, "control", {type:"finish"});
+    //});
+    getProjects();
 
-        //let pos = $('#combo_pos').dropdown("get value");
-
-        //if (pos == "1") posX = -1900;
-        //if (pos == "2") posX = 20;
-        //if (pos == "3") posX = 1940;
-
-        //adminWs.publish(devId, "control", {
-        //    type:"start",
-        //    chatPosX: posX,
-        ///    chatPosY: posY,
-        //    use_cam:  $('#use_cam').checkbox("is checked"),
-        //    use_mic:  $('#use_mic').checkbox("is checked"),
-        //    use_chat: $('#use_chat').checkbox("is checked")
-        //});
-    });
-
-    $("#Btn_Finish").click(()=>{
-        let devId = $('#setRoom').dropdown("get value");
-        adminWs.publish(devId, "control", {type:"finish"});
-    });
-
-    $('#combo_audio').dropdown({
-        onChange: function(value, text, $selectedItem) {
-            let devId = $('#setRoom').dropdown("get value");
-            adminWs.publish(devId, "control", {type:"setaudio", value:value});
-        }
-    });
-
-    $('#combo_pos').dropdown({
-        onChange: function(value, text, $selectedItem) {
-            let devId = $('#setRoom').dropdown("get value");
-
-            let posX, posY = 300;
-            let pos = $('#combo_pos').dropdown("get value");
-
-            if (pos == "1") posX = -1900;
-            if (pos == "2") posX = 20;
-            if (pos == "3") posX = 1940;
-
-            adminWs.publish(devId, "control", {type:"setpos", x:posX, y:posY, });
-        }
-    });
-
+    $('.menu .item').tab();
+    
 }
 
-start();
+start()

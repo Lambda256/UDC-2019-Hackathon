@@ -1,14 +1,14 @@
 module.exports = router = require('express').Router()
-const { luniGet, luniPost, recoverOutputs, toStructArray } = require('../core/helper.js')
 
-let tracker = require('../core/track.js')
+const { luniGet, luniPost, recoverOutputs, toStructArray } = require('../core/helper.js')
+const { getTransaction, getFuncDetail, getBlock } = require('../core/blockchain.js')
 
 // TxHash를 조회한 정보를 반환한다.
 router.get('/txhash/:txid', async (req, res, next)=>{
 
 	let txid = String(req.params.txid)
 
-	tracker.getTransaction(txid).then(r => {
+	getTransaction(txid).then(r => {
 
 		res.json(r)
 
@@ -23,7 +23,7 @@ router.get('/txfunc/:txid', async (req, res, next)=>{
 
 	let txid = String(req.params.txid)
 
-	tracker.getFuncDetail(txid).then(r => {
+	getFuncDetail(txid).then(r => {
 		
 		r.txid = txid;
 		res.json(r)
@@ -39,9 +39,9 @@ router.get('/func/:blockNumber', async (req, res, next)=>{
 
 	let bNumber = String(req.params.blockNumber)
 
-	let block    = await tracker.getBlock(bNumber)
-	let callInfo = await tracker.getFuncDetail( block.transactions[0] )
+	let block    = await getBlock(bNumber)
+	let callInfo = await getFuncDetail( block.transactions[0] )
 	callInfo.txid = block.transactions[0]
 
-	res.json(callInfo);
+	res.json(callInfo)
 })

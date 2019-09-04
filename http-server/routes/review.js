@@ -7,15 +7,8 @@ const { web3, Contracts, getTransaction, getFuncDetail, getBlock } = require('..
 
 module.exports = router = require('express').Router()
 
-router.get('/all/', async (req, res, next)=>{
-	//[TODO]
-	let box = Contracts.GiveBox.contract;	
-	//let cnt = await box.projectCount.call({from: config.adminAddr, gas: 500000})
-	let cnt = 3;
-	res.json({success: true, count:cnt})
-})
 
-// 프로젝트 신규생성
+// 리뷰 신규생성
 router.post('/new/', async (req, res, next)=>{
 		
 	let box = Contracts.GiveBox.contract

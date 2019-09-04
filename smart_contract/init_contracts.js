@@ -1,6 +1,6 @@
 const END_POINT = "http://baas-rpc.luniverse.net:8545?lChainId=8253766290815603891"                   
-//const PRIV_KEY  = "ab55eb5cd814c65ae60625aa23a2287fe07f515277bd0ba0b73210aaf2072617" // sabzil37
-const PRIV_KEY  = "6c922a9fbcd0ee3f7d1102f60f6f2a48d97cbef37d9c1031d240fbcc91060c3e" // acc1LEOA
+const PRIV_KEY  = "ab55eb5cd814c65ae60625aa23a2287fe07f515277bd0ba0b73210aaf2072617" // sabzil37
+//const PRIV_KEY  = "6c922a9fbcd0ee3f7d1102f60f6f2a48d97cbef37d9c1031d240fbcc91060c3e" // acc1LEOA
  
 //-----------------------------------------------------------------------------------------
 const WEB3 = require('web3')
@@ -15,7 +15,7 @@ function toEther(wei) { return web3.utils.fromWei(String(wei)) }
 //-----------------------------------------------------------------------------------------
 
 let Addr_GiveToken = "0x931c43A99ab557fEe73dE32fCEcf77eD1972c91F"
-let Addr_GiveBox   = "0xaC9E1B742bDC65FA3821324B9EE4E5FcB40522A2"
+let Addr_GiveBox   = "0x9b7dE9b5F940A69bCcE57a1DBBd4d9bcF86266eF"
 
 const compiledToken = require("./build/contracts/GiveToken.json")
 const compiledBox   = require("./build/contracts/GiveBox.json")
@@ -79,12 +79,12 @@ const linkContract = async () => {
     const sender = sabzil37
 
     //await box.methods.setToken(Addr_GiveToken).send({from: sender, gas: 500000})
-    let x2 = await box.methods.tokenContract().call()
-    console.log('x2:', x2)
+    //let x2 = await box.methods.tokenContract().call()
+    //console.log('x2:', x2)
 
     //await token.methods.addWhitelistAdmin(Addr_GiveBox).send({from: sender, gas: 500000})    
-    let x4 = await token.methods.isWhitelistAdmin(Addr_GiveBox).call()
-    console.log('x4:', x4)
+    //let x4 = await token.methods.isWhitelistAdmin(Addr_GiveBox).call()
+    //console.log('x4:', x4)
 
     //var balance = await contract.methods.balanceOf(sabzilREOA).call();
     //console.log( web3.utils.fromWei(balance) );
@@ -93,6 +93,14 @@ const linkContract = async () => {
 const createProject = async () => {
     const box = await new web3.eth.Contract(compiledBox.abi, Addr_GiveBox)
     await box.methods.addProject("테스트 프로젝트").send({from: sabzil37, gas: 500000})
+    console.log('project:', await box.methods.getProject("0").call() )
+}
+
+const ModiProject = async () => {
+    const box = await new web3.eth.Contract(compiledBox.abi, Addr_GiveBox)
+    await box.methods.editProjectContent(0, "테스트 프로젝트2", "xxx").send({from: sabzil37, gas: 500000})
+
+    //function editProjectContent(uint16 projectId, string memory title, string memory content) public onlyWhitelistAdmin {    
     console.log('project:', await box.methods.getProject("0").call() )
 }
 
@@ -112,6 +120,7 @@ const give = async () => {
 
 //give().catch(err => { console.log('[ERROR]:', err); })
 //createProject().catch(err => { console.log('[ERROR]:', err); })
+ModiProject().catch(err => { console.log('[ERROR]:', err); })
 //balance(acc1LEOA).catch(err => { console.log('[ERROR]:', err); })
 //distribToken().catch(err => { console.log('[ERROR]:', err); })
 //linkContract().catch(err => { console.log('[ERROR]:', err); })
