@@ -26,29 +26,31 @@ const Home = props => {
   return (
     <div className="home">
       <HomeTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
-      <div className="token-list">
-        {fetchingTokens ? (
-          <>
-            <GridLoading />
-            <GridLoading />
-            <GridLoading />
-            <GridLoading />
-            <GridLoading />
-            <GridLoading />
-            <GridLoading />
-            <GridLoading />
-          </>
-        ) : (
-          tokens.length > 0 &&
-          tokens
-            .filter(item => {
-              if (tabIndex === TAB_ALL) return true;
-              return item.category === tabIndex;
-            })
-            .map(token => {
-              return <GridItem key={token.id} data={token} />;
-            })
-        )}
+      <div className="content">
+        <div className="token-list">
+          {fetchingTokens ? (
+            <>
+              <GridLoading />
+              <GridLoading />
+              <GridLoading />
+              <GridLoading />
+              <GridLoading />
+              <GridLoading />
+              <GridLoading />
+              <GridLoading />
+            </>
+          ) : (
+            tokens.length > 0 &&
+            tokens
+              .filter(item => {
+                if (tabIndex === TAB_ALL) return true;
+                return item.category === tabIndex;
+              })
+              .map(token => {
+                return <GridItem key={token.id} data={token} />;
+              })
+          )}
+        </div>
       </div>
     </div>
   );

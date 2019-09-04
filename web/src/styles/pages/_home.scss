@@ -1,6 +1,16 @@
 .home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-height: 100vh;
   padding: 80px 0;
+
+  .content {
+    width: 1440px;
+    @include responsive(ipadpro) {
+      width: 100vw;
+    }
+  }
 
   .home-tab {
     max-width: 693px;
@@ -29,6 +39,9 @@
   .token-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
+    @include responsive(ipadpro) {
+      justify-content: center;
+    }
   }
 }
