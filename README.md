@@ -3,25 +3,25 @@
 ## In Time
 
 
-## Stacks
-### Back-End
+### Stacks
+#### Back-End
 - Luniverse Blockchain & API Gateway
 - Ruby 2.6.3
 - Rails 5.2.3
 - Puma 3.12.1
 - PostgreSQL 11.4
 
-### Front-End
+#### Front-End
 - React 16.9.0
 - D3.js 5.11.0
 - Ant Design 3.22.2
 - GSAP 2.1.3
 
-## API Document
+### API Document
 
 
-## Setup
-### Database
+### Dev Setup
+#### Database
 ```bash
 #!/bin/bash
 PG_DBNAME=intime
@@ -38,5 +38,5 @@ rake db:create db:migrate db:seed
 cd api && rails start
 ```
 
-## LICENSE
+### LICENSE
 MIT License
