@@ -376,9 +376,23 @@ function autocomplete(arr) {
 
   // Update mypage history
   function updateHistory(data) {
-    console.log("History", data);
-    for (var i = 1; i <= 7; i++) {
-      var N = data[0].length;
+    var historyDiv = document.getElementById("history");
+    // Remove previous child
+    while (historyDiv.firstChild) {
+      historyDiv.removeChild(historyDiv.firstChild);
+    }
+
+    var N = data[0].length;
+    var listnum = N;
+    if (N > 7) {
+      listnum = 7;
+    }
+
+    // Create & update new child
+    for (var i = 1; i <= listnum; i++) {
+      var createList = document.createElement('li');
+      historyDiv.appendChild(createList);
+
       var icon = '';
       var label = '';
       var amount = data[1][N-i];
@@ -397,7 +411,7 @@ function autocomplete(arr) {
       }
 
       // Print icon - amount - time
-      document.getElementById("log"+i).innerHTML= icon + label + " " + timeStampToTime(time);
+      createList.innerHTML= icon + label + " " + timeStampToTime(time);
     }
   }
 
