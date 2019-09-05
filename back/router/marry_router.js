@@ -9,8 +9,10 @@ moment.tz.setDefault('Asia/Seoul');
 
 // 프로포즈 수락, 결혼 신청
 marryRouter.post('/marry', async (req, res) => {
+    console.log(req)
     let propose = req.body.propose;
-    if(propose.sender.gender == 1 || propose.sender.gender == 3) {
+    console.log(propose)
+    if(propose.sender.gender == 0 || propose.sender.gender == 2) {
         indexOfGroom = propose.sender;
         indexOfBride = propose.receiver;
     } else {
@@ -21,7 +23,7 @@ marryRouter.post('/marry', async (req, res) => {
         groom: indexOfGroom,
         bride: indexOfBride,
         anniversary: propose.date,
-        package: JSON.stringify(propose.package),
+        pkg: JSON.stringify(propose.pkg),
         cost: propose.cost,
     };
 
@@ -43,7 +45,7 @@ marryRouter.post('/marry', async (req, res) => {
 });
 
 // 내가 진행중인 결혼 보기 (결제 할 수 있는 페이지 보여줄 때)
-marryRouter.get('/marry', async (req, res) => {
+marryRouter.get('/marry/index', async (req, res) => {
     // let index = req.session.user.index; // for service
     let index = req.body.index; // for test on Postman
     try {
@@ -56,7 +58,7 @@ marryRouter.get('/marry', async (req, res) => {
 
 // Luniverse getMarry
 marryRouter.get('/marry/:index', async (req, res) => {
-    let index = req.params.index;
+    let index = req.body.index;
     let options = {
         uri: `https://api.luniverse.net/tx/v1.0/transactions/${config.txName.getMarry}`,
         method: 'POST',
@@ -73,9 +75,9 @@ marryRouter.get('/marry/:index', async (req, res) => {
     }
     try {
         let response = await request(options);
-        console.log(response);
+        res.status(200).send(response);
     } catch(err) {
-        console.log(err);
+        res.status(500).send(err);
     }
 })
 
@@ -158,9 +160,10 @@ async function married(indexOfMarry) {
             form: {
                 'from': `${config.walletAddress.admin}`,
                 'inputs': {
+                    'index': `${indexOfMarry}`,
                     '_groom': `${ddidOfGroom}`,
                     '_bride': `${ddidOfBride}`,
-                    '_package': `${JSON.stringify((result[0][0]).package)}`
+                    '_pkg': `${JSON.stringify((result[0][0]).pkg)}`
                 }
             }
         };    

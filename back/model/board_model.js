@@ -13,6 +13,8 @@ class Board {
         });
     }
 
+    // SELECT 
+
     // 게시글 조회 
     readContents() {
         return new Promise((resolve, reject) => {

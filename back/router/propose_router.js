@@ -5,12 +5,13 @@ const userModel = require('../model/user_model');
 
 // 패키지 정보 제공
 proposeRouter.get('/package', (req, res) => {
-    res.status(200).send(package);
+    res.status(200).send(pkg);
 });
 
 // 프로포즈
 proposeRouter.post('/propose', async (req, res) => {
     let receiver = req.body.name;
+    let sender = req.body.index;
     try {
         let result = await userModel.selectOneByName(receiver);
         receiver = result[0][0];
@@ -26,13 +27,9 @@ proposeRouter.post('/propose', async (req, res) => {
         // ---------------------- for Service ----------------------
 
         // ------------------ for test on Postman ------------------
-        sender: req.body.sender, // for test on Postman
-        sender_gender: req.body.sender_gender, // for test on Postman
-        sender_name: req.body.sender_name, // for test on Postman
+        sender: sender, // for test on Postman
         // ------------------ for test on Postman ------------------
-        receiver: receiver.index,
-        receiver_gender: receiver.gender,
-        receiver_name: receiver.name,
+        receiver: receiver.name,
         package: JSON.stringify({
             hall: {
                 name: req.body.hall_title,
@@ -44,7 +41,7 @@ proposeRouter.post('/propose', async (req, res) => {
             },
             dress: {
                 name: req.body.dress_title,
-                cost: req.body.dree_cost
+                cost: req.body.dress_cost
             },
             makeup: {
                 name: req.body.makeup_title,
@@ -66,11 +63,10 @@ proposeRouter.post('/propose', async (req, res) => {
 });
 
 // 내가 받은 프로포즈 리스트 보기
-proposeRouter.get('/propose', async (req, res) => {
-    // let index = req.session.user.index; // for service
-    let index = req.body.index; // for test on Postman
+proposeRouter.post('/propose/receiver', async (req, res) => {
+    let name = req.body.name; // for test on Postman
     try {
-        let result = await proposeModel.selectByUserIndex(index);
+        let result = await proposeModel.selectByUserName(name);
         res.status(200).send(result[0][0]);
     } catch(err) {
         res.status(500).send(err);
@@ -79,6 +75,7 @@ proposeRouter.get('/propose', async (req, res) => {
 
 // 내가 받은 프로포즈 상세 보기
 proposeRouter.get('/propose/:index', async (req, res) => {
+    // 프로포즈의 index
     let index = req.params.index;
     try {
         let result = await proposeModel.selectOneByIndex(index);
@@ -90,7 +87,7 @@ proposeRouter.get('/propose/:index', async (req, res) => {
 
 module.exports = proposeRouter;
 
-let package = { // 추후 DB에서 관리
+let pkg = { // 추후 DB에서 관리
     hall: [
         {
             title: 'Hawaii',

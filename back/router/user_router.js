@@ -103,7 +103,7 @@ userRouter.put('/user', async (req, res) => {
     };
     let ddid;
     let birthday = Date.parse(user.birthday) / 1000;
-    try {
+    try {~`
         let result = await userModel.selectOneByIndex(user.index);
         ddid = result[0][0].ddid;
     } catch(err) {
@@ -148,7 +148,13 @@ userRouter.post('/login', async (req, res) => {
             data = {
                 result: true,
                 msg: '로그인 성공',
-                user: req.session.user
+                index: user.index,
+                name: user.name,
+                city: user.city,
+                gender: user.gender,
+                species: user.species,
+                GT: GT,
+                GR: GR,
             }
         } else {
             data = {
@@ -245,9 +251,9 @@ userRouter.post('/species', async (req, res) => {
 
 // 토큰 충전 (에러 검사가 안되는 중, transfer failed 떠도 result true 반환)
 // 충분한 토큰이 없는 경우에 대한 처리를 구현해야 함. (그런 경우가 있으면 안되겠지만..)
-userRouter.get('/token', async (req, res) => {
+userRouter.get('/token/:index', async (req, res) => {
     // let index = req.session.user.index;
-    let index = req.body.index; // for test on Postman.
+    let index = req.params.index; // for test on Postman.
     let valueAmount = req.body.valueAmount;
     let result, obj;
     try {
