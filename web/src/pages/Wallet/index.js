@@ -284,8 +284,8 @@ const Wallet = props => {
     getRedeemHistory();
   }, [getWallet, getRedeemHistory]);
 
-  if (!wallet || fetchingWallet) return <CircularProgress />;
   if (!user) return <Redirect to="/login" />;
+  if (!wallet || fetchingWallet) return <CircularProgress />;
 
   const {
     hour_balance,
