@@ -39,20 +39,8 @@ router.get("/",util.isLoggedin, function(req, res){
       });
      });
   
-  // 글 보기----------------------------------------------------------------------------페이지없는거
-  router.get("/:id",util.isLoggedin, function(req, res){
-    Post.findOne({_id:req.params.id}) // 3
-   .populate("author")               // 3
-   .exec(function(err, post){        // 3
-    if(err) return res.json(err);
-    res.render("../views/overwatch_show", {
-      title:"Regam Overwatch Posts",
-      ID:req.body.ID,
-        post:post});
-    });
-  });
   
-  // 글 수정 페이지----------------------------------------------------------------------페이지없는거
+  // 글 수정 페이지-----
   router.get("/:id/edit", util.isLoggedin, checkPermission, function(req, res){
       var post = req.flash("post")[0];
       var errors = req.flash("errors")[0] || {};
@@ -104,7 +92,7 @@ router.get("/",util.isLoggedin, function(req, res){
       if(err){
         req.flash("post", req.body);
         req.flash("errors", util.parseError(err));
-        return res.redirect("/posts/"+req.params.id);
+        return res.redirect("/posts");
       }
       
       like = post.likes + 1;
@@ -119,7 +107,7 @@ router.get("/",util.isLoggedin, function(req, res){
         if(err){
          req.flash("post", req.body);
          req.flash("errors", util.parseError(err));
-         return res.redirect("/posts/"+req.params.id);
+         return res.redirect("/posts");
         }
   
         var api = { 
@@ -136,7 +124,7 @@ router.get("/",util.isLoggedin, function(req, res){
         client.post("https://api.luniverse.net/tx/v1.0/transactions/likeReward", api, function(data, res){
           console.log(data);
         });
-        return res.redirect("/posts/"+req.params.id);
+        return res.redirect("/posts");
        });
     });
   

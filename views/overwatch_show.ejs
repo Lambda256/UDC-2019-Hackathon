@@ -26,7 +26,6 @@
                     <div class="is-clearfix">
                         <h3 style="float: left; margin-bottom: 35px;">정보 게시판</h3>
                         <div class="buttons">
-                                <a class="btn btn-default" href="/posts">Back</a>
                                 <form action="/posts/<%= post._id %>" method="post">
                                     <button type="submit" class="btn btn-default">Like</button>
                                 </form>
@@ -53,7 +52,6 @@
                                  <div class="col-sm-8 col-sm-pull-4">
                                   <div class="post-body"><%= post.body %>
                                     <br>
-                                    <%= post.likeIds %>
                                   </div>
                                  </div> <!-- col end-->
                                 </div> <!-- row end -->

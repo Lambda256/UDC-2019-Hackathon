@@ -5,7 +5,7 @@ var util = require("../util");
 var User = require("../models/User");
 var headers = require("../config/headers");
 var client = require("../config/client");
-
+var Post = require("../models/Post");
 
 router.get("/login", util.isLoggedin, function(req, res){
     res.render("../views/index_logout",{
@@ -190,6 +190,17 @@ router.post("/gold", util.isLoggedin, checkPermission, function(req,res){
     })
 });
 
+router.get("/s:id",util.isLoggedin, function(req, res){
+    Post.findOne({_id:req.params.id}) // 3
+   .populate("author")               // 3
+   .exec(function(err, post){        // 3
+    if(err) return res.json(err);
+    res.render("../views/overwatch_show", {
+      title:"Regam Overwatch Posts",
+      ID:req.user.ID,
+        post:post});
+    });
+  });
 
 
 

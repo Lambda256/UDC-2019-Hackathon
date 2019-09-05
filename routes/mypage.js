@@ -23,8 +23,9 @@ router.get("/:ID", util.isLoggedin, function(req, res){
                 "Authorization" : "Bearer 234g9KRjrtLhynvKLeUg6KzSjitxakVsBJPzLUzcRDRp8Uuwx1nxKPyeBqC39cLo"
             },
         };
-        console.log(user);
+        //console.log(user);
         client.get("https://api.luniverse.net/tx/v1.0/wallets/" + user.ID +"/MRGC/RGC/balance", api, function(data, re){
+            console.log(user.ID);
             console.log(data);
             return res.render("../views/mypage",{
                 user: user,

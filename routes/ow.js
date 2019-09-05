@@ -48,13 +48,13 @@ router.post('/overwatch_voting', function (req, res) {
         });
       }
  })
- //res.redirect("/ow/overwatch_voting");
-  res.render('overwatch_voting', {
-    title: "오버워치 커뮤니티지기 투표",
-    length: 5,
-    candidateList: candidates,
-    ID: req.user.ID
-  });
+ res.redirect("/ow/overwatch_voting");
+//   res.render('overwatch_voting', {
+//     title: "오버워치 커뮤니티지기 투표",
+//     length: 5,
+//     candidateList: candidates,
+//     ID: req.user.ID
+//   });
 });
 
 router.get('/overwatch_voting/setCandidate/:username/:candidateurl', function (req, res) {
