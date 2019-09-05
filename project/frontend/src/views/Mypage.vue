@@ -1,5 +1,9 @@
 <template>
+<div>
     <div> {{userInfo.name}}님 환영합니다. </div>
+    <div> {{userInfo.address}} </div>
+</div>
+
 </template>
 
 <script>

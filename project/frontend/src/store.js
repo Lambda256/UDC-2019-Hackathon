@@ -32,6 +32,7 @@ export default new Vuex.Store({
       }
     ],
     Teams: [
+      'All',
       'Tigers', 
       'Eagles', 
       'Heroes', 
@@ -48,22 +49,44 @@ export default new Vuex.Store({
     userInfo: {
       name: "",
       email: "",
+      address: "",
+      home: ""
     },
     isLogin: false,
     isLoginError: false,
     //token: localStorage.getItem('token'),
     token: "",
-    beforeLogin: "Home"
+    beforeLogin: 'home', 
+    games: [],
+    gameToday: [],
+    products: [],
+    productToBuy: null,
+    tickets: [],
+    ticketToBuy: null,
+    gameToSee: null,
   },
   getters: {
     loginRedirect: (state, name) => {
       state.beforeLogin = name
+    },
+    todayGame: (state, payload) => {
+      console.log(payload)
+      let m = games.filter(function(g) {
+        g.map(temp => {
+          var year=moment(temp.Time).format("YYYY");
+          var month=moment(temp.Time).format("MM");
+          var day=moment(temp.Time).format("DD");
+        })
+        return (payload.day==day && payload.month==month)
+      })
+      gameToday = m.slice()
     }
   },
   mutations: {
     loginSuccess: (state, payload) => {
       console.log(payload)
       state.userInfo.name = payload.userName
+      state.userInfo.address = payload.walletAddress
       state.token = payload.accessToken
       state.isLogin = true
       state.isLoginError = false
