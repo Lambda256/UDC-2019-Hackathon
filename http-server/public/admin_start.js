@@ -20,6 +20,21 @@ function loadProject(projectId) {
     $.get(`http://localhost:8000/project/${projectId}/content`).then(r => {                
         $("#content").val(r.content)
     })
+
+    $.get(`http://localhost:8000/project/${projectId}/closing`).then(r => {                
+        
+        if (r.withdrawAddr != "0x0000000000000000000000000000000000000000") {
+            $("#withdraw_content").val(r.content)
+            $("#receiver").val(r.withdrawAddr)
+            $("#withdraw_content").attr('readonly', true)
+            $("#receiver").attr('readonly', true)
+            $("#withdraw_content").attr('disabled', true)
+        } else {            
+            $("#withdraw_content").attr('readonly', false)
+            $("#receiver").attr('readonly', false)
+        }    
+    })
+
 }
 
 function getProjects() {
@@ -69,68 +84,6 @@ function setProjectDropdown(items) {
     })
 }
 
-/*
-adminWs.on("callback", function(payload) {
-
-    console.log("Callback Payload:", payload);
-
-    if (payload.type == "getdevice") {
-
-        let arrScreen = [];
-        let arrAudio  = [];
-        let arrCam    = [];
-
-        for (let scr of payload.screen)
-            arrScreen.push({value:scr, name:scr});
-
-        $('#combo_screen').dropdown('setup menu', {values: arrScreen});
-        $('#combo_screen').dropdown('set selected', payload.selScreen);
-
-        for (let aud of payload.audio )
-            arrAudio.push({value:aud.name, name:aud.name});
-
-        $('#combo_audio').dropdown('setup menu', {values: arrAudio});
-        $('#combo_audio').dropdown('set selected', payload.selMic);
-
-        for (let cam of payload.video )
-            arrCam.push({value:cam.name, name:cam.name});
-
-        $('#combo_cam').dropdown('setup menu', {values: arrCam});
-        $('#combo_cam').dropdown('set selected', payload.selCam);
-
-        let pos = 1;
-
-        if (payload.chatPos == -1900)
-            pos = 1;
-        else if (payload.chatPos == 20)
-            pos = 2;
-        else if (payload.chatPos == 1940)
-            pos = 3;
-
-        $('#combo_pos').dropdown('set selected', pos);
-        //$("select[name=bitrate] option").filter(function() {
-        //    return $(this).val() == payload.bitrate;
-        //}).prop('selected', true);
-    }
-
-    if (payload.type == "join") {
-        toastr.success(payload.device+"가 "+payload.room+"을 개설하였습니다.");
-    }
-
-    if (payload.type == "getstatus") {
-        $("#Panel").show();
-        $("#roomStatus").hide();
-
-        let devId = $('#setRoom').dropdown("get value");
-        if ((payload.isOnAir == true) && (payload.device == devId)) {
-            $("#roomStatus").html(payload.room + "에서 방송 중입니다.");
-            $("#roomStatus").show();
-        }
-    }
-
-});
-*/
-
 function start() {
 
     $('#setProj').dropdown({
@@ -140,35 +93,61 @@ function start() {
         }
     })
 
-    $("#Btn_Save").click(()=>{        
+    $("#Btn_Save").click(()=>{   
+
         let projId = $('#setProj').dropdown("get value")
 
-        $("#Btn_Save").addClass("loading");
+        $("#Btn_Save").addClass("loading")
         
         $.post(`/project/${projId}/content`, {
-            title: $("#title").val(),
-            content: $("#content").val()
+            title   : $("#title").val(),
+            content : $("#content").val()
         }).then(r => {
-            $("#Btn_Save").removeClass("loading");
-            toastr.success("전송 되었습니다.");            
+            $("#Btn_Save").removeClass("loading")
+            toastr.success("전송 되었습니다.")          
         })
         
         let goal = String($("#goal").val())
         let date = new Date($("#v_date").val()).getTime()
         let trooperSelect = $("#trooperSelect").val()                
         
-        $.post(`/project/${projId}/options`, { goal, date, trooperSelect }).then(r => {
-            //$("#Btn_Save").removeClass("loading");
-            //toastr.success("전송 되었습니다.");            
-        })
-        
+        $.post(`/project/${projId}/options`, { goal, date, trooperSelect })
+        .then(r => {})
+            
     })
+
+    $("#Btn_Save_Review").click(()=>{
+
+        let projId = $('#setProj').dropdown("get value")
+        $("#Btn_Save_Review").addClass("loading")
+
+        $.post(`/review/write/${projId}`, {
+            author  : $("#author").val(),
+            content : $("#review_content").val()
+        }).then(r => {
+            $("#Btn_Save_Review").removeClass("loading")
+            toastr.success("전송 되었습니다.")          
+        })
+
+    });
+
+    $("#Btn_Save_Withdraw").click(()=>{
+
+        let projId = $('#setProj').dropdown("get value")
+        $("#Btn_Save_Withdraw").addClass("loading")
+
+        $.post(`/project/${projId}/withdraw`, {
+            receiver : $("#receiver").val(),
+            content  : $("#withdraw_content").val()
+        }).then(r => {
+            $("#Btn_Save_Withdraw").removeClass("loading")
+            toastr.success("전송 되었습니다.")          
+        })
+
+    });
     
     $('#date').calendar({ type: 'date' })
-    //$("#Btn_Finish").click(()=>{
-    //    let devId = $('#setRoom').dropdown("get value");
-    //    adminWs.publish(devId, "control", {type:"finish"});
-    //});
+    
     getProjects();
 
     $('.menu .item').tab();

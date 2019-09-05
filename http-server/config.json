@@ -8,7 +8,7 @@
 	"contracts": {
 		"GiveBox": {
 			"abiFile": "./abi/GiveBox.json",
-			"address": "0x9b7dE9b5F940A69bCcE57a1DBBd4d9bcF86266eF"
+			"address": "0xfaF257932eE325B8481c2078eB1E973D68BCDadF"
 		},
 		"GiveToken": {
 			"abiFile": "./abi/GiveToken.json",

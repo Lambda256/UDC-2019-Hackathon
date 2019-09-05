@@ -194,7 +194,7 @@ contract('Give Box', function ([sender, user1, user2, hacker, hogoo]) {
         
     })
 
-    it('투표', async function () { 
+    it('후기 투표', async function () { 
         
         expect( await this.box.isBackerVoted(0, user1) ).to.be.equal( false )  
         

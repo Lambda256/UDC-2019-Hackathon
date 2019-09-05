@@ -1,17 +1,17 @@
-const config = require('../config.json');
-const boxAbi  = require('../abi/GiveBox.json').abi;
-const auth    = require('../core/auth.js');
+const config = require('../config.json')
+const boxAbi  = require('../abi/GiveBox.json').abi
+const auth    = require('../core/auth.js')
 
-const { luniGet, luniPost, recoverOutputs, toStructArray } = require('../core/helper.js');
+const { luniGet, luniPost, recoverOutputs, toStructArray } = require('../core/helper.js')
 const { web3, Contracts, getTransaction, getFuncDetail, getBlock } = require('../core/blockchain.js')
 
 module.exports = router = require('express').Router()
 
 router.get('/all/', async (req, res, next)=>{
-	//[TODO]
-	let box = Contracts.GiveBox.contract;	
-	//let cnt = await box.projectCount.call({from: config.adminAddr, gas: 500000})
-	let cnt = 3;
+	
+	let box = Contracts.GiveBox.contract;		
+	let cnt = await box.methods.projectCount().call({from: config.adminAddr, gas: 500000});
+	
 	res.json({success: true, count:cnt})
 })
 
@@ -31,13 +31,15 @@ router.get('/:id', (req, res, next)=>{
 
 	let projectId = String(req.params.id)
 
-	luniPost("/transactions/test_getProject_v2", { inputs: { projectId: projectId }})
+	luniPost("/transactions/test_getProject_v4", { inputs: { projectId: projectId }})
 	.then(r => {
 		let data = recoverOutputs(boxAbi, "getProject", r.data.data.res)
 		
 		data.goal = web3.utils.fromWei(data.goal.toString(), 'ether')		
+		data.fund = web3.utils.fromWei(data.fund.toString(), 'ether')		
+		data.address = Contracts.GiveBox.address;
+		 
 		res.json( data )
-
 	})
 	.catch(err => {
 		console.error(err);
@@ -50,19 +52,21 @@ router.get('/:id/backers', (req, res, next)=>{
 
 	let projectId = String(req.params.id)
 
-	luniPost("/transactions/test_getBackers_v1", { inputs: { projectId: projectId }})
+	luniPost("/transactions/test_getBackers_v4", { inputs: { projectId: projectId }})
 	.then(r => {
-
-		let data = toStructArray(['$id', '$amount', '$date', '$blockNumber', 'applyTrooper', 'isTrooper', '*name'],  r.data.data.res)
-
-		return res.json(data)
+		console.log();
+		if (r.data.data.res[0].length == 0) {
+			return res.json([])
+		} else {
+			let data = toStructArray(['$id', '$amount', '$date', '$blockNumber', 'applyTrooper', 'isTrooper', '*name'],  r.data.data.res)
+			return res.json(data)
+		}		
 	})
 	.catch(err => {
 		res.status(500).json({ success:false, message: err.message })
 	})
 
 })
-
 
 // 컨텐츠 본문 가져오기 
 router.get('/:id/content', async (req, res, next)=>{
@@ -88,6 +92,7 @@ router.post('/:id/content', async (req, res, next)=>{
 	res.json({success: true})
 })
 
+// 프로젝트 옵션 설정
 router.post('/:id/options', async (req, res, next)=>{
 
 	let projectId = String(req.params.id)
@@ -100,6 +105,33 @@ router.post('/:id/options', async (req, res, next)=>{
 	res.json({success: true})
 
 })
+
+
+// 최종 정산 인출 
+router.post('/:id/withdraw', async (req, res, next)=>{
+
+	let projectId = String(req.params.id)
+	let box 	  = Contracts.GiveBox.contract
+	
+	await box.methods.withdraw(projectId, req.body.content, req.body.receiver)
+		.send({from: config.adminAddr, gas: 500000})
+
+	res.json({success: true})
+})
+
+
+// 최종 정산 정보
+router.get('/:id/closing', async (req, res, next)=>{
+
+	let projectId = String(req.params.id)
+	let box 	  = Contracts.GiveBox.contract
+	
+	let data = await box.methods.getClosing(projectId)
+		.call({from: config.adminAddr, gas: 500000})
+
+	res.json(data);
+})
+
 
 // REOA 로 기부 트랜젝션 수행.
 router.post('/:id/give', (req, res, next)=>{
