@@ -13,3 +13,21 @@
 > Spec - Spring Boot, JQuery
 - Market : 직원의 리워드 포인트로 상품 구매, 상품 구매내역 조회
 > Spec - Node.js, Vue.js 
+
+---
+
+## Smart Contract 
+
+| Application | Smart Contract | API                | API명              |
+|-------------|----------------|--------------------|--------------------|
+| Luniverse   | GET            | Balance of MWCA    | Balance   |
+| Luniverse   | GET            | Balance of BwG     | Balance                   |
+| Luniverse   | GET            | Balance of User |    Balance                |
+| Luniverse   | POST           | transfer2User      | 리워드 토큰 전송   |
+| Luniverse   | POST           | transfer2MWCA      | 상품구매 토큰 전송 |
+| Market      | UserItems      | purchaseItem       | 상품구매           |
+| Market      | UserItems      | returnItem         | 상품구매취소       |
+| Market      | UserItems      | purchaseList       | 구매목록           |
+| App         | WorkStamp      | checkStamp         | 근무기록           |
+| App         | WorkStamp      | stampList          | 근무기록조회       |
+| Admin       | UserCompany    | addCompanyUser     | 직원주소등록       |
