@@ -16,12 +16,10 @@ module.exports = {
       apiKey: "9mT8pMN7dQPPfXhJEidir5G9Ja7cLkM8xYVNLajUnT4bWoFqMKDUCgtPiQ75QkZk"
     },
     txActionName: {
-      like: "like",
       funding: "mint",
       purchase: "purchase",
       getOwner: "getOwner",
       setOwner: "setOwner",
-      getCardStruct_1: "getCardStruct_1",
       buyCards: "buyCards",
       ownerOf: "ownerOf",
       balanceOf: "balanceOf",

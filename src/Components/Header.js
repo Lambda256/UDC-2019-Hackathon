@@ -5,6 +5,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Link from "@material-ui/core/Link";
 import Toolbar from "@material-ui/core/Toolbar";
 import MyBalance from "./MyBalance";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   "@import":
@@ -34,7 +35,8 @@ const useStyles = makeStyles(theme => ({
     left: 0
   },
   button: {
-    marginLeft: "50px"
+    marginLeft: "50px",
+    backgroundColor: "inherit"
   },
   typography: {
     fontFamily: [
@@ -57,36 +59,22 @@ export default function Header() {
 
   const resetCard = () => {
     localStorage.clear();
-    localStorage.setItem("Me", "23");
-    localStorage.setItem("Euijin", "24,25,26");
-    localStorage.setItem("Sinhyeok", "27,28,29");
-    localStorage.setItem("Hyeonjun", "30,31");
-    localStorage.setItem("Jungho", "32,33");
-    localStorage.setItem("Junhee", "34");
+    localStorage.setItem("Me", "57,10");
+    localStorage.setItem("Euijin", "24,25,26,55,56");
+    localStorage.setItem("Sinhyeok", "27,28,29,53,54");
+    localStorage.setItem("Hyeonjun", "30,31,23,51,52");
+    localStorage.setItem("Jungho", "32,33,49,50");
+    localStorage.setItem("Junhee", "34,35,36,37");
     localStorage.setItem(
       "noUser",
-      "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22"
+      "0,1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,21,22,38,39,40,41,42,43,44,45,46,47,48"
     );
-
     window.location.reload();
   };
 
   return (
     <AppBar position="relative" className={classes.appBar}>
-      {/* <CardMedia
-        className={classes.image}
-        component="img"
-        src="http://wiki.hash.kr/images/thumb/6/6e/%EB%A3%A8%EB%8B%88%EB%B2%84%EC%8A%A4_%EB%A1%9C%EA%B3%A0.png/200px-%EB%A3%A8%EB%8B%88%EB%B2%84%EC%8A%A4_%EB%A1%9C%EA%B3%A0.png"></CardMedia> */}
       <Toolbar>
-        <Link color="inherit" href="/" className={classes.nav}>
-          <Typography
-            variant="h6"
-            color="inherit"
-            className={classes.typography}
-            noWrap>
-            Test
-          </Typography>
-        </Link>
         <Link color="inherit" href="/tickets" className={classes.nav}>
           <Typography
             variant="h6"
@@ -111,7 +99,16 @@ export default function Header() {
             color="inherit"
             className={classes.typography}
             noWrap>
-            Card Market
+            Marketplace
+          </Typography>
+        </Link>
+        <Link color="inherit" href="/explore" className={classes.nav}>
+          <Typography
+            variant="h6"
+            color="inherit"
+            className={classes.typography}
+            noWrap>
+            Explore
           </Typography>
         </Link>
         <Typography
@@ -121,9 +118,7 @@ export default function Header() {
           noWrap>
           <MyBalance />
         </Typography>
-        <button className={classes.button} onClick={resetCard}>
-          카드 초기화
-        </button>
+        <Button className={classes.button} onClick={resetCard}></Button>
       </Toolbar>
     </AppBar>
   );

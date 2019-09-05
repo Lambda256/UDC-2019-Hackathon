@@ -4,9 +4,8 @@ import axios from "axios";
 import { Config } from "../../js/config";
 import cards from "../../players";
 import { makeStyles } from "@material-ui/core/styles";
-import CreateCard from "../CreateCard";
 import Modal from "@material-ui/core/Modal";
-import CardDetail from "../CardDetail";
+import CardUnit from "../Card";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
@@ -14,16 +13,23 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     width: "300px",
     height: "600px",
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "black",
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
+    color: "white"
   },
-  button: {}
+  h3: {
+    fontWeight: "600",
+    height: "20px"
+  },
+  detail: {
+    position: "absolute",
+    top: 0
+  }
 }));
 
 function rand() {
@@ -47,6 +53,7 @@ const CreateCardButton = () => {
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
   const [itemUrl, setItemUrl] = useState("");
+  // const [eventUrl, seteventUrl] = useState("");
 
   const handleClose = () => {
     setOpen(false);
@@ -89,12 +96,17 @@ const CreateCardButton = () => {
         arr.push(card);
       }
     });
-    return arr;
+
+    return arr.sort(() => {
+      return Math.random() - Math.random();
+    });
   };
 
   const noUserCards = getNoUserCards();
   const onClick = () => {
     const random = Math.floor(Math.random() * noUserCards.length);
+
+    console.log(random);
 
     const name = noUserCards[random].playername;
     const teamname = noUserCards[random].teamname;
@@ -127,13 +139,11 @@ const CreateCardButton = () => {
       )
       .then(() => {
         const cardId = noUserCards[random].id;
-        console.log(cardId);
 
         let pos = noUserCards.indexOf(cardId);
         let removedItem = noUserCards.splice(pos, 1);
         setItemUrl(removedItem[0].url);
-        console.log(noUserCards);
-        console.log(removedItem[0].id);
+        // seteventUrl(removedItem[0].eventUrl);
 
         const noUserCardsId = [];
         noUserCards.forEach(card => {
@@ -156,7 +166,6 @@ const CreateCardButton = () => {
         alert("카드 발행에 실패했습니다!");
       });
   };
-  console.log(itemUrl);
   return (
     <div>
       <Button
@@ -171,7 +180,15 @@ const CreateCardButton = () => {
         open={open}
         onClose={handleClose}>
         <div style={modalStyle} className={classes.paper}>
-          <CardDetail className={classes.detail} bgPhoto={itemUrl} />
+          <CardUnit
+            className={classes.detail}
+            bgPhoto={itemUrl}
+            // eventUrl={eventUrl}
+            borderRadius={"0px"}
+            width={"300px"}
+            height={"480px"}
+          />
+          <h3 className={classes.h3}>카드가 발행되었습니다.</h3>
           <Link to={"/profile/Me"}>
             <Button
               size={"buyCard"}

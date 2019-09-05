@@ -55,7 +55,7 @@ const CardList = props => {
         myCards.push(card);
       }
     });
-    return myCards.reverse();
+    return myCards;
   };
 
   const cardList = getMyCards();
@@ -76,12 +76,11 @@ const CardList = props => {
               <Link href={`/album/${card.id}`} className={classes.link}>
                 <CardUnit
                   {...card}
-                  title={card.playername}
-                  subtitle={card.id}
                   iconName="fas fa-heart"
                   bgPhoto={card.url}
                   borderRadius={"8px"}
                   width={"280px"}
+                  eventUrl={card.eventUrl}
                 />
               </Link>
             </Grid>

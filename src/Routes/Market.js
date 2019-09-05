@@ -7,10 +7,11 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import cards from "../players";
-import CardButton from "../Components/Buttons/Button_BuyCard";
+import BuyButton from "../Components/Buttons/Button_Buy";
 import Avatar from "@material-ui/core/Avatar";
 import CardUnit from "../Components/Card";
 import { Link } from "react-router-dom";
+import CustomizedInputBase from "../Components/SearchBar";
 
 const useStyles = makeStyles(theme => ({
   "@import":
@@ -92,6 +93,11 @@ const useStyles = makeStyles(theme => ({
   },
   bcc: {
     fontSize: "20px"
+  },
+  searchbar: {
+    display: "flex",
+    justifyContent: "center",
+    padding: "30px"
   }
 }));
 
@@ -154,6 +160,9 @@ export default () => {
           gutterBottom>
           Card Market
         </Typography>
+        <div className={classes.searchbar}>
+          <CustomizedInputBase />
+        </div>
       </Container>
       {/* <StyledCard /> */}
       {/* End hero unit */}
@@ -187,8 +196,9 @@ export default () => {
                       subtitle="Card information"
                       iconName="fas fa-heart"
                       bgPhoto={card.url}
-                      width={"300px"}
-                      borderRadius={0}
+                      width={"280px"}
+                      borderRadius={"3px"}
+                      eventUrl={card.eventUrl}
                     />
                   </div>
                   <CardContent className={classes.cardContent}>
@@ -199,10 +209,11 @@ export default () => {
                       </Typography>
                     </Typography>
                     <div className={classes.buyBotton}>
-                      <CardButton
+                      <BuyButton
                         value={card.id}
                         user={card.currentOwner}
                         price={card.price}
+                        imgUrl={card.url}
                       />
                     </div>
                   </CardContent>

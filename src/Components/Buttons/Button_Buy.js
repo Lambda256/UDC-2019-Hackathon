@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import Button from "./Button";
-import axios from "axios";
-import { Config } from "../../js/config";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import CardDetail from "../CardDetail";
+import CardButton from "./Button_BuyCard";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -20,8 +19,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-around",
     alignItems: "center",
     color: "white"
-  },
-  button: {}
+  }
 }));
 
 function rand() {
@@ -39,7 +37,7 @@ function getModalStyle() {
   };
 }
 
-const CardButton = ({ value, user, price, imgUrl }) => {
+const BuyButton = ({ value, user, price, imgUrl }) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
@@ -49,6 +47,7 @@ const CardButton = ({ value, user, price, imgUrl }) => {
   };
 
   const onClick = e => {
+    setOpen(true);
     const { value } = e.target;
     const user = e.target.name;
 
@@ -74,54 +73,6 @@ const CardButton = ({ value, user, price, imgUrl }) => {
         console.log("error");
       }
     }
-
-    axios
-      .post(
-        `https://api.luniverse.net/tx/v1.0/transactions/buyCards`,
-        {
-          from: `${Config.walletAddress.user}`,
-          inputs: {
-            _tokenId: CardId /// 1번 카드를 살때
-          }
-        },
-        {
-          headers: {
-            "api-key": `${Config.dapp.apiKey}`
-          }
-        }
-      )
-      .then(() => {
-        alert(`${CardId}번 카드를 샀습니다. 가격: ${price}`);
-      })
-      .catch(() => {
-        alert("실패했습니다");
-      });
-
-    axios
-      .post(
-        `https://api.luniverse.net/tx/v1.0/transactions/purchase`,
-        {
-          from: `${Config.walletAddress.user}`,
-          inputs: {
-            receiverAddress: `${Config.walletAddress.pd}`,
-            valueAmount: price * 100000000000000000
-          }
-        },
-        {
-          headers: {
-            "api-key": `${Config.dapp.apiKey}`
-          }
-        }
-      )
-      .then(() => {
-        setTimeout(() => {
-          window.location.href = `http://localhost:3000/profile/Me`;
-        }, 2000);
-      })
-      .catch(() => {
-        alert("지불 실패");
-        return;
-      });
   };
 
   return (
@@ -141,14 +92,18 @@ const CardButton = ({ value, user, price, imgUrl }) => {
         <div style={modalStyle} className={classes.paper}>
           <CardDetail className={classes.detail} bgPhoto={imgUrl} />
           <h2>카드를 구매하시겠습니까?</h2>
-          <Button
+          <CardButton
             size={"buyCard"}
-            text={"Yes"}
-            className={classes.button}></Button>
+            text={"구매하기"}
+            className={classes.button}
+            value={value}
+            user={user}
+            price={price}
+            imgUrl={imgUrl}></CardButton>
         </div>
       </Modal>
     </div>
   );
 };
 
-export default CardButton;
+export default BuyButton;

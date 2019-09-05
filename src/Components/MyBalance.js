@@ -30,7 +30,7 @@ const MyBalance = ({ margin }) => {
   getBalance();
 
   return (
-    <Text margin={margin}>{Math.round(balance / 100000000000000000)} BLC</Text>
+    <Text margin={margin}>{Math.round(balance / 100000000000000000)} BCC</Text>
   );
 };
 
