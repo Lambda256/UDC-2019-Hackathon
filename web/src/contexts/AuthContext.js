@@ -14,7 +14,8 @@ class AuthProvider extends Component {
     authenticating: false,
     wallet: null,
     fetchingWallet: false,
-    recharging: false
+    recharging: false,
+    redeemHistory: null
   };
 
   componentWillMount() {
@@ -100,6 +101,37 @@ class AuthProvider extends Component {
     }
   };
 
+  getRedeemHistory = async () => {
+    console.log("redeem history!");
+    try {
+      await this.setState({ fetchingWallet: true });
+      const redeemHistory = await api.get(
+        "/redeem_requests/history.json",
+        {},
+        true
+      );
+      console.log("redeem history", redeemHistory);
+      this.setState({ redeemHistory });
+    } catch (e) {
+      handleErrorMessage(e);
+    } finally {
+      await this.setState({ fetchingWallet: false });
+    }
+  };
+
+  submitSignature = async id => {
+    console.log("redeem sig!");
+    try {
+      await this.setState({ fetchingWallet: true });
+      await api.patch(`/redeem_requests/${id}/sign_by_sender.json`, {}, true);
+      window.location = "/wallet";
+    } catch (e) {
+      handleErrorMessage(e);
+    } finally {
+      await this.setState({ fetchingWallet: false });
+    }
+  };
+
   refreshSession = async () => {
     const token = getToken();
     if (token) {
@@ -149,6 +181,8 @@ class AuthProvider extends Component {
           getWallet: this.getWallet,
           recharge: this.recharge,
           redeem: this.redeem,
+          getRedeemHistory: this.getRedeemHistory,
+          submitSignature: this.submitSignature,
           updateState: this.updateState
         }}
       >

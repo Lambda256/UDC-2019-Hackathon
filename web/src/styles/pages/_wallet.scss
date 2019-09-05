@@ -172,7 +172,44 @@
   }
 
   .inprogress-container {
-    padding: 40px 0px 40px 140px;
+    padding: 40px 0px 40px 70px;
 
+    .desc {
+      margin: 20px 0;
+    }
+
+    .inprogress-header {
+      border-top: 1px solid #4f4f4f;
+      border-bottom: 1px solid #4f4f4f;
+      font-size: 18px;
+      div {
+        &:first-child {
+          border-right: 1px solid #4f4f4f;
+        }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex: 1;
+        padding: 10px 0;
+      }
+
+      button {
+        width: 200px;
+        border-color: #fff;
+        color: #fff;
+      }
+    }
+
+    .text-confirm {
+      font-size: 14px;
+      color: #50e3c2;
+    }
+
+    .confirm-submit {
+      max-width: 200px;
+      padding: 20px;
+      margin-left: 16px;
+    }
   }
 }

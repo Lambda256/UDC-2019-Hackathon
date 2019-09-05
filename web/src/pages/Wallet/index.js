@@ -25,9 +25,12 @@ const WalletRow = props => {
     current_price,
     profile_picture,
     loading,
+    redeem,
     symbol,
-    onClick
+    onClick,
+    onSign
   } = props;
+  console.log("redeem", redeem);
   const inProgress = pending_balance > 0;
   return (
     <div className="wallet-row">
@@ -88,15 +91,52 @@ const WalletRow = props => {
           </Button>
         </div>
       </div>
-      {inProgress && (
-        <div className="inprogrses-container">
-          <div className="text-grey uppercase">Post-Meeting Confirmation</div>
-          <div className="text-white uppercase">
-            {numeral(pending_balance).format("0,0.00")} {symbol} will be burnt
-            when both parties confirm that they have met and used the token.
+      {redeem &&
+        (!redeem.signed_by_owner || !redeem.signed_by_sender) &&
+        inProgress && (
+          <div className="inprogress-container">
+            <div className="text-grey uppercase">Post-Meeting Confirmation</div>
+            <div className="text-white desc">
+              {numeral(pending_balance).format("0,0.00")} {symbol} will be burnt
+              when both parties confirm that they have met and used the token.
+            </div>
+            <div className="inprogress-header row-align-center">
+              <div className="text-grey">You ({user.name})</div>
+              <div className="text-grey">{name} (Token Issuer)</div>
+            </div>
+            <div className="inprogress-header row-align-center">
+              {!redeem.signed_by_sender ? (
+                <div className="text-grey">
+                  <Button onClick={() => onSign(redeem.id)}>
+                    Submit Signature
+                  </Button>
+                </div>
+              ) : (
+                <div className="row-align-center text-confirm">
+                  <Icon type="check" />
+                  <div className="confirm-submit">
+                    Submitted for the confirmation{" "}
+                    {moment(redeem.updated_at).fromNow()} mins ago.
+                  </div>
+                </div>
+              )}
+              {!redeem.signed_by_owner ? (
+                <div className="text-grey">
+                  Waiting for signature...
+                  {/*<Button>Submit Signature</Button>*/}
+                </div>
+              ) : (
+                <div className="row-align-center text-confirm">
+                  <Icon type="check" />
+                  <div className="confirm-submit">
+                    Submitted for the confirmation{" "}
+                    {moment(redeem.updated_at).fromNow()} mins ago.
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
       <div className={`collapsed-content ${collapsed && "collapsed"}`}>
         <div className="collapsed-body">
           <div className="text-grey uppercase redeem-request">
@@ -191,11 +231,15 @@ const Wallet = props => {
     getWallet,
     recharge,
     redeem,
-    recharging
+    recharging,
+    redeemHistory,
+    getRedeemHistory,
+    submitSignature
   } = useContext(AuthContext);
   useEffect(() => {
     getWallet();
-  }, [getWallet]);
+    getRedeemHistory();
+  }, [getWallet, getRedeemHistory]);
 
   if (!user) return <Redirect to="/login" />;
 
@@ -239,7 +283,9 @@ const Wallet = props => {
             balance={hour_balance}
             current_price={1}
             symbol="TUSD"
+            redeem={null}
             onClick={recharge}
+            onSign={() => {}}
             loading={recharging}
             name="Intime Main Token"
             profile_picture={hourToken}
@@ -251,8 +297,19 @@ const Wallet = props => {
                 key={index}
                 user={user}
                 onClick={redeem}
+                onSign={submitSignature}
                 {...token}
                 {..._.find(private_tokens, ["id", token.private_token_id])}
+                redeem={
+                  _.find(redeemHistory.sent, [
+                    "private_token_id",
+                    token.private_token_id
+                  ]) ||
+                  _.find(redeemHistory.received, [
+                    "private_token_id",
+                    token.private_token_id
+                  ])
+                }
               />
             );
           })}
