@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html class="uk-height-1-1 uk-background-fixed uk-background-center-center" style="background-image: url(src/bg.jpg);">
+    <head>
+        <title>스마트 공유 모빌리티, 타고벌자</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans|Noto+Sans+KR:300&display=swap&subset=korean" rel="stylesheet">
+        <link rel="stylesheet" href="css/uikit.css" />
+        <link rel="stylesheet" href="css/leaflet.css" />
+        <script src="js/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.Spin/1.1.0/leaflet.spin.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="js/uikit.js"></script>
+        <script src="js/uikit-icons.min.js"></script>
+        <meta name="google-signin-scope" content="profile email">
+        <meta name="google-signin-client_id" content="246220780726-tr10ltoqeu9t2bj7qchcddsbqjva0ilf.apps.googleusercontent.com">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+    </head>
+
+    <body class="uk-height-1-1 ">
+      <!-- nav -->
+      <div id="nav" class="uk-text-center" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky" style="height:90px;">
+      	<nav class="uk-height-1-1 uk-navbar uk-navbar-container" style="background: transparent">
+          <div class="uk-width-1-6"></div>
+      	  <div class="uk-width-2-3 uk-animation-toggle" tabindex="0">
+
+      	    <div class="uk-animation-shake uk-margin-top">
+              <a id="logo" onclick="up()" href="#" uk-totop uk-scroll>
+                <span class="uk-heading-small" style="font-family: 'Black Han Sans', sans-serif; color: #F3F3F2;">
+        			    타고벌자
+                </span>
+              </a>
+            </div>
+          </div>
+          <div class="uk-width-1-6 uk-flex uk-flex-right uk-flex-top">
+            <img id="userProfileButton" class="uk-profile-small uk-border-circle uk-margin-right uk-margin-top" src="" uk-toggle="target: #offcanvas-flip" onclick="refresh()">
+            <div id="signInButton" class="g-signin2 uk-profile-small uk-border-circle uk-margin-right uk-margin-top" data-width="50" data-height="50" data-longtitle="false" data-onsuccess="onSignIn">
+          </div>
+          </div>
+      	</nav>
+      </div>
+      <!-- my page history -->
+      <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+        <div class="uk-offcanvas-bar" style="font-family: 'Noto Sans KR', sans-serif;">
+          <button class="uk-offcanvas-close" type="button" uk-close></button>
+          <h3  style="margin-bottom:5px;"><span id="userName">YEONJAE</span><span id="refresh" uk-icon="refresh" style="margin-left:5px;"></span></h3>
+          <span class="uk-label" style="background-color:#ffd250;color:#000;" onclick="updateBalance()">
+            <span uk-icon="bolt"></span><span id="balance"></span>
+          </span>
+          <span id="return" class="uk-label" style="background-color:#317bfd;color:#fff;">
+            <span uk-icon="sign-out"></span>반납
+          </span>
+          <p>
+            최근 결제/보상 내역을 확인하세요
+          </p>
+          <ul id="history" class="uk-list uk-list-divider">
+          </ul>
+          <button id="signOutButton" class="uk-button-default" onclick="signOut();" style="margin-top:5px;">
+            <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif; font-size:0.8rem;">로그아웃</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- body0 (select page) -->
+      <div id="body0" class="uk-height-1-nav uk-text-center">
+        <div class="uk-inline uk-divider-vertical"></div>
+        <div class="uk-flex uk-flex-center uk-margin-bottom">
+            <a id="choice" onclick="choose()" href="#body1" uk-scroll>
+              <div class="uk-card-hover uk-card uk-card-default uk-card-body uk-width-small uk-height-small uk-width-medium@m" onclick=""><span uk-icon="icon: cart; ratio: 2.2" style="margin-bottom:5px;"></span><br>따릉이</div>
+            </a>
+            <div class="uk-card-hover uk-card uk-card-default uk-card-body uk-margin-left uk-width-small uk-height-small uk-width-medium@m" onclick=""><span uk-icon="icon:  lifesaver; ratio: 2.2" style="margin-bottom:5px;"></span><br>반디클</div>
+        </div>
+        <div class="uk-flex uk-flex-center">
+            <div class="uk-card-hover uk-card uk-card-default uk-card-body uk-width-small uk-height-small uk-width-medium@m" onclick=""><span uk-icon="icon: happy; ratio: 2.2" style="margin-bottom:5px;"></span><br>씽씽이</div>
+            <div class="uk-card-hover uk-card uk-card-default uk-card-body uk-margin-left uk-width-small uk-height-small uk-width-medium@m" onclick=""><span uk-icon="icon: bell; ratio: 2.2" style="margin-bottom:5px;"></span><br>퀵고잉</div>
+        </div>
+      </div>
+
+      <!-- empty space -->
+      <div id="emptydiv0" class="uk-height-small" style="display:none;"></div>
+
+      <!-- body 1 -->
+      <div id="body1" class="uk-height-1-nav uk-text-center" style="display:none;">
+        <div class="uk-inline uk-divider-vertical"></div>
+        <form class="uk-text-middle">
+          <div class="uk-margin-bottom">
+            <div class="uk-inline uk-width-medium uk-width-1-3@m">
+                <span class="uk-form-icon" uk-icon="icon: location" style="color: #fff;"></span>
+                <input class="autocomplete-input uk-input uk-padding-medium" autocomplete="on" placeholder="출발지" type="text" placeholder="Large" style="font-family: 'Noto Sans KR', sans-serif; color:#fff; background: transparent;">
+                <div class="custom-select autocomplete-dropdown uk-width-1-1" style="display:none; position:absolute; z-index:1;">
+                  <select class="autocomplete-list uk-width-1-1 uk-select uk-padding-medium" name="list" style="font-family: 'Noto Sans KR', sans-serif;">
+                    <option value="0">Select</option>
+                  </select>
+                </div>
+            </div>
+          </div>
+          <div>
+            <div class="uk-inline uk-width-medium uk-width-1-3@m">
+                <span class="uk-form-icon" uk-icon="icon: location" style="color: #fff;"></span>
+                <input class="autocomplete-input uk-input uk-padding-medium" autocomplete="on" placeholder="도착지" type="text" placeholder="Large" style="font-family: 'Noto Sans KR', sans-serif; color:#fff; background: transparent;">
+                <div class="custom-select autocomplete-dropdown uk-width-1-1" style="display:none; position:absolute; z-index:1;">
+                  <select class="autocomplete-list uk-width-1-1 uk-select uk-padding-medium" name="list" style="font-family: 'Noto Sans KR', sans-serif;">
+                    <option value="0">Select</option>
+                  </select>
+                </div>
+            </div>
+          </div>
+        </form>
+        <div class="uk-inline uk-divider-vertical"></div>
+        <div>
+          <div id="spinner" uk-spinner style="display:none;"></div>
+          <a id="go" onclick="showbody2()" href="#body2" uk-scroll>
+            <button class="uk-width-1-4 uk-width-small@s uk-button-default uk-margin-bottom">
+              <div class="uk-margin-small-top uk-margin-small-bottom">
+                <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">GO!</span>
+              </div>
+            </button>
+          </a>
+        </div>
+      </div>
+
+
+      <!-- empty space -->
+      <div id="emptydiv" class="uk-height-small" style="display:none;"></div>
+
+      <!-- body 2 -->
+      <div id="body2" class="uk-height-1-nav" style="display:none;">
+        <div class="uk-text-center" style="height:130px;">
+            <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif; color: #F3F3F2;">
+              도착지 근처 정류장들의 인센티브를 확인하세요
+            </span>
+          <div class="uk-margin-top">
+            <button class="uk-width-1-4 uk-width-small@s uk-button-default" type="button" uk-toggle="target: #modal-example">
+              <div class="uk-margin-small-top uk-margin-small-bottom">
+                <span class="uk-text-medium" style="font-family: 'Noto Sans KR', sans-serif;">OK</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div id="mapid" class="uk-width-1-1 uk-height-1-text" style="margin:0px;">
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div id="modal-example" uk-modal>
+          <div class="uk-modal-dialog uk-modal-body">
+              <h2 class="uk-modal-title">CHECK</h2>
+              <p>결제 전 출발지 정보를 다시 한번 확인해주세요.</p>
+              <p id="departure"></p>
+              <p class="uk-text-right">
+                  <button class="uk-button uk-button-secondary uk-modal-close" type="button">취소</button>
+                  <button id="rent" class="uk-button uk-button-primary" type="button">결제</button>
+              </p>
+          </div>
+      </div>
+    </body>
+</html>
+<script src="js/txs.js"></script>
+<script src="js/functions.js"></script>
