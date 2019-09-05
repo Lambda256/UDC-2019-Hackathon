@@ -27,7 +27,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$outlogin_skin_url.'/style.css">'
         <br>
         <?php if ($member[mb_id] && $member[mb_level] >= 2) { ?>
             <?php if ($member['mb_1'] == NULL) { ?>
-                <center><button onclick="backand_get_wallet();"><img src="<?php echo G5_THEME_MSHOP_URL ?>/img/lnv_white.png" width="18px" height="18px" align="top"> <?php echo $member['mb_id'] ?>(<?php echo $member['mb_no'] ?>)님, 루니버스 지갑 생성하기</button></center>
+                <center><button class="new_wallet" onclick="backand_get_wallet();"><img src="<?php echo G5_THEME_MSHOP_URL ?>/img/lnv_white.png" width="18px" height="18px" align="top"> <?php echo $member['mb_id'] ?>(<?php echo $member['mb_no'] ?>)님, 루니버스 지갑 생성하기</button></center>
                 <span id="ming1"></span>
             <?php } else { ?>
                 <span id="ming1" style="visibility: hidden;"><?php echo $member['mb_1'] ?></span>

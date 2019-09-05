@@ -157,20 +157,38 @@ $( "#staking_opener" ).on( "click", function() {
         });
     }
 
-    function stake_token() {
+    function ta_stake() {
         var user_address = '<?php echo $member['mb_1'] ?>';
         var stake_address = '<?php echo $member['mb_2'] ?>';
         var amount = document.getElementById("stake_token_amount").value;
         var abc = user_address + '/' + stake_address + '/' + amount;
+
+        alert( '결과 : ' + abc );
+
+        $.ajax({
+            type: 'POST',
+            url: '/backand_get.php',
+            data: {what: 'ta_stake', parameter: abc}
+        }).done(function( msg ) {
+            alert( '결과 : ' + msg );
+            location.reload();
+        });
+    }
+
+    function ta_withdraw() {
+        var post_address = '<?php echo $member['mb_1'] ?>';
+        var address = document.getElementById("post_token_address").value;
+        var amount = document.getElementById("post_token_amount").value;
+        var abc = post_address + '/' + address + '/' + amount;
 
         //alert( '결과 : ' + abc );
 
         $.ajax({
             type: 'POST',
             url: '/backand_get.php',
-            data: {what: 'stake_token', parameter: abc}
+            data: {what: 'ta_withdraw', parameter: abc}
         }).done(function( msg ) {
-            alert( '결과 : ' + msg );
+            //alert( '결과 : ' + msg );
             location.reload();
         });
     }
@@ -220,7 +238,7 @@ fieldset { padding:0; border:0; margin-top:25px; }
                                 <input type="text" name="stake_token_amount" id="stake_token_amount" value="1" class="text ui-widget-content ui-corner-all">
                                 </fieldset>
                             </form>
-                            <button onclick="stake_token();">냐옹</button>
+                            <button onclick="ta_stake();">스테이킹!</button>
                         </div>
                         <i class="fa fa-btc" aria-hidden="true"></i> TA Staking
                             <span id="stake_address_balance"class="payment">0 TA <i class="fa fa-cubes" aria-hidden="true" style="font-size:1.25em;"></i></span>
@@ -249,13 +267,13 @@ fieldset { padding:0; border:0; margin-top:25px; }
                             <form>
                                 <fieldset>
                                 <label for="post_token_address">받으실 분의 지갑주소</label>
-                                <input type="text" name="post_token_address" id="post_token_address" value="" class="text ui-widget-content ui-corner-all">
+                                <input type="text" name="post_token_address" id="post_token_address" value="0xb3c4c146d4a851a72893a24fc892356bc39f4420" class="text ui-widget-content ui-corner-all">
                                 <label for="post_token_amount">보내실 토큰의 개수</label>
                                 <input type="text" name="post_token_amount" id="post_token_amount" value="1" class="text ui-widget-content ui-corner-all">
 
                                 </fieldset>
                             </form>
-                            <button onclick="post_token();">냐옹</button>
+                            <button onclick="ta_withdraw();">보내자!</button>
                         </div>
                         <i class="fa fa-arrow-circle-up" aria-hidden="true"></i> 토큰 출금
                             <span><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
@@ -286,7 +304,7 @@ fieldset { padding:0; border:0; margin-top:25px; }
                                                         //location.href = location.href;
                                                         //document.getElementById("user_address_balance").innerHTML = msg + ` TA`
 
-                                                        var aaa = document.getElementById("ming1").innerHTML;
+                                                        var aaa = '<?php echo $member['mb_1'] ?>';
                                                         $.ajax({
                                                             type: 'POST',
                                                             url: '/backand_get.php',
@@ -298,16 +316,13 @@ fieldset { padding:0; border:0; margin-top:25px; }
                                                     },2000));
                                                 }
                                             </script>
-                                            가나다라?
+                                            광고를 끝까지 시청시 TA를 보상 받습니다.
                                         </center>
                                     </p>
                                 </div>
                             </span>
                         </li>
                     </a>
-            <br><li class="my_cou"><i class="fa fa-gamepad" aria-hidden="true"></i> 게임하고 타! 토큰받기
-                            <span><i class="fa fa-star" aria-hidden="true"></i></span>
-                        </li>
         </ul>
     </section>
 
@@ -319,88 +334,7 @@ fieldset { padding:0; border:0; margin-top:25px; }
         });
 
     </script>
-
-    <!--
-    <section id="smb_my_od">
-        <h2>여름이니깐</h2>
-        <?php
-        // 최근 주문내역
-        define("_ORDERINQUIRY_", true);
-
-        $limit = " limit 0, 5 ";
-        include G5_MSHOP_PATH.'/orderinquiry.sub.php';
-        ?>
-        <a href="<?php echo G5_SHOP_URL; ?>/orderinquiry.php" class="btn_more">더보기</a>
-    </section>
-
-    <section id="smb_my_od">
-        <h2><a href="<?php echo G5_SHOP_URL; ?>/orderinquiry.php">최근 주문내역_mobile_shop_mypage</a></h2>
-        <?php
-        // 최근 주문내역
-        define("_ORDERINQUIRY_", true);
-
-        $limit = " limit 0, 5 ";
-        include G5_MSHOP_PATH.'/orderinquiry.sub.php';
-        ?>
-        <a href="<?php echo G5_SHOP_URL; ?>/orderinquiry.php" class="btn_more">더보기</a>
-    </section>
-
-    <section id="smb_my_wish" class="wishlist">
-        <h2><a href="<?php echo G5_SHOP_URL; ?>/wishlist.php">최근 위시리스트</a></h2>
-
-        <ul>
-            <?php
-            $sql = " select *
-                       from {$g5['g5_shop_wish_table']} a,
-                            {$g5['g5_shop_item_table']} b
-                      where a.mb_id = '{$member['mb_id']}'
-                        and a.it_id  = b.it_id
-                      order by a.wi_id desc
-                      limit 0, 6 ";
-            $result = sql_query($sql);
-            for ($i=0; $row = sql_fetch_array($result); $i++)
-            {
-                $image_w = 250;
-                $image_h = 250;
-                $image = get_it_image($row['it_id'], $image_w, $image_h, true);
-                $list_left_pad = $image_w + 10;
-            ?>
-
-            <li>
-                <div class="wish_img"><?php echo $image; ?></div>
-                <div class="wish_info">
-                    <a href="./item.php?it_id=<?php echo $row['it_id']; ?>" class="info_link"><?php echo stripslashes($row['it_name']); ?></a>
-                     <span class="info_date"><?php echo substr($row['wi_time'], 2, 8); ?></span>
-                </div>
-            </li>
-
-            <?php
-            }
-
-            if ($i == 0)
-                echo '<li class="empty_list">보관 내역이 없습니다.</li>';
-            ?>
-        </ul>
-         <a href="<?php echo G5_SHOP_URL; ?>/wishlist.php" class="btn_more">더보기</a>
-    </section>
-    -->
-
 </div>
-
-<script>
-$(function() {
-    $(".win_coupon").click(function() {
-        var new_win = window.open($(this).attr("href"), "win_coupon", "left=100,top=100,width=700, height=600, scrollbars=1");
-        new_win.focus();
-        return false;
-    });
-});
-
-function member_leave()
-{
-    return confirm('정말 회원에서 탈퇴 하시겠습니까?')
-}
-</script>
 
 <?php
 include_once(G5_MSHOP_PATH.'/_tail.php');

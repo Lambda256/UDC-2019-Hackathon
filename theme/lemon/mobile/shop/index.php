@@ -6,6 +6,10 @@ define("_INDEX_", TRUE);
 include_once(G5_THEME_MSHOP_PATH.'/shop.head.php');
 ?>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=31c23088fddc016694c85d0f42dd0c8d"></script>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
@@ -49,6 +53,25 @@ include_once(G5_THEME_MSHOP_PATH.'/shop.head.php');
             consol.log("Geolocation을 지원하지 않는 브라우저 입니다.");
         }
     });
+</script>
+<script>
+$( function() {
+$( "#dialog" ).dialog({
+    autoOpen: false,
+    show: {
+    effect: "blind",
+    duration: 1000
+    },
+    hide: {
+    effect: "explode",
+    duration: 1000
+    }
+});
+
+$( "#opener" ).on( "click", function() {
+    $( "#dialog" ).dialog( "open" );
+});
+} );
 </script>
 <script><?php echo $member['mb_1'] ?>
 
@@ -235,14 +258,17 @@ include_once(G5_THEME_MSHOP_PATH.'/shop.head.php');
         </a>
     </li>
     <li id="ol_after_pt">
-        <a href="#">
+        <a href="<?php echo G5_BBS_URL ?>/board.php?bo_table=notice">
         <img src="<?php echo G5_THEME_MSHOP_URL ?>/img/4.png" width="100px" height="100px"><br>
-            <strong></strong>
+            <strong>공지사항</strong>
         </a>
     </li>
     <li id="ol_after_pt">
-        <a>
-        <img src="<?php echo G5_THEME_MSHOP_URL ?>/img/5.png" width="100px" height="100px"><br>
+        <div id="dialog" title="<?php echo $member['mb_nick'] ?> 님의 타타타 지갑주소 입니다!">
+            <p><img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=<?php echo $member['mb_1'] ?>"><br><?php echo $member['mb_1'] ?></p>
+        </div>
+        <a id="opener">
+        <img src="<?php echo G5_THEME_MSHOP_URL ?>/img/5.png" width="100px" height="100px" ><br>
             <strong id="ming3">0 TA</strong>
             <i class="fa fa-cog fa-spin fa-3x fa-fw" onclick="backand_get_balance();"></i>
         </a>

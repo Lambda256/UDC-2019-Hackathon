@@ -66,6 +66,7 @@ include_once(G5_LIB_PATH.'/latest.lib.php');
             data: {what: 'wallet_stake', parameter: aaa}
         }).done(function( msg ) {
             alert( '결과2 : ' + msg );
+            document.getElementById("new_wallet").style.display = 'none';
             //document.getElementById("ming3").innerHTML = msg + ` TA`
         });
         });
