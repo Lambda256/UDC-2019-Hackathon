@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "solTest": "truffle test test/lunisign.test.js",
+    "dev:deploy": "truffle migrate --reset",
+    "dev:testNode": "ganache-cli -d -m lunisign"
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "eccrypto": "^1.1.1"
+  }
+}
