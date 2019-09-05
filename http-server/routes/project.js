@@ -7,6 +7,7 @@ const { web3, Contracts, getTransaction, getFuncDetail, getBlock } = require('..
 
 module.exports = router = require('express').Router()
 
+// 전체 갯수 반환
 router.get('/all/', async (req, res, next)=>{
 	
 	let box = Contracts.GiveBox.contract;		
@@ -14,6 +15,26 @@ router.get('/all/', async (req, res, next)=>{
 	
 	res.json({success: true, count:cnt})
 })
+
+// 메인페이지에 나올 프로젝트들 
+router.get('/main', async (req, res, next)=>{
+	// 임의선정 나중에 관리자 모드로 가야됨.
+	let pick = [0,1,2];
+
+	let projectId = String(req.params.id)
+	let box = Contracts.GiveBox.contract
+
+	let items = []
+
+	for (let i=0; i< pick.length; i++) {
+		let item = await box.methods.getProject(String(i)).call({from: config.adminAddr, gas: 500000});
+		items.push( item )
+	}
+	
+	res.json(items)
+})
+
+
 
 // 프로젝트 신규생성
 router.post('/new/', async (req, res, next)=>{
@@ -166,4 +187,3 @@ router.post('/:id/give', (req, res, next)=>{
 		res.status(500).json({ success:false, message: err.message })
 	})
 })
-

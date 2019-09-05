@@ -12,15 +12,15 @@
     </v-ons-toolbar>
 
     <div style="margin-top:15px;text-align:center;height:calc(100% - 15px);">
-        <div class="detail_title" @click="directPayment">일산 안타까운 사연</div>
+        <div class="detail_title" v-text="info.title"></div>
 
         <div class="card-item" style="width:100%;border:0;margin:8px 0px;border-radius:0;">
             <div style="float:left;margin-right:10px;border-radius:8px;overflow:hidden;"><img src="img/help.png" width="150"></div>
             <div style="text-align:left">
-                <div class="header"><span>목표액</span> {{info.goal}} JAL = {{info.goal_eth}} ETH</div>
+                <div class="header"><span>목표액</span> {{info.goal}} GIV = {{info.goal_eth}} ETH</div>
                 <div class="header"><span>마감일</span> {{info.close}}</div>
                 <div class="header"><span>돌격대</span> {{info.trooperCount}}명 신청됨, {{info.trooperSelect}} 선발예정</div>
-                <div class="header"><span>모집액</span><b>{{info.fund}}</b> JAL, <b>{{info.backerCount}}</b>명이 후원했음</div>
+                <div class="header"><span>모집액</span><b>{{info.fund}}</b> GIV, <b>{{info.backerCount}}</b>명이 후원했음</div>
                 <div style="padding-left:160px;">
                     <v-ons-progress-bar :value="info.rate" secondary-value="100"></v-ons-progress-bar>
                 </div>
@@ -34,27 +34,14 @@
         </div>
 
         <div v-if="tab == 0" class="detail_tab">
-            <div class="detail_content">
-                <div class="sub-title">개요</div>
-                <div>이번 후원은 XX에 방문하여 XX 하는 것입니다!</div>
-                Logined: {{loginId}}
-                <div class="sub-title">기부금 사용예정 항목</div>
-                <div>기저귀 3박스, 분유 1박스</div>
-
-                <div class="sub-title">기부금 사용예정 항목</div>
-                <div>
-ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㄴㅁㅇ
-                </div>
-
-            </div>
-
+            <div class="detail_content" v-html="info.content"></div>
         </div>
 
         <div v-if="tab == 1" class="detail_tab">
             <div class="detail_content" style="padding-left:15px;">
                 <div v-for="user in backers" :key="user.id" class="row">
                     <div>{{user.name}}<span class="dol" v-if="user.applyTrooper" :class={confirmed:user.isTrooper}>돌격대</span></div>
-                    <div><b>{{user.amount}}</b> JAL</div>
+                    <div><b>{{user.amount}}</b> GIV</div>
                     <div>{{user.date}}</div><div @click="openTrack(user.blockNumber)">{{user.blockNumber}}</div>
                 </div>
             </div>
@@ -62,8 +49,10 @@
 
         <div v-if="tab == 2" class="detail_tab">
             <div class="detail_content">
-               <div class="sub-title">돌격대 정기영님 투척 후기</div>
-               <div>2019년 9월 15일경 돌격대 10명과 함께 방문을 하였습니다.<br>갔다 왔는데 비가 많이 내렸는데도 불구하고 많은 분들이 참여해주셨어요.<br>일단 브이로그를 확인해주세요!</div>
+               <div v-for="rev in reviews" :key="rev.id">
+                    <div class="sub-title">돌격대 {{rev.author}}님 후기</div>
+                    <div v-html="rev.content"></div>
+               </div>               
             </div>
         </div>
 
@@ -73,8 +62,8 @@
         </div>
 
         <div class="buttonBox" v-if="tab == 2">
-            <ons-button class="btn_accept" @click="doAccept" :class="{ disabled: (this.accepted == true)}">인정!</ons-button>
-            <ons-button class="btn_claim"  @click="doClaim" :class="{ disabled: (this.claimed == true)}">이건 좀...</ons-button>
+            <ons-button class="btn_accept" @click="doAccept" :class="{ disabled: (this.$data.info.voted == true)}">인정!</ons-button>
+            <ons-button class="btn_claim"  @click="doClaim" :class="{ disabled: (this.$data.info.voted == true)}">이건 좀...</ons-button>
         </div>
 
     </div>
@@ -156,25 +145,15 @@ props: ['target'],
 
 data() {
 
-    let cTags = []
-    if (this.$props.target && this.$props.target.tags) {
-        this.$props.target.tags.split(",").forEach( (tag)=>cTags.push({text:tag}) )
-    }
-
-    let atHome = this.$store.getters["xapp/existTag"](this.$props.target.id, 'home');
-    let size   = (this.$props.target.size) ? this.$props.target.size : '10';
-
-    let projectId = "0";
-
+    let projectId = target;
+    console.log('projectId:', projectId);
     return {
 
         projectId : projectId,
 
         timer: null, // 리플래시 타이머
 
-        tab : 0,
-        accepted : false,
-        claimed  : false,
+        tab : 0,        
         gave     : false,
 
         info: {
@@ -185,7 +164,11 @@ data() {
             trooperCount:  '-',
             trooperSelect: '-',
             backerCount:   '-',
-            rate: 0
+            title: '',
+            content: '',
+            rate: 0,
+            address: '',
+            voted: false
         },
 
         form: {
@@ -206,24 +189,26 @@ data() {
         },
 
         backers: [],
+        reviews: [],
 
         loginId: undefined,
 
         giveDialogVisible : false,
-        trackDialogVisible: false,
+        trackDialogVisible: false
         //------------------------------------------
 
-        size: size
     }
 },
 
 mounted() {
-    this.myInfo()
+    
     this.getInfo()
+    this.getContent()
 
     this.$data.timer = setInterval(()=>{
         this.getInfo()
-    }, 5000)
+    }, 10000)
+
 },
 
 beforeDestroy() {
@@ -247,20 +232,33 @@ methods: {
         return (t_date.getMonth()+1)+"월 "+t_date.getDate()+"일";
     },
 
+    getContent() {
+        axios.get(HOST+"/project/"+this.$data.projectId+"/content").then(r => {                        
+            this.$data.info.content = r.data.content;
+        })
+        
+        axios.get(HOST+"/review/list/"+this.$data.projectId).then(r => {                        
+            this.$data.reviews = r.data;
+        })
+
+    },
+
     getInfo() {
         console.log('called project');
-
+        
         axios.get(HOST+"/project/"+this.$data.projectId).then(r => {
-
-            this.$data.info.goal     = 100; //r.data.goal || 300;
+            
+            this.$data.info.goal     = r.data.goal;
             this.$data.info.goal_eth = (r.data.goal / 100).toFixed(1)
-            this.$data.info.fund     = this.$core.price.setDecimal(r.data.fund, 18).toFixed(0)
+            this.$data.info.fund     = r.data.fund;
             this.$data.info.trooperCount  = r.data.trooperCount
             this.$data.info.backerCount   = r.data.backerCount
             this.$data.info.trooperSelect = (r.data.trooperSelect == 0) ? '전원' : r.data.trooperSelect;
+            this.$data.info.title   = r.data.title;
+            this.$data.info.address = r.data.address;
 
             if (this.$data.info.goal == 0)
-                this.$data.info.rate = 100;
+                this.$data.info.rate = 0;
             else
                 this.$data.info.rate = (parseFloat(this.$data.info.fund) / parseFloat(this.$data.info.goal))*100;
 
@@ -275,16 +273,17 @@ methods: {
             })
 
             this.$data.backers = r.data;
-        })
+        })        
     },
 
-    fireGive() {
+    fireVote(isAccept) {
 
+        //[TODO] 로그인 처리 필요.
         let loginedId = "Kiyoung002";
         let acc = this.$store.state.coin.accounts[0];
 
         let buttons = [];
-        buttons.push({ label : '[로그인 됨]' + loginedId, type:"REOA" })
+        buttons.push({ label : '[로그인 됨] ' + loginedId, type:"REOA" })
         buttons.push({
             label     : `${acc.nick} <font style="float:right;padding-right:20px;">${acc.symbol} ${acc.address.substr(0,9)}</font>`,
             icon      : 'fa-ethereum',
@@ -294,7 +293,74 @@ methods: {
             type      : "LEOA"
         })
 
-        console.log('acc:', acc);
+        buttons.push({ label : this.$i18n.tc("common.close"), icon  : 'fa-close' })
+
+        this.$core.Sheet.open("서명할 계정을 선택하세요", buttons).then(r => {
+
+            if (r == buttons.length - 1)
+                return this.$core.alert("취소 되었습니다.");
+
+            let targetObj = buttons[r.index];
+
+            if (targetObj.type == "REOA") {
+
+                alert('reoa 콜!');
+/*
+                return axios.post(HOST+"/project/"+this.$data.projectId+"/give", {
+                    giver:   this.$data.form.giver,
+                    amount:  this.$data.form.amount,
+                    name:    this.$data.form.name,
+                    trooper: this.$data.form.trooper,
+                    phone:   this.$data.form.phone
+                }).then(r => {
+
+                    console.log('recv:', r.data)
+
+                }).catch(err => {
+
+                    console.log('error:', err)
+                })*/
+
+            } else if (targetObj.type == "LEOA") {
+
+                let fromAddr = targetObj.address;
+
+                return this.$core.payment.confirm(fromAddr).then(r => {
+
+                    return this.$core.luniWallet.sendMethod(this.$data.info.address, BOX_ABI, "vote", fromAddr,
+                        [ this.$data.projectId, isAccept ],
+                        { gasPrice:0, gasLimit: 500000 }
+                    ).then(r =>{
+                        
+                        this.$data.info.voted = true;
+                        this.$core.alert("완료 되었습니다.");
+
+                    }).catch(err => {
+                        console.log('errr:', err);
+                    })
+
+                })
+            }
+        })
+
+    },
+
+    fireGive() {
+
+        //[TODO] 로그인 처리 필요.
+        let loginedId = "Kiyoung002";
+        let acc = this.$store.state.coin.accounts[0];
+
+        let buttons = [];
+        buttons.push({ label : '[로그인 됨] ' + loginedId, type:"REOA" })
+        buttons.push({
+            label     : `${acc.nick} <font style="float:right;padding-right:20px;">${acc.symbol} ${acc.address.substr(0,9)}</font>`,
+            icon      : 'fa-ethereum',
+            address   : acc.address,
+            accountId : acc.id,
+            accNick   : acc.nick,
+            type      : "LEOA"
+        })
 
         buttons.push({ label : this.$i18n.tc("common.close"), icon  : 'fa-close' })
 
@@ -324,15 +390,13 @@ methods: {
 
             } else if (targetObj.type == "LEOA") {
 
-                //[TODO] 서버에서 가져와야 함.
-                let contractAddr = "0x0b15Bffb75dc8a2C854f5E51F1426764Cfb24c9c";
                 let fromAddr = targetObj.address;
 
                 return this.$core.payment.confirm(fromAddr).then(r => {
-
-                    return this.$core.luniWallet.sendMethod(contractAddr, BOX_ABI, "give",
+                                        
+                    return this.$core.luniWallet.sendMethod(this.$data.info.address, BOX_ABI, "give",
                         fromAddr,
-                        [ this.$data.projectId, this.$data.form.giver, String(this.$data.form.amount)+"000000000000000000", this.$data.form.trooper],
+                        [ this.$data.projectId, this.$data.form.giver, Web3.utils.toWei(String(this.$data.form.amount),'ether'), this.$data.form.trooper],
                         { gasPrice:0, gasLimit: 500000 }
                     ).then(r =>{
                         this.$core.alert("완료 되었습니다.");
@@ -345,12 +409,8 @@ methods: {
         })
 
         this.$data.giveDialogVisible = false;
-
     },
 
-    directPayment() {
-        //let accInfo = this.$store.getters["coin/account"]("6s9Izg")
-    },
 
     openGive()        { this.$data.giveDialogVisible = true   },
     closeGiveModal()  { this.$data.giveDialogVisible = false  },
@@ -377,6 +437,7 @@ methods: {
 
     closeTrackModal() { this.$data.trackDialogVisible = false },
 
+    //------------------------------------------------------------------
 
     close() { this.$core.goHome() },
     selectTab(num, event) { this.$data.tab = num },
@@ -386,7 +447,6 @@ methods: {
         if (!token) {
             this.$data.loginId = 'unlogined';
         }
-
         return axios.get(HOST+"/test/myinfo/",
             { headers: { Authorization: `Bearer ${token}` }}
         ).then(r => {
@@ -396,33 +456,16 @@ methods: {
 
     doClaim() {
         this.$core.confirm("돌격대에게 추가 증명을 요구합니다.").then(r =>{
-            if (r == 1) {
-                this.$data.claimed = true;
-            }
+            if (r != 1) return
+            this.fireVote(false)            
         })
     },
 
     doAccept() {
         this.$core.confirm("돌격대에게 지출정산에 동의합니다.<br>번복할 수 없습니다.").then(r =>{
-            if (r == 1) {
-                this.$data.accepted = true;
-            }
+            if (r != 1) return
+            this.fireVote(true)            
         })
-    },
-
-    done() {
-/*
-        this.$core.Validation.check(this, [
-        ]).then(success => {
-
-            this.$store.commit("xapp/edit", {
-                id: this.$props.target.id,
-                size: this.$data.size
-            })
-
-            this.$core.alert("적용 되었습니다.")
-        })
-*/
     }
 
 }
