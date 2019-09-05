@@ -49,14 +49,21 @@ export default new Vuex.Store({
     userInfo: {
       name: "",
       email: "",
+      address: "",
+      home: ""
     },
     isLogin: false,
     isLoginError: false,
     //token: localStorage.getItem('token'),
     token: "",
-    beforeLogin: "Home", 
+    beforeLogin: 'home', 
     games: [],
-    gameToday: []
+    gameToday: [],
+    products: [],
+    productToBuy: null,
+    tickets: [],
+    ticketToBuy: null,
+    gameToSee: null,
   },
   getters: {
     loginRedirect: (state, name) => {
@@ -79,6 +86,7 @@ export default new Vuex.Store({
     loginSuccess: (state, payload) => {
       console.log(payload)
       state.userInfo.name = payload.userName
+      state.userInfo.address = payload.walletAddress
       state.token = payload.accessToken
       state.isLogin = true
       state.isLoginError = false

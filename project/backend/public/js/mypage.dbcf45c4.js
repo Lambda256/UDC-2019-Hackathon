@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["mypage"],{bd34:function(e,s,n){"use strict";n.r(s);var t=function(){var e=this,s=e.$createElement,n=e._self._c||s;return n("div",[n("div",[e._v(" "+e._s(e.userInfo.name)+"님 환영합니다. ")]),n("div",[e._v(" "+e._s(e.userInfo.address)+" ")])])},o=[],r=n("2f62"),a={data:()=>({}),computed:{...Object(r["c"])(["userInfo"])},created(){console.log(this.$store.state.userInfo)}},u=a,c=n("2877"),d=Object(c["a"])(u,t,o,!1,null,null,null);s["default"]=d.exports}}]);
+//# sourceMappingURL=mypage.dbcf45c4.js.map
