@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-// linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)),
-
 const Container = styled.div`
   position: relative;
   background-image: url(${props => props.bgPhoto});
@@ -17,87 +15,44 @@ const Container = styled.div`
   justify-content: space-between;
   padding: 20px;
   border-bottom: 5px solid ${props => props.borderBottomColor};
-  height: 460px;
+  height: 480px;
   width: ${props => props.width};
 `;
 
-// const Content = styled.div`
-//   width: 100%;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: flex-end;
-//   color: white;
-//   margin-top: 40px;
-//   margin-bottom: 20px;
-// `;
-
-// const ContentColumn = styled.div``;
-
-// const Title = styled.span`
-//   font-size: 24px;
-//   font-weight: 900;
-//   color: white;
-// `;
-
-// const Subtitle = styled.span`
-//   margin-top: 8px;
-//   font-size: 14px;
-//   display: block;
-//   color: white;
-// `;
-
 const IconContainer = styled.div`
-  cursor: pointer;
-  color: ${props => props.color};
+  position: absolute;
 `;
 
-const Top = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row-reverse;
-  width: 100%;
-  z-index: 0;
+const IconContainer2 = styled.div`
+  position: relative;
 `;
-
-// const TitleContainer = styled.div`
-//   display: flex;
-//   align-items: center;
-// `;
 
 const CardUnit = ({
-  title,
-  subtitle,
   borderBottomColor = "linear-gradient(45deg, #2196f3 30%, #21cbf3 90%)",
-  iconName,
-  iconSize = 2,
-  iconColor,
   bgPhoto,
   borderRadius = "5px",
-  width = 270
+  width = 270,
+  eventUrl
 }) => (
-  <Container
-    bgPhoto={bgPhoto}
-    borderBottomColor={borderBottomColor}
-    borderRadius={borderRadius}
-    width={width}>
-    {/* <Top>
-      {iconName && (
-        <IconContainer color={iconColor}>
-          <i className={`${iconName} fa-${iconSize}x`} />
-        </IconContainer>
-      )}
-    </Top> */}
+  <div>
+    <IconContainer>
+      <IconContainer2>
+        <Container
+          bgPhoto={bgPhoto}
+          borderBottomColor={borderBottomColor}
+          borderRadius={borderRadius}
+          width={width}
+        />
+      </IconContainer2>
+    </IconContainer>
 
-    {/* {(title || subtitle) && (
-      <Content>
-        <ContentColumn>
-          <TitleContainer>{title && <Title>{title}</Title>}</TitleContainer>
-          {subtitle && <Subtitle>{subtitle}</Subtitle>}
-        </ContentColumn>
-      </Content>
-    )} */}
-  </Container>
+    <Container
+      bgPhoto={eventUrl}
+      borderBottomColor={borderBottomColor}
+      borderRadius={borderRadius}
+      width={width}
+    />
+  </div>
 );
 
 CardUnit.propTypes = {

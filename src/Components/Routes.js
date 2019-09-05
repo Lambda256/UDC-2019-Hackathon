@@ -7,6 +7,7 @@ import Tickets from "../Routes/Tickets";
 import Test from "../Routes/Test";
 import Match from "../Routes/Match";
 import CardDetail from "../Components/CardDetail";
+import Explore from "../Routes/Explore";
 
 const LoggedInRoutes = () => (
   <Switch>
@@ -18,6 +19,7 @@ const LoggedInRoutes = () => (
     <Route path="/album/:playerId" component={CardDetail} />
     <Route path="/profile/:username" component={Album} />
     <Route path="/match" component={Match} />
+    <Route path="/explore" component={Explore} />
   </Switch>
 );
 

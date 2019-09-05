@@ -2,7 +2,6 @@ import React from "react";
 import CardUnit from "./Card";
 import cards from "../players";
 import styled from "styled-components";
-import { Button } from "@material-ui/core";
 
 const Container = styled.div`
   display: flex;
@@ -28,7 +27,7 @@ const CardDetail = ({ bgPhoto }) => {
       {pathname === "match" ? (
         <Text>카드가 발급되었습니다.</Text>
       ) : (
-        <Text>상세 페이지</Text>
+        <Text></Text>
       )}
 
       <CardUnit width={"300px"} bgPhoto={card ? card.url : bgPhoto} />
