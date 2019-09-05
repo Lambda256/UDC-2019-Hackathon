@@ -35,7 +35,11 @@ data() {
         themeClass,
         version : '1.0',
         target  : target,
-        
+        domi_btc: '',
+        domi_eth: '',
+        domi_xrp: '',
+        total_cap: '',
+
         myStyle: {
             height: (57+'px'),   // [TODO] Line 이거 합체 필요
         }
@@ -45,12 +49,36 @@ data() {
 mounted() {
 
     this.$emit('setHeight', 57); // [TODO] Line Height Contanst
-
+/*
+    this.$core.Scheduler.addTask({
+        id        : this.$props.id,
+        type      : 'APP',
+        name      : 'CryptoDominance',
+        func      : this.getData.bind(this),
+        online    : true,
+        delay     : 100,
+        duration  : 60*1000
+    })
+*/
 },
 
 methods: {
     getData() {
+/*
+        axios.get("https://api.coingecko.com/api/v3/global")
+        .then(res => {
+            if (res.data && res.data.data) {
+                this.$data.domi_btc = '<b style="font-size:16px">BTC</b><br>'+this.$core.price.preset(res.data.data.market_cap_percentage.btc, 'percent_plain')
+                this.$data.domi_eth = '<b style="font-size:16px">ETH</b><br>'+this.$core.price.preset(res.data.data.market_cap_percentage.eth, 'percent_plain')
+                this.$data.domi_xrp = '<b style="font-size:16px">XRP</b><br>'+this.$core.price.preset(res.data.data.market_cap_percentage.xrp, 'percent_plain')
 
+                let t = this.$core.price.parse(
+                    res.data.data.total_market_cap.krw, 'KRW')
+                this.$data.total_cap = t.largeCut().short().symbol().html();
+            }
+
+        })
+*/
     },
 
     enter() {

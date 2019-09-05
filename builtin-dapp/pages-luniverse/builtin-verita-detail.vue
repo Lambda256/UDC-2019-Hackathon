@@ -10,81 +10,29 @@
         <div class="center">진실의 입</div>
         <div class="right" @click="showPopover($event, 'down', true)">설정</div>
     </v-ons-toolbar>
+    
+    <div style="margin-top:0px;text-align:center;">
+        <div class="title">오늘의 따뜻함</div>
 
-    <div class="tabbar tabbar--top tabbar--material">
-        <label class="tabbar__item tabbar--material__item">
-            <input type="radio" name="fortune-tab" v-model="tab" value="today" />
-            <button class="tabbar__button tabbar--material__button">홈</button>
-        </label>
+        <div class="card-item" @click="goDetail(item.id)" v-for="item of mainItems" :key="item.id">
+            <div style="float:left;margin-right:10px;overflow:hidden;"><img src="{{item.image}}" width="150" height="95" style="border-radius:8px;"></div>
+            <div style="text-align:left">
+                <div class="header">{{item.title}}</div>     
+                <div class="header"><span>목표액</span> {{item.goal}} GIV</div>
+                <div class="header"><span>마감일</span> 09.09</div>                
+                <div class="header"><span>모집액</span><b>{{item.fund}}</b> GIV, <b>{{item.backerCount}}</b>명이 후원</div>
+                <div style="padding-left:160px;">
+                    <v-ons-progress-bar value="40" secondary-value="100"></v-ons-progress-bar>
+                </div>
+            </div>
+        </div>
 
-        <label class="tabbar__item tabbar--material__item">
-            <input type="radio" name="fortune-tab" v-model="tab" value="month" />
-            <button class="tabbar__button tabbar--material__button">내 후원</button>
-        </label>
+        <div style="padding: 30px;clear: both;color: #797979;font-size: 1.1em;">
+            <div>주변에 작은 도움을 필요로 하는 사람이 있나요?</div>
+            <div style="padding: 20px 20px 5px 20px;text-align: center;font-weight:bold;">제보하기</div>
+        </div>
 
-        <label class="tabbar__item tabbar--material__item">
-            <input type="radio" name="fortune-tab" v-model="tab" value="give" />
-            <button class="tabbar__button tabbar--material__button">내 계정</button>
-        </label>
     </div>
-
-    <v-ons-carousel class="blocksCarousel" fullscreen swipeable overscrollable auto-scroll auto-scroll-ratio="0.15"
-        :index.sync="slideIndex" style="overflow-y:scroll;">
-
-        <v-ons-carousel-item>
-
-            <div style="margin-top:20px;text-align:center;">
-                <div class="title">오늘의 따뜻함</div>
-
-                <div class="card-item" @click="goDetail(1)">
-                    <div style="float:left;">
-                        <span><img src="img/help.png" width="150"></span>
-                    </div>
-                    <div>
-                        <div>일산 안타까운 사연</div>
-                        <div>후원액: 100만원</div>
-                        <div>출동일: 4월 3일 (10일 후)</div>
-                    </div>
-                </div>
-
-                <div class="card-item" @click="goDetail(2)">
-                    <div style="float:left;">
-                        <span><img src="img/help.png" width="150"></span>
-                    </div>
-                    <div>
-                        <div>일산 안타까운 사연</div>
-                        <div>후원액: 100만원</div>
-                        <div>출동일: 4월 3일 (10일 후)</div>
-                    </div>
-                </div>
-
-                <div class="card-item" @click="goDetail(3)">
-                    <div style="float:left;">
-                        <span><img src="img/help.png" width="150"></span>
-                    </div>
-                    <div>
-                        <div>일산 안타까운 사연</div>
-                        <div>후원액: 100만원</div>
-                        <div>출동일: 4월 3일 (10일 후)</div>
-                    </div>
-                </div>
-            </div>
-
-        </v-ons-carousel-item>
-
-        <v-ons-carousel-item>
-            <div style="padding-top:50px;color:black;">
-                내 계정
-
-                <ons-button @click="doLogin">로그인</ons-button>
-            </div>
-
-        </v-ons-carousel-item>
-
-        <v-ons-carousel-item>
-            agggg
-        </v-ons-carousel-item>
-    </v-ons-carousel>
 
 
     <v-ons-popover cancelable modifier="material" direction="down" :cover-target="true"
@@ -130,6 +78,7 @@
 </template>
 
 <script>
+const HOST = "http://192.168.43.82:8000"
 
 export default {
 
@@ -146,7 +95,7 @@ data() {
     let size   = (this.$props.target.size) ? this.$props.target.size : '10';
 
     return {
-
+        mainItems: [],        
         slideIndex    : 0,         // 현재 슬라이드 인덱스
         slideLength   : 0,         // 슬라이드 길이
         tagSlideIndex : 0,         // 태그 슬라이드 길이
@@ -164,11 +113,34 @@ data() {
     }
 },
 
+mounted() {
+
+    this.loadMainProject()
+},
+
 methods: {
+
+    loadMainProject() {
+        let images = ["img/girl.jpg", 'img/water.png','jangap.jpg'];
+
+        axios.get(HOST+"/project/main").then(r => {            
+            r.data.forEach( (i,idx) => {
+                if (i.fund) 
+                    i.fund = Web3.utils.fromWei(i.fund,'ether');
+                if (i.goal) 
+                    i.goal = Web3.utils.fromWei(i.goal,'ether');
+                                                
+                i.image = images[idx];
+                
+            })            
+            this.$data.mainItems = r.data;            
+        })
+
+    },
 
     goDetail(num) {
         this.$core.push({component: 'builtin-verita-detail2', props: {
-            target: this.$props.target
+            target: num
         }})
     },
 
@@ -241,9 +213,7 @@ methods: {
         }
     },
 
-    removeAtHome() {
-
-    },
+    removeAtHome() {},
 
     // 페이지 이동
     goPage(item) {
