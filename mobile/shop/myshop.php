@@ -91,14 +91,14 @@ $( "#opener2" ).on( "click", function() {
         });
     })
 
-    function giftshop_buy(buy_amount) {
+    function ta_giftshop(buy_amount) {
         var aaa = '<?php echo $member['mb_1'] ?>';
         var abc = aaa + '/' + buy_amount;
 
         $.ajax({
             type: 'POST',
             url: '/backand_get.php',
-            data: {what: 'giftshop', parameter: abc}
+            data: {what: 'ta_giftshop', parameter: abc}
         }).done(function( msg ) {
             alert( '결과 : ' + msg );
         });
@@ -131,7 +131,7 @@ $( "#opener2" ).on( "click", function() {
                             <p>
                                 사용처 : GS25<br>
                                 필요한 타 토큰의 개수 : 1 TA<br><br>
-                                <button onclick="giftshop_buy(1);">냐옹</button>
+                                <button onclick="ta_giftshop(1);">냐옹</button>
                             </p>
                         </div>
                         <a href="#" id="opener"><img src="https://www.giftishow.com/Resource/goods/G00000321203/G00000321203.jpg" width="50px" height="50px" style="vertical-align: bottom">바나나우유(GS25)

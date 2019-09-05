@@ -37,6 +37,9 @@ for($k=0; $cp=sql_fetch_array($res); $k++) {
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
+window.onload = setTimeout(function() {
+    location.href="/mobile/shop/mycalled.php";
+}, 20000);
 $( function() {
 
     $( "#number" )
@@ -174,8 +177,9 @@ fieldset { padding:0; border:0; margin-top:25px; }
         <h2>회원정보 개요</h2>
         <ul class="my_pocou_calling">
             <br><li class="my_cou">
-                        <img src="https://songseungwoon.site/data/banner/7" width="100%" height="100px;">
+            <center><img src="<?php echo G5_THEME_MSHOP_URL ?>/img/3-2.png" width="100%" height="50%;"></center>
                         </li>
+                        <br>
             <center><div id="map" style="width:auto;height:250px;"></div></center>                        
             <br><li class="my_cou">
                         [A 탑승자 출발지]
@@ -203,15 +207,15 @@ fieldset { padding:0; border:0; margin-top:25px; }
                         </li>
             <br><li class="my_cou">
                         [예상가격]
-                            <span id="a7">220,000원</span>
+                            <span id="a7">198,000원 ~ 220,000원</span>
                         </li>
             <br><li class="my_cou">
                         [A 탑승자]
-                            <span id="a8">80,000원</span>
+                            <span id="a8">73,260원 ~ 89,540원</span>
                         </li>
             <br><li class="my_cou">
                         [B 탑승자]
-                            <span id="a9">140,000원</span>
+                            <span id="a9">124,740원 ~ 152,460원</span>
                         </li>
             <br><li class="my_cou">
                         <center><img src="<?php echo G5_THEME_MSHOP_URL ?>/img/labo.png"></center>
@@ -219,8 +223,8 @@ fieldset { padding:0; border:0; margin-top:25px; }
             <br><li class="my_cou">
                         <center><b>'타타타는 승객은 물론, 소중한 가치를 함께 태웁니다'</b></center>
                         </li>
-            <br><a href="<?php echo G5_SHOP_URL; ?>/mygame.php"><li class="my_cou">
-                        <center><button>탑승 중 미니게임</button>　<button>교차 감시 시스템</button></center>
+            <br><li class="my_cou">
+                        <center><a href="<?php echo G5_SHOP_URL; ?>/mygame.php"><button>탑승 중 미니게임</button></a>　<a href="<?php echo G5_SHOP_URL; ?>/mysearch.php"><button>교차 감시 시스템</button></a></center>
                         </li></a>
         </ul>
     </section>

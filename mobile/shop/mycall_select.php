@@ -53,6 +53,22 @@ window.onload = function move() {
     }
   }
 }
+
+function insertContract() {
+        var abc = '00001/123123';
+
+        //alert( '결과 : ' + abc );
+
+        $.ajax({
+            type: 'POST',
+            url: '/backand_get.php',
+            data: {what: 'insertContract', parameter: abc}
+        }).done(function( msg ) {
+            alert( '결과 : ' + msg );
+            location.href="/mobile/shop/mycall_ok.php";
+        });
+    }
+
 </script>
 
 <style type="text/css">
@@ -102,8 +118,9 @@ fieldset { padding:0; border:0; margin-top:25px; }
         <h2>회원정보 개요</h2>
         <ul class="my_pocou_calling">
             <br><li class="my_cou">
-                        <img src="https://songseungwoon.site/data/banner/7" width="100%" height="100px;">
+                        <center><img src="<?php echo G5_THEME_MSHOP_URL ?>/img/3-2.png" width="100%" height="50%;"></center>
                         </li>
+                        <br>
             <center><div id="map" style="width:auto;height:250px;"></div></center>                        
             <br><li class="my_cou">
                         [A 탑승자 출발지]
@@ -131,15 +148,15 @@ fieldset { padding:0; border:0; margin-top:25px; }
                         </li>
             <br><li class="my_cou">
                         [예상가격]
-                            <span id="a7">220,000원</span>
+                            <span id="a7">198,000원 ~ 220,000원</span>
                         </li>
             <br><li class="my_cou">
                         [A 탑승자]
-                            <span id="a8">80,000원</span>
+                            <span id="a8">73,260원 ~ 89,540원</span>
                         </li>
             <br><li class="my_cou">
                         [B 탑승자]
-                            <span id="a9">140,000원</span>
+                            <span id="a9">124,740원 ~ 152,460원</span>
                         </li>
             <br><li class="my_cou">
                         <div class="w3-light-grey w3-round-xlarge">
@@ -148,8 +165,8 @@ fieldset { padding:0; border:0; margin-top:25px; }
             <br><li class="my_cou">
                         <center><b>'타타타는 승객은 물론, 소중한 가치를 함께 태웁니다'</b></center>
                         </li>
-            <br><a href="<?php echo G5_SHOP_URL; ?>/mycall.php"><li class="my_cou">
-                        <center><a href="<?php echo G5_SHOP_URL; ?>/mycall_ok.php"><button>좋아요! 함께 타타타!</button></a>　<a href="<?php echo G5_SHOP_URL; ?>/mycalling.php"><button>다른분과 함께 하겠어요</button></a></center>
+            <br><li class="my_cou">
+                        <center><button onclick="insertContract();"> 좋아요! 함께 타타타!</button>　<a href="<?php echo G5_SHOP_URL; ?>/mycalling.php"><button>다른분과 함께 하겠어요</button></a></center>
                         </li></a>
         </ul>
     </section>

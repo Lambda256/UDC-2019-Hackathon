@@ -157,6 +157,9 @@ switch ($what) {
         case 'insertRate':
             $curl = curl_init();
 
+            $plus_rates = (int)$several_parameter_array[1];
+            $user_class = (int)$several_parameter_array[2];
+
             curl_setopt_array($curl, array(
                 CURLOPT_URL => "{$url}/tx/v1.0/transactions/insertRate",
                 CURLOPT_RETURNTRANSFER => true,
@@ -165,7 +168,7 @@ switch ($what) {
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => "{\"from\": \"{$primary_Address}\",\"inputs\": {\"user_address\": \"{$several_parameter_array[0]}\",\"plus_rate\": \"{(int)$several_parameter_array[1]}\",\"user_class\": \"{(int)$several_parameter_array[2]}\"}}",
+                CURLOPT_POSTFIELDS => "{\"from\": \"{$primary_Address}\",\"inputs\": {\"user_address\": \"{$several_parameter_array[0]}\",\"plus_rate\": \"{$plus_rate}\",\"user_class\": \"{$user_class}\"}}",
                 CURLOPT_HTTPHEADER => array(
                   "authorization: Bearer {$DAPP_API_KEY}",
                   "content-type: application/json"
@@ -216,9 +219,9 @@ switch ($what) {
             if ($err) {
                 echo "cURL Error #:" . $err;
             } else {
-                echo $response;
+                //echo $response;
                 //{"result":true,"data":{"balance":"100"}}
-                //echo $data['data']['balance'];
+                echo $data['data']['res'][1];
             }
 
             break;
@@ -369,6 +372,8 @@ switch ($what) {
 
             $curl = curl_init();
             
+            $selectkey = (int)$several_parameter_array[1];
+
             $Volunteers = array('aaaa','bbbb');
             $Endpoint_order = array('2','1');
             $Driver = array('cccc');
@@ -429,7 +434,7 @@ switch ($what) {
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => "{\"from\": \"{$primary_Address}\",\"inputs\": {\"current_IdNUM\": \"{$several_parameter_array[0]}\",\"v_value\": \"{$convertStringToHex}\",\"selectkey\": {(int)$several_parameter_array[1]}}}",
+                CURLOPT_POSTFIELDS => "{\"from\": \"{$primary_Address}\",\"inputs\": {\"current_IdNUM\": \"{$several_parameter_array[0]}\",\"v_value\": \"{$convertStringToHex}\",\"selectkey\": {$selectkey}}}",
                 CURLOPT_HTTPHEADER => array(
                 "authorization: Bearer {$DAPP_API_KEY}",
                 "content-type: application/json"
@@ -445,7 +450,7 @@ switch ($what) {
             if ($err) {
                 echo "cURL Error #:" . $err;
             } else {
-                echo $response;
+                echo $convertStringToHex. "\n" .$response;
                 //{"result":true,"data":{"balance":"100"}}
                 //echo $data['data']['balance'];
             }
@@ -609,11 +614,11 @@ switch ($what) {
 
             break;
 
-        case 'stake_token':
+        case 'ta_stake':
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "{$url}/tx/v1.0/transactions/post_token",
+                CURLOPT_URL => "{$url}/tx/v1.0/transactions/ta_stake",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -643,11 +648,45 @@ switch ($what) {
 
             break;
 
-        case 'giftshop':
+        case 'ta_withdraw':
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "{$url}/tx/v1.0/transactions/purchase",
+                CURLOPT_URL => "{$url}/tx/v1.0/transactions/ta_withdraw",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => "{\"from\": \"{$several_parameter_array[0]}\",\"inputs\": {\"receiverAddress\": \"{$several_parameter_array[1]}\",\"valueAmount\": {$several_parameter_array[2]}}}",
+                CURLOPT_HTTPHEADER => array(
+                "authorization: Bearer {$DAPP_API_KEY}",
+                "content-type: application/json"
+                ),
+            ));
+            
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            $data = json_decode($response,true);
+            
+            curl_close($curl);
+            
+            if ($err) {
+                echo "cURL Error #:" . $err;
+            } else {
+                echo $response;
+                //{"result":true,"data":{"balance":"100"}}
+                //echo $data['data']['balance'];
+            }
+
+            break;
+
+        case 'ta_giftshop':
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "{$url}/tx/v1.0/transactions/ta_giftshop",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,
@@ -688,7 +727,7 @@ switch ($what) {
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => "{\"inputs\": {\"receiverAddress\": \"{$parameter}\",\"valueAmount\": 1}}",
+                CURLOPT_POSTFIELDS => "{\"inputs\": {\"receiverAddress\": \"{$parameter}\",\"valueAmount\": 30}}",
                 CURLOPT_HTTPHEADER => array(
                 "authorization: Bearer {$DAPP_API_KEY}",
                 "content-type: application/json"

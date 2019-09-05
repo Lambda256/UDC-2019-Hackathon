@@ -306,6 +306,20 @@ $( "#staking_opener" ).on( "click", function() {
         });
     }
 
+    function insertContract() {
+        var abc = '00001/123123';
+
+        //alert( '결과 : ' + abc );
+
+        $.ajax({
+            type: 'POST',
+            url: '/backand_get.php',
+            data: {what: 'insertContract', parameter: abc}
+        }).done(function( msg ) {
+            alert( '결과 : ' + msg );
+        });
+    }
+
     function updateRate() {
         var abc = '0xbd8a78cbea41e477ed3cb8c925de71586c518b8e/50';
 
@@ -397,9 +411,6 @@ fieldset { padding:0; border:0; margin-top:25px; }
             <br><a href="<?php echo G5_SHOP_URL; ?>/mycalling.php"><li class="my_cou">
                         <button>함께 타타타 시작할까요?</button>
                         </li></a>
-            <br><li class="my_cou">
-                        <button onclick="updateRate();">백앤드 테스트야!!</button>
-                        </li>
         </ul>
     </section>
 
