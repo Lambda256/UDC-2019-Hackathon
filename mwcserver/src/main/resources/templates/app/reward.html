@@ -39,7 +39,7 @@
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
 						<li>
-							<a id="geo" href="#" th:object="${user}">
+							<a id="geo" target="_new" href="https://www.google.com/maps/search/?api=1&query=37.4406277,126.45739799999998" th:object="${user}">
 								<span id="geo-tooltip" data-toggle="tooltip" data-placement="bottom" th:text="'위치 : ' + *{workPlaceName}"></span>
 							</a>
 						</li>
@@ -120,7 +120,7 @@
 							</div>
 							<div class="box-body">
 								<div class="dataTables_wrapper form-inline dt-bootstrap">
-									<h3 th:text="${balance} + ' R1908'"></h3>
+									<h3 th:text="${balance} + ' MWRT'"></h3>
 								</div>
 							</div>
 						</div>
@@ -132,13 +132,7 @@
 		<!-- /.content-wrapper -->
 
 		<footer class="main-footer">
-			<!-- <div class="pull-right hidden-xs">
-				<b>Version</b> 1.0.0
-			</div>
-			<strong>Copyright © 2019 <a href="http://bankwareglobal.com">BankwareGlobal FinLab</a>.
-			</strong> All rights reserved. -->
-			<!-- <img th:src="@{/imgs/avatar5.png}" class="user-image" alt="User Image"> -->
-			<!--주52시간 progress bar-->
+
 		</footer>
 	</div>
 	<!-- ./wrapper -->
