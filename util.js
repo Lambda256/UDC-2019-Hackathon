@@ -31,14 +31,14 @@ util.isLoggedin = function(req, res, next){
      next();
     } else {
      req.flash("errors", {login:"Please login first"});
-     res.redirect("/login");
+     res.redirect("/");
     }
 }
    
 util.noPermission = function(req, res){
     req.flash("errors", {login:"You don't have permission"});
     req.logout();
-    res.redirect("/login");
+    res.redirect("/");
 }
 
 module.exports = util;

@@ -15,11 +15,12 @@ router.post("/create", function(req, res){
         headers : headers,
         data : {
             walletType : "LUNIVERSE",
-            userKey : req.body.ID
+            userKey : req.user.ID
         }
     };
-
     client.post("https://api.luniverse.net/tx/v1.0/wallets", api, function(data, res){
+        console.log('userID');
+        console.log(req.body.id);
         console.log(data);
     });
     

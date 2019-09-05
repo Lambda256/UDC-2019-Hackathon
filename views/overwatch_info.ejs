@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <title><%= ID %></title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../vendors/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../vendors/fonts/line-awesome.css">
+    <link rel="stylesheet" href="../vendors/fonts/SpoqaHanSans-kr.css">
+    <link rel="stylesheet" type="text/css" href="css/style_overwatch.css">
+    <link rel="stylesheet" type="text/css" href="css/uc.min.css">
+</head>
+
+<body>
+    <% include ./overwatch_header.ejs %>
+
+
+    <div class="container-frame is-pd-y_60">
+        <div data-uc-colgroup="row-md">
+            <div class="is-col-xs2">
+                <% include ./overwatch_left_side.ejs %>
+            </div>
+            <div class="is-col-xs8">
+                <div class="independence-widget-wrap">
+                    <div class="is-clearfix">
+                        <h3 style="float: left; margin-bottom: 35px;">정보 게시판</h3>
+                        <div class="is-option-wrap">
+                            <a href="/new_post">게시글 작성하기</a>
+                        </div>
+                    </div>
+                    <dl>
+                        <dd>
+                            <% posts.forEach(function(post){%>
+                            <div class="is-col-xs2 is-align-mid">
+                                <div class="like-wrap">
+                                    <span class="is-icon">♥</span>
+                                    <span class="is-label">좋아요 수</span>
+                                    <span class="is-num"><%=post.likes%></span>
+                                </div>
+                            </div>
+                            <div class="is-col-xs7 is-align-mid">
+                                <h4 class="is-title"><%=post.title%></h4>
+                                <div class="is-info">
+                                    <span>작성자 <b><%=post.author? post.author.ID:"없음" %></b></span>
+                                    <span>생성일 <b><%=post.createdDate%></b></span>
+                                </div>
+                                <p class="is-txt"><%=post.body%> <br>
+                                    </p>
+                            </div>
+                            <div class="is-col-xs3 is-align-top is-txt-right">
+                                <div class="is-circle-set">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <a href="/s<%=post.id%>" method ="get" class="is-more"><i class="la la-angle-right"></i></a>
+                                <% }) %>
+                            </div>
+                        </dd>
+                    </dl>
+                    
+                    <span class="is-scroll-overlay"></span>
+                </div>
+            </div>
+            <div class="is-col-xs2">
+                <% include ./overwatch_right_side.ejs %>
+            </div>
+        </div>
+    </div>
+
+
+    <% include ./overwatch_footer.ejs %>
+</body>
+
+</html>

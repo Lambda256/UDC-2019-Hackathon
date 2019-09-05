@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/vendors/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendors/fonts/line-awesome.css">
+    <link rel="stylesheet" href="/vendors/fonts/SpoqaHanSans-kr.css">
+    <link rel="stylesheet" type="text/css" href="css/style_overwatch.css">
+    <link rel="stylesheet" type="text/css" href="css/uc.min.css">
+</head>
+
+<body>
+    <% include ./overwatch_header.ejs %>
+
+
+    <div class="container-frame is-pd-y_60">
+        <div data-uc-colgroup="row-md">
+            <div class="is-col-xs2">
+                <% include ./overwatch_left_side.ejs %>
+            </div>
+            <div class="is-col-xs8">
+                <div class="donate-wrap">
+                    
+                    <h3>OverWatch-KR 커뮤니티 RGC 후원하기</h3>                    
+                    <form class="is-form-box" action="/donate/<%=currentUser.ID%>" method="post">
+                            <div class="is-inner">
+                       <div class="is-col-xs5 is-offset-xs1 is-align-top">
+                            <label>RGC 후원 금액</label>
+                            <input type="text" id="value" name="value" value="" onkeyup="RGCChange(this)" />
+                            <p class="is-txt-strong"><%= ID %>님의 RGC 보유수량 : <%=RGC%> RGC</p>
+                            <a href="javascript:RGCChangeCk(100);">100 RGC</a>
+                            <a href="javascript:RGCChangeCk(500) ;">500 RGC</a>
+                            <a href="javascript:RGCChangeCk(1000);">1000 RGC</a>
+                            <a href="javascript:RGCChangeCk(3000);">3000 RGC</a>
+                            <span class="is-add-arrow"></span>
+                       </div>
+                       <div class="is-col-xs4 is-offset-xs2 is-align-top">
+                            <label>리워드</label>
+                            <span id="rgc_value">GG</span>
+                            <p class="is-txt-basic">* OverWatch-KR 커뮤니티에 RGC를<br>
+                                후원하고 GG 리워드를 받으세요 !</p>
+                       </div>
+                    </div>
+                 </form>
+                    <div class="is-txt-center">
+                        <button type="button" class="concept-btn">후원하기</button>
+                    </div>
+                
+                </div>
+            </div>
+            <div class="is-col-xs2">
+                <% include ./overwatch_right_side.ejs %>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function RGCChange(_this) {
+            //var _this = document.querySelector(_this);
+            var v = _this.value;
+
+            document.getElementById('rgc_value').innerHTML = v + ' GG';
+
+
+            console.log(v);
+        }
+        function RGCChangeCk(v) {
+            document.getElementById('rgc_input').value = v;
+            document.getElementById('rgc_value').innerHTML = v + ' GG';
+        }
+    </script>
+
+    <% include ./overwatch_footer.ejs %>
+</body>
+
+</html>

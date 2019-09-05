@@ -1,0 +1,67 @@
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="vendors/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/fonts/line-awesome.css">
+    <link rel="stylesheet" href="vendors/fonts/SpoqaHanSans-kr.css">
+    <link rel="stylesheet" type="text/css" href="css/style_overwatch.css">
+    <link rel="stylesheet" type="text/css" href="css/uc.min.css">
+</head>
+
+<body>
+    <% include ./overwatch_header.ejs %>
+
+
+    <div class="container-frame is-pd-y_60">
+        <div data-uc-colgroup="row-md">
+            <div class="is-col-xs2">
+                <% include ./overwatch_left_side.ejs %>
+            </div>
+            <div class="is-col-xs8">
+                <div class="impeach-wrap">
+                    <h3>Community Keeper [ Jaywhang ] 탄핵 - 투표하기</h3>                    
+                    <div class="is-txt-box">
+                        <p class="is-line-txt">OverWatch-KR Community Keeper [JayWhang] 탄핵 소추의 안</p>
+                        <div data-uc-colgroup="">
+                            <div class="is-col-xs5">
+                                <span class="is-avatar-wrap"><img src="images/3 OverWatch/0 ck-3.png" alt=""></span>
+                                <div class="info-wrap">
+                                    <p class="is-txt-orange">피소추자</p>
+                                    <p class="is-txt-bold" style="margin-bottom: 5px;">Jaywhang</p>
+                                    <p class="is-txt">OverWatch-KR<br>
+                                            Community Keeper</p>                                    
+                                    <p class="is-txt-bold" style="font-size: 12px;">( 2018.07.02 ~ )</p>
+                                </div>
+                            </div>
+                            <div class="is-col-xs7">
+                                <p class="is-txt-orange">탄핵소추의 사유</p>
+                                <p class="is-txt-bold" style="font-size: 12px;">커뮤니티 운영 및 게시물 관리 정책 위배행위</p>
+                                <p class="is-txt">JayWhang OverWatch-KR 커뮤니티 매니저는 최근 6개월간 일방적인 게시글을 삭제하였다. 게시물 관리에 관한 리겜 커뮤니티 운영정책을 위반하고 커뮤니티 유저의 의견 존중 및 자유보호의무를 정면으로 위반하였다.</p>
+                                <p class="is-txt">이에 OverWatch-KR 커뮤니티 회원의 뜻을 받들어 JayWhang에 대한 탄색소추를 발의한다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="is-vote">
+                        <a href="" class="is-agree is-active">찬성</a>
+                        <a href="" class="is-opposition">반대</a>
+                    </div>
+                    <div class="is-txt-center">
+                        <button type="button" class="concept-btn">투표하기</button>
+                    </div>
+                </div>
+            </div>
+            <div class="is-col-xs2">
+                <% include ./overwatch_right_side.ejs %>
+            </div>
+        </div>
+    </div>
+
+
+    <% include ./overwatch_footer.ejs %>
+</body>
+
+</html>
