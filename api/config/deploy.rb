@@ -2,13 +2,13 @@
 lock "~> 3.11.1"
 
 set :application, "intime"
-set :repo_url, "git@github.com:UDC-InTime/api.git"
-
-current_branch = `git branch`.match(/\* (\S+)\s/m)[1]
-set :branch, ENV['branch'] || current_branch || "master"
+# NOTE: Cannot deploy a sub directory
+set :repo_url, "git@github.com:sydneyitguy/UDC-2019-Hackathon.git"
 
 set :deploy_to, "/srv/web/#{fetch(:application)}"
 set :linked_dirs, %w(log)
+
+set :branch, 'intime'
 
 # Default value for :linked_files is []
 # set :linked_files, fetch(:linked_files, []).push('config/secrets.yml')

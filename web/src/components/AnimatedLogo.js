@@ -13,8 +13,10 @@ const animate = (id, delay, lastValue, timeout) => {
 
   countUp.start();
   timeout = setTimeout(() => {
-    countUp.pauseResume();
-    document.getElementById(id).innerHTML = lastValue;
+    if (document.getElementById(id)) {
+      countUp.pauseResume();
+      document.getElementById(id).innerHTML = lastValue;
+    }
   }, delay);
 };
 

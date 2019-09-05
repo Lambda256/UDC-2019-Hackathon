@@ -2,10 +2,10 @@ require 'luniverse'
 
 class User < ApplicationRecord
   has_secure_password
-  has_many :user_private_tokens
-  has_many :private_tokens, through: :user_private_tokens
-  has_many :redeem_requests_received, class_name: :RedeemRequest, foreign_key: :owner_id
-  has_many :redeem_requests_sent, class_name: :RedeemRequest, foreign_key: :sender_id
+  has_many :user_private_tokens, dependent: :destroy
+  has_many :private_tokens, through: :user_private_tokens, dependent: :destroy
+  has_many :redeem_requests_received, class_name: :RedeemRequest, foreign_key: :owner_id, dependent: :destroy
+  has_many :redeem_requests_sent, class_name: :RedeemRequest, foreign_key: :sender_id, dependent: :destroy
   has_one_attached :profile_picture
 
   validates :name, presence: true
@@ -26,7 +26,7 @@ class User < ApplicationRecord
 
     res = Luniverse::recharge!(self.reoa, amount)
 
-    puts "Team sent #{amount} HOUR (#{res['txHash']}) -> Current user balance: #{time_balance!}"
+    puts "Team sent #{amount} HOUR (#{res['txHash']}) -> Current user balance: #{hour_balance!}"
   end
 
   # When a buyer buys a private token from the owner's profile page
@@ -49,7 +49,7 @@ class User < ApplicationRecord
     puts "#{self.name} bought 1 #{token.symbol} at #{token.current_price} => #{token.charity} received the fund"
   end
 
-  def time_balance!
+  def hour_balance!
     Luniverse::get_wallet_balance!(self.reoa)
   end
 

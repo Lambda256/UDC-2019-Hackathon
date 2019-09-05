@@ -1,0 +1,215 @@
+.wallet-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .content {
+    width: 800px;
+    margin: 180px 0;
+  }
+
+  .transaction-text,
+  .wallet-text {
+    font-size: 18px;
+    text-align: center;
+  }
+  .transaction-text {
+    margin: 70px 0 40px;
+  }
+
+  .usd-value {
+    font-weight: bold;
+    font-size: 44px;
+    text-align: center;
+    margin-top: 5px;
+    line-height: 1;
+  }
+
+  .border-container {
+    border: 1px solid #4f4f4f;
+    border-bottom-width: 0;
+    width: 100%;
+    margin-top: 40px;
+  }
+
+  .flex-token {
+    flex: 2;
+  }
+
+  .flex-pending,
+  .flex-action,
+  .flex-balance {
+    flex: 1;
+  }
+
+  .wallet-header {
+    padding: 20px 40px;
+    border-bottom: 1px solid #4f4f4f;
+  }
+
+  .wallet-row {
+    padding: 20px 40px;
+    border-bottom: 1px solid #4f4f4f;
+    line-height: 1;
+
+    .profile-image {
+      width: 50px;
+      height: 50px;
+      border-radius: 25px;
+      object-fit: cover;
+      margin-right: 16px;
+    }
+
+    .name-value {
+      font-weight: 400;
+      font-size: 18px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    button {
+      width: 140px;
+      height: 28px;
+      border: solid 1px #a6a7a8;
+      background-color: transparent;
+      color: #a6a7a8;
+      border-radius: 0;
+      text-transform: uppercase;
+    }
+
+    .collapsed-content {
+      overflow: hidden;
+      height: 530px;
+      transition: all 0.5s ease-in-out;
+
+      &.collapsed {
+        height: 0;
+      }
+
+      .redeem-request {
+        margin: 20px 0 40px;
+      }
+
+      .collapsed-body {
+        padding: 20px 0;
+        padding-left: 65px;
+
+        .input-container {
+          margin-top: 20px;
+          align-items: flex-start;
+        }
+
+        .input-label {
+          min-width: 120px;
+          margin-top: 8px;
+          font-size: 14px;
+        }
+
+        .minus-plus-container {
+        }
+
+        .hour-input {
+          max-width: 140px;
+          text-align: center;
+        }
+
+        .minus-plus-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #a6a7a8;
+          width: 32px;
+          height: 32px;
+          border: solid 1px #4f4f4f;
+        }
+
+        textarea,
+        input {
+          background-color: #000;
+          border: 1px solid #4f4f4f;
+          border-radius: 0;
+          color: #a6a7a8;
+        }
+
+        textarea {
+          height: 240px;
+          padding-top: 10px;
+        }
+
+        .request-container {
+          margin-top: 40px;
+        }
+
+        .cancel-text {
+          margin-left: 20px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .transaction-row {
+    padding: 20px 40px;
+    font-size: 14px;
+    border-bottom: 1px solid #4f4f4f;
+    img {
+      width: 49px;
+      height: 49px;
+      margin-right: 16px;
+    }
+
+    a {
+      color: #50e3c2;
+    }
+
+    .purchased-text {
+      font-size: 18px;
+    }
+  }
+
+  .inprogress-container {
+    padding: 40px 0px 40px 70px;
+
+    .desc {
+      margin: 20px 0;
+    }
+
+    .inprogress-header {
+      border-top: 1px solid #4f4f4f;
+      border-bottom: 1px solid #4f4f4f;
+      font-size: 18px;
+      div {
+        &:first-child {
+          border-right: 1px solid #4f4f4f;
+        }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex: 1;
+        padding: 10px 0;
+      }
+
+      button {
+        width: 200px;
+        border-color: #fff;
+        color: #fff;
+      }
+    }
+
+    .text-confirm {
+      font-size: 14px;
+      color: #50e3c2;
+    }
+
+    .confirm-submit {
+      max-width: 200px;
+      padding: 20px;
+      margin-left: 16px;
+    }
+  }
+}

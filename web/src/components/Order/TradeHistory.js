@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Card } from "antd";
 import moment from "moment";
 import _ from "lodash";

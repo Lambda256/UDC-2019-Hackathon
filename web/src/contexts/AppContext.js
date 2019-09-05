@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import api from "utils/api";
 
 const AppContext = React.createContext();
 const { Provider, Consumer } = AppContext;
 
 class AppProvider extends Component {
   state = {
-    timeSold: 10,
+    timeSold: 0,
     updatingTime: false,
     currentCampaign: null
   };

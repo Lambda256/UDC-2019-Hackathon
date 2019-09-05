@@ -5,16 +5,16 @@
 
 class PrivateToken < ApplicationRecord
   belongs_to :owner, class_name: 'User'
-  has_many :user_private_tokens
-  has_many :users, through: :user_private_tokens
-  has_many :transactions
+  has_many :user_private_tokens, dependent: :destroy
+  has_many :users, through: :user_private_tokens, dependent: :destroy
+  has_many :transactions, dependent: :destroy
   has_many_attached :images
 
   # Symbol format: 2-6 characters, alphanumeric
   validates_presence_of :offers, :description
   validates :category, inclusion: { in: %w(politics economics technology journalism entertainment business sports) }
   validates :symbol, format: { with: /\A[A-Za-z0-9]{2,6}\Z/, message: 'Token symbol must be 2-6 alphanumeric characters' }
-  validates :charity, inclusion: { in: %w(the_nature_conservancy red_cross alzheimers_association) }
+  validates :charity, inclusion: { in: %w(national_trust unhcr wwf) }
   validates :initial_price, numericality: { greater_than_or_equal_to: 0 }
   validates_uniqueness_of :symbol, :owner_id
 

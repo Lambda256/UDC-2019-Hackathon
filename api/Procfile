@@ -1,0 +1,3 @@
+client: sh -c 'cd ../web && yarn start'
+watch: sh -c 'cd ../web && yarn run watch-css'
+api: bundle exec rails s -p 3001 -b 0.0.0.0

@@ -1,10 +1,10 @@
 class PrivateTokensController < ApplicationController
   before_action :ensure_user!, only: [:create, :buy]
-  before_action :set_private_token!, only: [:buy, :holders]
+  before_action :set_private_token!, only: [:buy, :history]
 
   # GET - /private_tokens.json
   def index
-    render json: PrivateToken.all.order(id: :asc).map { |t| token_json(t) }
+    render json: PrivateToken.all.order(id: :desc).map { |t| token_json(t) }
   end
 
   # POST - /private_tokens.json
@@ -25,20 +25,33 @@ class PrivateTokensController < ApplicationController
       @current_user.donate_and_buy!(@private_token)
 
       render json: {
-        time_balance: @current_user.time_balance!,
+        hour_balance: @current_user.hour_balance!,
         private_tokens: @current_user.private_tokens.
           as_json(only: [:id, :symbol, :initial_price, :purchase_count], methods: [:current_price, :supply]),
         private_token_balances: @current_user.user_private_tokens.
           as_json(only: [:user_id, :private_token_id, :balance, :pending_balance])
       }
     rescue => e
-      render_error!(e.message, :service_unavailable)
+      msg = e.message =~ /TX_FAILED/ ? 'Not enough HOUR balance' : e.message
+      render_error!(msg, :service_unavailable)
     end
   end
 
-  # GET - /private_tokens/:id/holders.json
-  def holders
-    render json: UserPrivateToken.where(private_token_id: @private_token.id)
+  # GET - /private_tokens/:id/history.json
+  def history
+    transactions = Transaction.where(private_token_id: @private_token.id)
+    transactions = transactions.where(category: params[:category]) if params[:category].present?
+    transactions = transactions.includes(:sender).order(id: :desc).limit(params[:limit] || 6)
+
+    out = transactions.map do |t|
+      if t.category == 'burn'
+        t.as_json.merge(sender_profile_picture: url_for(t.sender.profile_picture))
+      else
+        t.as_json
+      end
+    end
+
+    render json: out
   end
 
   private
