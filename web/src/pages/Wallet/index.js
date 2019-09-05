@@ -25,13 +25,83 @@ const WalletRow = props => {
     current_price,
     profile_picture,
     loading,
-    redeem,
+    sent,
+    received,
     symbol,
     onClick,
     onSign
   } = props;
-  console.log("redeem", redeem);
-  const inProgress = pending_balance > 0;
+
+  let redeem = sent || received;
+  const inProgress = redeem;
+
+  let left = <div className="text-grey">Waiting for signature...</div>;
+  let right = <div className="text-grey">Waiting for signature...</div>;
+
+  if (sent) {
+    if (!sent.signed_by_sender) {
+      left = (
+        <div className="text-grey">
+          <Button onClick={() => onSign(redeem.id)}>Submit Signature</Button>
+        </div>
+      );
+    } else {
+      left = (
+        <div className="row-align-center text-confirm">
+          <Icon type="check" />
+          <div className="confirm-submit">
+            Submitted for the confirmation {moment(sent.updated_at).fromNow()}{" "}
+            mins ago.
+          </div>
+        </div>
+      );
+    }
+
+    if (sent.signed_by_owner) {
+      right = (
+        <div className="row-align-center text-confirm">
+          <Icon type="check" />
+          <div className="confirm-submit">
+            Submitted for the confirmation {moment(sent.updated_at).fromNow()}{" "}
+            mins ago.
+          </div>
+        </div>
+      );
+    }
+  }
+
+  if (received) {
+    if (!received.signed_by_owner) {
+      right = (
+        <div className="text-grey">
+          <Button onClick={() => onSign(redeem.id)}>Submit Signature</Button>
+        </div>
+      );
+    } else {
+      right = (
+        <div className="row-align-center text-confirm">
+          <Icon type="check" />
+          <div className="confirm-submit">
+            Submitted for the confirmation{" "}
+            {moment(received.updated_at).fromNow()} mins ago.
+          </div>
+        </div>
+      );
+    }
+
+    if (received.signed_by_sender) {
+      left = (
+        <div className="row-align-center text-confirm">
+          <Icon type="check" />
+          <div className="confirm-submit">
+            Submitted for the confirmation{" "}
+            {moment(received.updated_at).fromNow()} mins ago.
+          </div>
+        </div>
+      );
+    }
+  }
+
   return (
     <div className="wallet-row">
       <div className=" row-align-center">
@@ -105,35 +175,8 @@ const WalletRow = props => {
               <div className="text-grey">{name} (Token Issuer)</div>
             </div>
             <div className="inprogress-header row-align-center">
-              {!redeem.signed_by_sender ? (
-                <div className="text-grey">
-                  <Button onClick={() => onSign(redeem.id)}>
-                    Submit Signature
-                  </Button>
-                </div>
-              ) : (
-                <div className="row-align-center text-confirm">
-                  <Icon type="check" />
-                  <div className="confirm-submit">
-                    Submitted for the confirmation{" "}
-                    {moment(redeem.updated_at).fromNow()} mins ago.
-                  </div>
-                </div>
-              )}
-              {!redeem.signed_by_owner ? (
-                <div className="text-grey">
-                  Waiting for signature...
-                  {/*<Button>Submit Signature</Button>*/}
-                </div>
-              ) : (
-                <div className="row-align-center text-confirm">
-                  <Icon type="check" />
-                  <div className="confirm-submit">
-                    Submitted for the confirmation{" "}
-                    {moment(redeem.updated_at).fromNow()} mins ago.
-                  </div>
-                </div>
-              )}
+              {left}
+              {right}
             </div>
           </div>
         )}
@@ -283,7 +326,8 @@ const Wallet = props => {
             balance={hour_balance}
             current_price={1}
             symbol="TUSD"
-            redeem={null}
+            sent={null}
+            received={null}
             onClick={recharge}
             onSign={() => {}}
             loading={recharging}
@@ -300,16 +344,14 @@ const Wallet = props => {
                 onSign={submitSignature}
                 {...token}
                 {..._.find(private_tokens, ["id", token.private_token_id])}
-                redeem={
-                  _.find(redeemHistory.sent, [
-                    "private_token_id",
-                    token.private_token_id
-                  ]) ||
-                  _.find(redeemHistory.received, [
-                    "private_token_id",
-                    token.private_token_id
-                  ])
-                }
+                sent={_.find(redeemHistory.sent, [
+                  "private_token_id",
+                  token.private_token_id
+                ])}
+                received={_.find(redeemHistory.received, [
+                  "private_token_id",
+                  token.private_token_id
+                ])}
               />
             );
           })}
