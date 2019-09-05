@@ -167,7 +167,7 @@ const WalletRow = props => {
           <div className="inprogress-container">
             <div className="text-grey uppercase">Post-Meeting Confirmation</div>
             <div className="text-white desc">
-              {numeral(pending_balance).format("0,0.00")} {symbol} will be burnt
+              {numeral(redeem.amount).format("0,0.00")} {symbol} will be burnt
               when both parties confirm that they have met and used the token.
             </div>
             <div className="inprogress-header row-align-center">
@@ -284,9 +284,8 @@ const Wallet = props => {
     getRedeemHistory();
   }, [getWallet, getRedeemHistory]);
 
-  if (!user) return <Redirect to="/login" />;
-
   if (!wallet || fetchingWallet) return <CircularProgress />;
+  if (!user) return <Redirect to="/login" />;
 
   const {
     hour_balance,
