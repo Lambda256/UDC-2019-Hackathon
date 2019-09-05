@@ -56,6 +56,7 @@
 </template>
 <script>
 import axios from 'axios'
+import {mapActions} from 'vuex'
 
 export default {
     data: () => ({
@@ -86,6 +87,7 @@ export default {
       address: ''
     }),
     methods: {
+        ...mapActions(['login']),
         submit () {
             axios.post('http://localhost:3000/api/signup', {
                 'name': this.name,
@@ -95,6 +97,8 @@ export default {
             })
             .then(res => {
                 console.log('register-response: ', res)
+                this.login({email, password})
+                this.$router.push({name: 'home'})
             })
             .catch(err => {
                 console.log('register/error')

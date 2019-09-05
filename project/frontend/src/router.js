@@ -11,7 +11,8 @@ const Merchandises = () => import(/* webpackChunkName: "merchandises" */ './view
 const Login = () => import(/* webpackChunkName: "login" */ './views/Login.vue')
 const Register = () => import(/* webpackChunkName: "register" */ './views/Register.vue')
 const Mypage =  () => import(/* webpackChunkName: "mypage" */ './views/Mypage.vue')
-
+const ProductInfo =  () => import('./views/ProductInfo.vue')
+const TicketInfo =  () => import('./views/TicketInfo.vue')
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -45,12 +46,22 @@ export default new Router({
       },
     },
     {
-      path: '/merchandises',
+      path: '/merchandises/',
       name: 'merchandises',
       component: Merchandises,
       meta: {
         auth: 0
-      },
+      }
+    },
+    {
+      path: '/info/:id',
+      name: 'productinfo',
+      component: ProductInfo,
+    },
+    {
+      path: '/ticketinfo/',
+      name: 'ticketinfo',
+      component: TicketInfo,
     },
     {
       path: '/login',

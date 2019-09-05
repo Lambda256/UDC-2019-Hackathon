@@ -19,11 +19,13 @@
                 >
                     <v-card  class="mx-3">
                         <v-card-text>
-                        <div class="headline mb-2">{{game.Place}}</div>
+                        <div class="headline mb-2">{{game.Team1}} vs {{game.Team2}}</div>
+                        <div> 장소: {{game.Place}} </div>
+                        <div> 시간: {{game.Time.substr(5,2)}}:{{game.Time.substr(8,2)}}
                         </v-card-text>
 
                         <v-card-actions>
-                        <v-btn text> 예매하기 </v-btn>
+                        <v-btn text @click=" next(game)"> 예매하기 </v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
@@ -76,6 +78,10 @@ export default {
             })
             console.log(m[0])
             this.$store.state.gameToday = m.slice()
+        },
+        next(game) {
+            this.$store.state.gameToSee = game
+            this.$router.push({name: 'ticketinfo'})
         }
     }
     /*

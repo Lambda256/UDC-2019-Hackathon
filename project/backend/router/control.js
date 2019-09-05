@@ -98,8 +98,9 @@ exports.login = (req, res) => {
 exports.ticket = (req, res) => {
   let place = req.query.place
   let time = req.query.time
-
-  con.query('SELECT * FROM Ticket WHERE Place = "' + place + '" AND Time = "' + time + '"', function (err, respond) {
+  console.log('?')
+//time 비교 안됨;
+  con.query('SELECT * FROM Ticket WHERE Place = "' + place + '"', function (err, respond) {
     if (err) throw err;
     res.status(200).send(respond);
   });
@@ -142,7 +143,7 @@ exports.product = (req, res) => {
   let end = req.query.end;
   console.log('start', start)
   console.log('end', end)
-  con.query('SELECT * FROM Ticket LIMIT ' + start + ', ' + end, function (err, respond) {
+  con.query('SELECT * FROM Product LIMIT ' + start + ', ' + end, function (err, respond) {
     if (err) throw err;
     res.status(200).send(respond);
   });
