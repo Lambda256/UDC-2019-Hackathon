@@ -13,9 +13,9 @@ class Propose {
         });
     }
 
-    selectByUserIndex(index) {
+    selectByUserName(index) {
         return new Promise(async (resolve, reject) => {
-            let sql = 'SELECT * FROM propose WHERE propose.receiver = ?';
+            let sql = 'SELECT * FROM propose WHERE propose.receiver_name = ?';
             try {
                 let result = await db.query(sql, index);
                 resolve(result);
