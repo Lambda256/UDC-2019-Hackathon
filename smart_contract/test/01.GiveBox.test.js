@@ -167,22 +167,51 @@ contract('Give Box', function ([sender, user1, user2, hacker, hogoo]) {
     it('인출 테스트', async function () { 
 
         // 프로젝트 마감 후 인출 테스트 
-        await this.box.withdraw(0, user2)
+        await this.box.withdraw(0, "done!", user2)
         
         // 유저 계좌에서 증가 확인
-        expect( await this.bals.user2.delta() ).to.be.bignumber.equal( ether("50") )
+        expect( await this.bals.user2.delta() ).to.be.bignumber.equal( ether("50") )                
+        
+        // closes에 계정 남았나 확인.
+        let c = await this.box.getClosing(0);        
+        expect( c.withdrawAddr ).to.be.equal( user2 )        
     })
 
     it('권한 없는 인출 테스트', async function () { 
         
         await expectRevert(
-            this.box.withdraw(0, hacker, {from:hacker})
+            this.box.withdraw(0, 'done!', hacker, {from:hacker})
             , "WhitelistAdminRole: caller does not have the WhitelistAdmin role")
             
     })
+
+    it('리뷰 등록 및 조회', async function () { 
+        
+        await this.box.addReview(0, "정기영", "잘 다녀왔슴미다")
+
+        let r = await this.box.getReview(0, 0)
+        console.log(r);
+        
+    })
+
+    it('후기 투표', async function () { 
+        
+        expect( await this.box.isBackerVoted(0, user1) ).to.be.equal( false )  
+        
+        let cc = await this.box.getClosing(0)        
+        expect( cc.acceptCount ).to.be.bignumber.equal( "0" )
+        expect( cc.claimCount ).to.be.bignumber.equal( "0" )
+        
+        await this.box.vote(0, true)
+
+        cc = await this.box.getClosing(0)
+        expect( cc.acceptCount ).to.be.bignumber.equal( "1" )
+        expect( cc.claimCount ).to.be.bignumber.equal( "0" )
+        
+        expect( await this.box.isBackerVoted(0, user1) ).to.be.equal( true )  
+
+    })
     
-    // 리뷰 등록테스트
-    // 프로젝트 클로징 등록 테스트 
-    // 투표.
+    
 })
 

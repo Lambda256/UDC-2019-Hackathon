@@ -717,6 +717,7 @@ contract GiveBox is WhitelistAdminRole {
         bool isClosed;
         mapping (uint => Backer) backers;
         mapping (uint => Review) reviews;
+        mapping (address => uint) backLink;
     }
 
     struct ProjectClosing {
@@ -724,13 +725,14 @@ contract GiveBox is WhitelistAdminRole {
         uint16 acceptCount;
         uint16 claimCount;
         string content;
+        address withdraw;
     }
 
     address public tokenContract;   // 연동된 토큰 컨트랙트
     address public administrator;   // [TODO] 나중에 화이트리스트들로 수정
 
-    uint16 projectCount = 0;
-    uint   totalBalance = 0;        // 컨트랙트에 쌓여있는 토큰 수
+    uint16 public projectCount = 0;
+    uint   public totalBalance = 0;        // 컨트랙트에 쌓여있는 토큰 수
 
     mapping (uint => Project) public projects;
     mapping (uint => ProjectClosing) public projectCloses;
@@ -743,7 +745,7 @@ contract GiveBox is WhitelistAdminRole {
     // 프로젝트 추가
     function addProject(string memory title) public onlyWhitelistAdmin returns(uint id) {
         projects[projectCount] = Project(projectCount, title, 0, 0, now, 0, 0, 0, 0, '', false);
-        projectCloses[projectCount] = ProjectClosing(projectCount, 0,0, '');
+        projectCloses[projectCount] = ProjectClosing(projectCount, 0, 0, '', address(0));
         projectCount++;
 
         return projects[projectCount].id;
@@ -792,6 +794,8 @@ contract GiveBox is WhitelistAdminRole {
         p.fund += amount;
 
         p.backers[p.backerCount] = Backer(p.backerCount, name, amount, now, applyTrooper, false, false, block.number, msg.sender);
+        p.backLink[msg.sender] = p.backerCount;
+
         p.backerCount++;
 
         if (applyTrooper == true) {
@@ -799,6 +803,32 @@ contract GiveBox is WhitelistAdminRole {
         }
 
         return true;
+    }
+
+    function vote(uint16 projectId, bool isAccept) public {
+
+        Project storage p = projects[projectId];
+        uint backNum = p.backLink[msg.sender];
+        Backer storage backer = p.backers[backNum];
+
+        if (backer.voted) return;
+
+        backer.voted = true;
+
+        if (isAccept == true)
+            projectCloses[projectId].acceptCount++;
+        else
+            projectCloses[projectId].claimCount++;
+
+    }
+
+    function isBackerVoted(uint16 projectId, address backerAddr) public view returns (bool voted) {
+
+        Project storage p = projects[projectId];
+        uint backNum = p.backLink[backerAddr];
+        Backer storage backer = p.backers[backNum];
+
+        return backer.voted;
     }
 
     function getBackersAddrs(uint16 projectId) public view returns (address[] memory addr, uint[] memory blockNumber) {
@@ -816,11 +846,36 @@ contract GiveBox is WhitelistAdminRole {
         return (bArray,uArray);
     }
 
-    function withdraw(uint16 projectId, address receiver) public onlyWhitelistAdmin {
+    function withdraw(uint16 projectId, string memory content, address receiver) public onlyWhitelistAdmin {
         GiveToken token = GiveToken(tokenContract);
 
-        Project storage p = projects[projectId];
+        Project memory p = projects[projectId];
         token.transfer(receiver, p.fund);
+
+        projectCloses[projectId].withdraw = receiver;
+        projectCloses[projectId].content  = content;        
+    }
+
+    function addReview(uint16 projectId, string memory author, string memory content ) public onlyWhitelistAdmin {
+        Project storage p = projects[projectId];
+        p.reviews[p.reviewCount] = Review(p.reviewCount, author, content, msg.sender, block.timestamp);
+        p.reviewCount++;
+    }
+
+    function getClosing(uint16 projectId) public view returns
+        (uint id, uint16 acceptCount, uint16 claimCount, string memory content, address withdrawAddr) {
+
+        ProjectClosing memory p = projectCloses[projectId];
+
+        return (p.id, p.acceptCount, p.claimCount, p.content, p.withdraw);
+    }
+
+    function getReview(uint16 projectId, uint16 reviewId) public view returns (
+        uint16 id, string memory author, string memory content, address sender, uint date)
+    {
+        Review memory r = projects[projectId].reviews[reviewId];
+
+        return (r.id, r.author, r.content, r.sender, r.date);
     }
 
     function getBackers(uint16 projectId) public view returns (

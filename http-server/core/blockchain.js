@@ -1,27 +1,33 @@
 const config 	 = require('../config.json')
-const Web3   	 = require('web3')
+const WEB3   	 = require('web3')
+const PrivKeyProvider = require("truffle-privatekey-provider")
 
-let web3 = new Web3();
-web3.setProvider(new Web3.providers.HttpProvider(config.provider))
+const provider = new PrivKeyProvider(config.adminKey, config.provider);
+const web3     = new WEB3(provider)
 
+function ether(wei) { return web3.utils.toWei(String(wei)) }
+function toEther(wei) { return web3.utils.fromWei(String(wei)) }
 //----------------------------------------------------------
 let Contracts = {}
 
 /*
 	ABI 파일 불러옴
 */
-let loadAbi = () => {
+let loadAbi = async () => {
 	for (let key in config.contracts) {
 
 		let abiDecoder = require('abi-decoder')
 		let abiFile    = require("../"+config.contracts[key].abiFile)
 		let abiData    = (abiFile.abi || abiFile)
 
+		let contractAddr = config.contracts[key].address;
 		abiDecoder.addABI(abiData)
 
 		Contracts[key] = {
 			abi: abiData,
-			decoder: abiDecoder
+			decoder: abiDecoder,
+			address: contractAddr,
+			contract: await new web3.eth.Contract(abiData, contractAddr)
 		}
 
 	}
@@ -83,7 +89,7 @@ return example.
 */
 
 module.exports = {
-	web3,
+	web3,	
 	Contracts,
 	getBlock,
 	getTransaction,

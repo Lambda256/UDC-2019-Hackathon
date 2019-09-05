@@ -3,12 +3,12 @@
 	"HOST"     : "https://api.luniverse.net/tx/v1.0",
 	"apiKey"   : "vKdymzk5HL69AQkLMberpvTtqZkMP2R6nY4FSBYmYT9s8VdmV8dMztYAkpmViKnY",
 	"provider" : "http://baas-rpc.luniverse.net:8545?lChainId=8253766290815603891",
-	"adminKey" : "",
+	"adminKey" : "ab55eb5cd814c65ae60625aa23a2287fe07f515277bd0ba0b73210aaf2072617",
 	"adminAddr": "0x12c60cb9f9fdcb61eb45f04690635a43e33714cc",
 	"contracts": {
 		"GiveBox": {
 			"abiFile": "./abi/GiveBox.json",
-			"address": "0xaC9E1B742bDC65FA3821324B9EE4E5FcB40522A2"
+			"address": "0xfaF257932eE325B8481c2078eB1E973D68BCDadF"
 		},
 		"GiveToken": {
 			"abiFile": "./abi/GiveToken.json",
