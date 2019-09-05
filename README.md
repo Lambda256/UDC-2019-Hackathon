@@ -31,3 +31,5 @@
 | App         | WorkStamp      | checkStamp         | 근무기록           |
 | App         | WorkStamp      | stampList          | 근무기록조회       |
 | Admin       | UserCompany    | addCompanyUser     | 직원주소등록       |
+| Admin       | UserCompany    | delCompanyUser     | 직원주소삭제       |
+| Admin       | UserCompany    | companyUserList     | 직원주소목록       |
